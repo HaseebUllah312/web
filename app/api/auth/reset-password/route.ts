@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/app/lib/supabase';
-import { verifyOTPFromStorage } from '@/app/lib/otp-storage';
+import { verifyOTP } from '@/app/lib/otp-storage';
 import { hashPassword } from '@/app/lib/password';
 
 export async function POST(req: Request) {
@@ -31,11 +31,11 @@ export async function POST(req: Request) {
         }
 
         // Verify OTP
-        const isValidOTP = await verifyOTPFromStorage(email.toLowerCase().trim(), otp, 'password_reset');
+        const otpResult = verifyOTP(email.toLowerCase().trim(), otp);
         
-        if (!isValidOTP) {
+        if (!otpResult.valid) {
             return NextResponse.json(
-                { error: 'Invalid or expired reset code.' },
+                { error: otpResult.message || 'Invalid or expired reset code.' },
                 { status: 400 }
             );
         }
