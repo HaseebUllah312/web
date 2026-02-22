@@ -41,20 +41,14 @@ export async function POST(req: Request) {
         const otp = generateOTP();
         const expiryTime = getOTPExpiryTime();
 
-        // Store OTP in database
-        const storeResult = await storeOTP(email.toLowerCase().trim(), otp, expiryTime, 'password_reset');
-        if (!storeResult) {
-            return NextResponse.json(
-                { error: 'Failed to generate reset code. Please try again.' },
-                { status: 500 }
-            );
-        }
+        // Store OTP in memory
+        storeOTP(email.toLowerCase().trim(), user.username, otp, expiryTime);
 
         // Send OTP email
         const emailSent = await sendEmail(
             email,
             'Password Reset Code - VU Academic Hub',
-            getOTPEmailTemplate(otp, 'password_reset', user.username)
+            getOTPEmailTemplate(user.username, otp, 'password_reset')
         );
 
         if (!emailSent) {
@@ -65,8 +59,8 @@ export async function POST(req: Request) {
         }
 
         return NextResponse.json(
-            { 
-                success: true, 
+            {
+                success: true,
                 message: 'Reset code sent to your email. Please check your inbox (and spam folder).',
                 email: email // Return email for display
             },

@@ -47,6 +47,7 @@ next-env.d.ts
 *.bak
 *.backup
 
-# local data files
-data/otp-storage.json
-data/pending_uploads.json
+# local data / scripts / docs (not needed in production)
+/data/
+/scripts/
+/docs/

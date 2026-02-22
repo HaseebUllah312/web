@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/app/lib/supabase';
 import { verifyOTP } from '@/app/lib/otp-storage';
-import { hashPassword } from '@/app/lib/password';
+import { hashPassword, generateSalt } from '@/app/lib/password';
 
 export async function POST(req: Request) {
     try {
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 
         // Verify OTP
         const otpResult = verifyOTP(email.toLowerCase().trim(), otp);
-        
+
         if (!otpResult.valid) {
             return NextResponse.json(
                 { error: otpResult.message || 'Invalid or expired reset code.' },
@@ -41,12 +41,13 @@ export async function POST(req: Request) {
         }
 
         // Hash new password
-        const { hash, salt } = hashPassword(newPassword);
+        const salt = generateSalt();
+        const hash = hashPassword(newPassword, salt);
 
         // Update password in database
         const { error: updateError } = await supabase
             .from('users')
-            .update({ 
+            .update({
                 password_hash: hash,
                 salt: salt,
                 updated_at: new Date().toISOString()
@@ -62,8 +63,8 @@ export async function POST(req: Request) {
         }
 
         return NextResponse.json(
-            { 
-                success: true, 
+            {
+                success: true,
                 message: 'Password reset successfully! You can now login with your new password.'
             },
             { status: 200 }
