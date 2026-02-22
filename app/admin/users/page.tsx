@@ -8,6 +8,7 @@ interface User {
     email: string;
     username: string;
     role: string;
+    provider: string;
     created_at: string;
     is_email_verified: boolean;
 }
@@ -17,6 +18,7 @@ export default function UserManagementPage() {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedRole, setSelectedRole] = useState('all');
+    const [providerFilter, setProviderFilter] = useState('all');
     const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
 
     useEffect(() => {
@@ -39,9 +41,10 @@ export default function UserManagementPage() {
 
     const filteredUsers = users.filter(user => {
         const matchSearch = user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          user.username.toLowerCase().includes(searchTerm.toLowerCase());
+            user.username.toLowerCase().includes(searchTerm.toLowerCase());
         const matchRole = selectedRole === 'all' || user.role === selectedRole;
-        return matchSearch && matchRole;
+        const matchProvider = providerFilter === 'all' || user.provider === providerFilter;
+        return matchSearch && matchRole && matchProvider;
     });
 
     const handleSelectUser = (userId: string) => {
@@ -60,14 +63,14 @@ export default function UserManagementPage() {
 
     const handleBulkAction = async (action: string) => {
         if (!selectedUsers.length) return;
-        
+
         try {
             const response = await fetch('/api/admin/users/bulk-action', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userIds: selectedUsers, action })
             });
-            
+
             if (response.ok) {
                 fetchUsers();
                 setSelectedUsers([]);
@@ -152,6 +155,28 @@ export default function UserManagementPage() {
                         <option value="owner">Owner</option>
                         <option value="admin">Admin</option>
                         <option value="student">Student</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', fontSize: '0.95rem' }}>
+                        🔑 Filter by Provider
+                    </label>
+                    <select
+                        value={providerFilter}
+                        onChange={(e) => setProviderFilter(e.target.value)}
+                        style={{
+                            width: '100%',
+                            padding: '12px',
+                            border: '1px solid rgba(102, 126, 234, 0.3)',
+                            borderRadius: '8px',
+                            background: 'var(--bg-secondary)',
+                            color: 'var(--text-primary)'
+                        }}
+                    >
+                        <option value="all">All Providers</option>
+                        <option value="google">🔵 Google (Gmail) only</option>
+                        <option value="email">📧 Email only</option>
                     </select>
                 </div>
 
@@ -251,6 +276,7 @@ export default function UserManagementPage() {
                                     />
                                 </th>
                                 <th style={{ padding: '15px', textAlign: 'left', fontWeight: '600' }}>User Info</th>
+                                <th style={{ padding: '15px', textAlign: 'left', fontWeight: '600' }}>Provider</th>
                                 <th style={{ padding: '15px', textAlign: 'left', fontWeight: '600' }}>Role</th>
                                 <th style={{ padding: '15px', textAlign: 'left', fontWeight: '600' }}>Status</th>
                                 <th style={{ padding: '15px', textAlign: 'left', fontWeight: '600' }}>Joined</th>
@@ -275,12 +301,24 @@ export default function UserManagementPage() {
                                     </td>
                                     <td style={{ padding: '15px' }}>
                                         <span style={{
+                                            background: user.provider === 'google' ? 'rgba(66, 133, 244, 0.1)' : 'rgba(34, 197, 94, 0.1)',
+                                            color: user.provider === 'google' ? '#4285F4' : '#22c55e',
+                                            padding: '5px 10px',
+                                            borderRadius: '6px',
+                                            fontSize: '0.82rem',
+                                            fontWeight: '500'
+                                        }}>
+                                            {user.provider === 'google' ? '🔵 Google' : '📧 Email'}
+                                        </span>
+                                    </td>
+                                    <td style={{ padding: '15px' }}>
+                                        <span style={{
                                             background: user.role === 'owner' ? 'rgba(239, 68, 68, 0.1)' :
-                                                       user.role === 'admin' ? 'rgba(102, 126, 234, 0.1)' :
-                                                       'rgba(34, 197, 94, 0.1)',
+                                                user.role === 'admin' ? 'rgba(102, 126, 234, 0.1)' :
+                                                    'rgba(34, 197, 94, 0.1)',
                                             color: user.role === 'owner' ? '#ef4444' :
-                                                   user.role === 'admin' ? '#667eea' :
-                                                   '#22c55e',
+                                                user.role === 'admin' ? '#667eea' :
+                                                    '#22c55e',
                                             padding: '6px 12px',
                                             borderRadius: '6px',
                                             fontSize: '0.85rem',

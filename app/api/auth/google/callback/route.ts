@@ -10,6 +10,16 @@ export async function GET(req: Request) {
         return NextResponse.redirect(new URL('/login?error=Google login failed', req.url));
     }
 
+    // Validate required env vars up front
+    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+        console.error('Missing GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET env vars');
+        return NextResponse.redirect(new URL('/login?error=OAuth+not+configured+on+server', req.url));
+    }
+    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        console.error('Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY env vars');
+        return NextResponse.redirect(new URL('/login?error=Database+not+configured+on+server', req.url));
+    }
+
     try {
         // Exchange code for tokens
         const requestUrl = new URL(req.url);
@@ -45,6 +55,10 @@ export async function GET(req: Request) {
             return NextResponse.redirect(new URL('/login?error=Could not get Google account info', req.url));
         }
 
+        // Owner email — always granted owner role
+        const OWNER_EMAIL = 'haseebsaleem312@gmail.com';
+        const isOwner = googleUser.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+
         // Find or create user
         const { data: existingUser } = await supabase
             .from('users')
@@ -63,7 +77,7 @@ export async function GET(req: Request) {
             username = (googleUser.name || googleUser.email.split('@')[0])
                 .replace(/[^a-zA-Z0-9_]/g, '_')
                 .slice(0, 30);
-            role = 'student';
+            role = isOwner ? 'owner' : 'student';
 
             const insertData: Record<string, any> = {
                 id: userId,
@@ -88,6 +102,13 @@ export async function GET(req: Request) {
             userId = existingUser.id;
             username = existingUser.username;
             role = existingUser.role;
+
+            // Force owner role if this is the owner email and role isn't set correctly
+            if (isOwner && role !== 'owner') {
+                await supabase.from('users').update({ role: 'owner' }).eq('id', userId);
+                role = 'owner';
+                console.log('Upgraded', googleUser.email, 'to owner role');
+            }
         }
 
         const sessionToken = await createSession({ id: userId, username, role: role as any });

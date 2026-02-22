@@ -32,6 +32,63 @@ export default function ServicesPage() {
                     <p>Professional academic support for Virtual University students</p>
                 </div>
 
+                {/* FREE Academic Support Banner */}
+                <div style={{
+                    background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%)',
+                    border: '2px solid rgba(34, 197, 94, 0.4)',
+                    borderRadius: '16px',
+                    padding: '28px 32px',
+                    marginBottom: '40px',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '20px',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                }}>
+                    <div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                            <span style={{ fontSize: '2rem' }}>🎓</span>
+                            <h2 style={{ margin: 0, fontSize: '1.5rem', color: '#22c55e' }}>Academic Advice is 100% FREE</h2>
+                        </div>
+                        <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '1rem', maxWidth: '600px', lineHeight: '1.6' }}>
+                            Have a question about your VU course, exam, assignment concept, or study plan?
+                            Ask us anything — <strong>completely free, no charges, no registration needed.</strong>
+                            We believe every student deserves access to quality academic guidance.
+                        </p>
+                        <div style={{ marginTop: '14px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                            {['✅ Subject Advice', '✅ Study Planning', '✅ Concept Help', '✅ Exam Tips', '✅ Career Guidance'].map(item => (
+                                <span key={item} style={{
+                                    background: 'rgba(34, 197, 94, 0.15)',
+                                    color: '#22c55e',
+                                    padding: '5px 14px',
+                                    borderRadius: '50px',
+                                    fontSize: '0.85rem',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(34, 197, 94, 0.3)'
+                                }}>{item}</span>
+                            ))}
+                        </div>
+                    </div>
+                    <a
+                        href="https://wa.me/923177180123?text=Hi!%20I%20have%20an%20academic%20question"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                            background: '#22c55e',
+                            color: 'white',
+                            padding: '14px 28px',
+                            borderRadius: '12px',
+                            textDecoration: 'none',
+                            fontWeight: '700',
+                            fontSize: '1rem',
+                            whiteSpace: 'nowrap',
+                            boxShadow: '0 4px 15px rgba(34, 197, 94, 0.35)'
+                        }}
+                    >
+                        💬 Ask FREE Now
+                    </a>
+                </div>
+
                 {/* Services Grid */}
                 <div className="card-grid-3" style={{ display: 'grid', gap: '24px', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', marginBottom: '60px' }}>
                     {services.map(s => (
@@ -121,11 +178,43 @@ export default function ServicesPage() {
                     </div>
                 </div>
 
-                {/* Financial Aid Banner */}
-                <div className="card" style={{ padding: '24px', textAlign: 'center', background: 'var(--success-bg)', borderColor: 'var(--success)', marginBottom: '60px', maxWidth: '700px', margin: '0 auto 60px' }}>
-                    <h3 style={{ color: 'var(--success)' }}>💚 Financial Aid Available</h3>
-                    <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>We offer special discounts for deserving and needy students. Contact us to learn more.</p>
-                    <a href="https://wa.me/923177180123?text=I%20need%20financial%20aid" className="btn btn-success" style={{ marginTop: '12px' }} target="_blank" rel="noopener noreferrer">Apply for Financial Aid</a>
+                {/* Needy Student Discount Banner */}
+                <div style={{
+                    background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.12) 0%, rgba(245, 158, 11, 0.12) 100%)',
+                    border: '2px solid rgba(251, 191, 36, 0.4)',
+                    borderRadius: '16px',
+                    padding: '28px 32px',
+                    textAlign: 'center',
+                    marginBottom: '60px',
+                    maxWidth: '800px',
+                    margin: '0 auto 60px'
+                }}>
+                    <div style={{ fontSize: '2.5rem', marginBottom: '10px' }}>💛</div>
+                    <h3 style={{ color: '#f59e0b', fontSize: '1.4rem', marginBottom: '10px' }}>Special Discount for Needy Students</h3>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '16px', lineHeight: '1.7', maxWidth: '550px', margin: '0 auto 16px' }}>
+                        We understand that not every student can afford paid services.
+                        If you are a deserving or financially struggling student,
+                        <strong style={{ color: 'var(--text-primary)' }}> contact us privately</strong> — we offer
+                        <strong style={{ color: '#f59e0b' }}> up to 100% discounts</strong> for genuinely needy VU students.
+                        No questions asked, your privacy is respected.
+                    </p>
+                    <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                        <a
+                            href="https://wa.me/923177180123?text=I%20am%20a%20needy%20student%20and%20need%20financial%20assistance"
+                            className="btn btn-warning"
+                            style={{ background: '#f59e0b', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '10px', textDecoration: 'none', fontWeight: '600', fontSize: '0.95rem' }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            💬 Apply via WhatsApp (Private)
+                        </a>
+                        <a
+                            href="mailto:haseebsaleem312@gmail.com?subject=Financial Aid Request"
+                            style={{ background: 'transparent', color: '#f59e0b', border: '2px solid #f59e0b', padding: '12px 24px', borderRadius: '10px', textDecoration: 'none', fontWeight: '600', fontSize: '0.95rem' }}
+                        >
+                            📧 Email Privately
+                        </a>
+                    </div>
                 </div>
 
                 {/* Testimonials */}

@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { getSubjectByCode } from '@/data/subjects';
+import PollsSection from '@/app/components/PollsSection';
 
 const sections = ['Midterm Files', 'Final Term Files', 'Solved Assignments', 'GDB Solutions', 'Quiz Files', 'Handwritten Notes', 'Past Papers', 'Important MCQs', 'Short Questions', 'Long Questions'];
 
@@ -220,6 +221,10 @@ export default function SubjectDetailPage() {
                         <button className="btn btn-outline btn-sm">👍 Helpful ({r.helpful})</button>
                     </div>
                 ))}
+
+                {/* Question Polls */}
+                <PollsSection subjectCode={code} />
+
             </div>
         </div>
     );

@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 const modes = [
     { id: 'quick', label: '⚡ Quick Answer', desc: 'Short, direct answers' },
@@ -8,31 +8,45 @@ const modes = [
     { id: 'quiz', label: '🧠 Quiz Mode', desc: 'Practice questions' },
 ];
 
+const WELCOME = 'Hello! 👋 I\'m your **VU AI Study Assistant** powered by HSM Tech & Gemini AI.\n\nI can help you with:\n📚 Any VU subject (CS, IT, Math, Management, English...)\n🧠 MCQ practice & quiz generation\n📝 Assignment & GDB understanding\n❓ Concept clarification\n📊 Exam tips & past paper patterns\n\nSelect a mode above and ask me anything — in Urdu or English! 🎓';
+
 export default function AIAssistantPage() {
     const [mode, setMode] = useState('quick');
     const [messages, setMessages] = useState([
-        { role: 'bot', text: 'Hello! 👋 I\'m your VU AI Study Assistant powered by HSM Tech. I can help you with:\n\n📚 Concept clarification\n🧠 MCQ practice\n📝 Assignment guidance\n❓ Quiz preparation\n📊 Exam tips & strategies\n📄 Past paper analysis\n\nSelect a mode above and ask me anything!' }
+        { role: 'bot', text: WELCOME }
     ]);
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
+    const chatEndRef = useRef<HTMLDivElement>(null);
+
+    // Auto-scroll to bottom on new messages
+    useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages, loading]);
 
     const sendMessage = async () => {
         if (!input.trim() || loading) return;
         const userMsg = input.trim();
         setInput('');
-        setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
+        const newMessages = [...messages, { role: 'user', text: userMsg }];
+        setMessages(newMessages);
         setLoading(true);
 
         try {
             const res = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: userMsg, mode }),
+                body: JSON.stringify({
+                    message: userMsg,
+                    mode,
+                    // Send last 6 messages as history for context
+                    history: newMessages.slice(-7, -1),
+                }),
             });
             const data = await res.json();
             setMessages(prev => [...prev, { role: 'bot', text: data.reply || 'Sorry, I could not process that.' }]);
         } catch {
-            setMessages(prev => [...prev, { role: 'bot', text: 'Connection error. Please try again.' }]);
+            setMessages(prev => [...prev, { role: 'bot', text: '⚠️ Connection error. Please check your internet and try again.' }]);
         }
         setLoading(false);
     };
@@ -74,6 +88,7 @@ export default function AIAssistantPage() {
                                 <div className="chat-bubble">Thinking... ✨</div>
                             </div>
                         )}
+                        <div ref={chatEndRef} />
                     </div>
 
                     <div style={{ padding: '16px', borderTop: '1px solid var(--border-color)', display: 'flex', gap: '8px' }}>
@@ -84,7 +99,16 @@ export default function AIAssistantPage() {
 
                 {/* Suggestion Chips */}
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '16px' }}>
-                    {['Explain OOP concepts', 'CS101 midterm tips', 'Practice MCQs for STA301', 'How to solve NPV problems?', 'Important topics CS403'].map(s => (
+                    {[
+                        'Explain OOP concepts for CS304',
+                        'STA301 midterm important topics',
+                        'Generate 5 MCQs on linked lists',
+                        'How to solve NPV in FIN622?',
+                        'CS402 important topics for exam',
+                        'Explain database normalization',
+                        'MTH101 calculus exam prep',
+                        'What is OSI model? CS601',
+                    ].map(s => (
                         <button key={s} className="quick-btn" onClick={() => { setInput(s); }}>{s}</button>
                     ))}
                 </div>
