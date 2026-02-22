@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(req: Request) {
     const clientId = process.env.GOOGLE_CLIENT_ID;
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
     if (!clientId) {
         console.error('GOOGLE_CLIENT_ID is not set in environment variables.');
@@ -12,9 +11,15 @@ export async function GET() {
         );
     }
 
+    // Auto-detect base URL from request — works on localhost and any Vercel domain
+    const requestUrl = new URL(req.url);
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ||
+        `${requestUrl.protocol}//${requestUrl.host}`;
+    const redirectUri = `${baseUrl}/api/auth/google/callback`;
+
     const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
     const options = {
-        redirect_uri: `${baseUrl}/api/auth/google/callback`,
+        redirect_uri: redirectUri,
         client_id: clientId,
         access_type: 'offline',
         response_type: 'code',
@@ -26,6 +31,7 @@ export async function GET() {
     };
 
     const qs = new URLSearchParams(options);
+    console.log('Google OAuth redirect_uri:', redirectUri);
 
     return NextResponse.redirect(`${rootUrl}?${qs.toString()}`);
 }

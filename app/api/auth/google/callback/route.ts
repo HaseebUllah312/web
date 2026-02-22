@@ -12,6 +12,11 @@ export async function GET(req: Request) {
 
     try {
         // Exchange code for tokens
+        const requestUrl = new URL(req.url);
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ||
+            `${requestUrl.protocol}//${requestUrl.host}`;
+        const redirectUri = `${baseUrl}/api/auth/google/callback`;
+
         const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -19,7 +24,7 @@ export async function GET(req: Request) {
                 code,
                 client_id: process.env.GOOGLE_CLIENT_ID || '',
                 client_secret: process.env.GOOGLE_CLIENT_SECRET || '',
-                redirect_uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/google/callback`,
+                redirect_uri: redirectUri,
                 grant_type: 'authorization_code',
             }),
         });
