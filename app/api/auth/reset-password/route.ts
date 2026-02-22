@@ -5,16 +5,15 @@ import { hashPassword, generateSalt } from '@/app/lib/password';
 
 export async function POST(req: Request) {
     try {
-        const { email, otp, newPassword, confirmPassword } = await req.json();
+        const { otpToken, otp, newPassword, confirmPassword } = await req.json();
 
-        if (!email || !otp || !newPassword || !confirmPassword) {
+        if (!otpToken || !otp || !newPassword || !confirmPassword) {
             return NextResponse.json(
                 { error: 'All fields are required.' },
                 { status: 400 }
             );
         }
 
-        // Validate password length
         if (newPassword.length < 8) {
             return NextResponse.json(
                 { error: 'Password must be at least 8 characters.' },
@@ -22,7 +21,6 @@ export async function POST(req: Request) {
             );
         }
 
-        // Check if passwords match
         if (newPassword !== confirmPassword) {
             return NextResponse.json(
                 { error: 'Passwords do not match.' },
@@ -30,8 +28,8 @@ export async function POST(req: Request) {
             );
         }
 
-        // Verify OTP
-        const otpResult = await verifyOTP(email.toLowerCase().trim(), otp);
+        // Verify OTP using the signed JWT token
+        const otpResult = await verifyOTP(otpToken, otp);
 
         if (!otpResult.valid) {
             return NextResponse.json(
@@ -39,6 +37,8 @@ export async function POST(req: Request) {
                 { status: 400 }
             );
         }
+
+        const email = otpResult.email!;
 
         // Hash new password
         const salt = generateSalt();
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
                 salt: salt,
                 updated_at: new Date().toISOString()
             })
-            .eq('email', email.toLowerCase().trim());
+            .eq('email', email);
 
         if (updateError) {
             console.error('Password update error:', updateError);

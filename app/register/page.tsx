@@ -10,6 +10,7 @@ function RegisterForm() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [otp, setOtp] = useState('');
+    const [otpToken, setOtpToken] = useState(''); // Signed JWT from server
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [otpSent, setOtpSent] = useState(false);
@@ -43,8 +44,9 @@ function RegisterForm() {
             const data = await res.json();
 
             if (res.ok) {
-                // Use normalized email from server response
+                // Use normalized email and save the JWT token from server
                 setEmail(data.email);
+                setOtpToken(data.otpToken);
                 setOtpSent(true);
                 setStep(2);
                 // Start countdown for resend
@@ -90,12 +92,11 @@ function RegisterForm() {
         setLoading(true);
 
         try {
-            const normalizedEmail = email.toLowerCase().trim();
             const res = await fetch('/api/auth/verify-otp', {
                 method: 'POST',
-                body: JSON.stringify({ 
-                    email: normalizedEmail,
-                    username: username.trim(), 
+                body: JSON.stringify({
+                    otpToken,          // Signed JWT containing the OTP
+                    username: username.trim(),
                     password: password.trim(),
                     otp: otp.trim()
                 }),
@@ -119,7 +120,7 @@ function RegisterForm() {
 
     const handleResendOTP = async () => {
         if (resendCountdown > 0) return;
-        
+
         setError('');
         setLoading(true);
 
@@ -134,6 +135,7 @@ function RegisterForm() {
 
             if (res.ok) {
                 setEmail(data.email); // Use normalized email from server
+                setOtpToken(data.otpToken); // Update token for resend
                 setResendCountdown(60);
             } else {
                 setError(data.error || 'Failed to resend verification code');
@@ -281,10 +283,10 @@ function RegisterForm() {
             {/* STEP 3: OTP Verification */}
             {step === 3 && (
                 <form onSubmit={handleVerifyOTP}>
-                    <div style={{ 
-                        background: 'rgba(102, 126, 234, 0.1)', 
-                        padding: '15px', 
-                        borderRadius: '8px', 
+                    <div style={{
+                        background: 'rgba(102, 126, 234, 0.1)',
+                        padding: '15px',
+                        borderRadius: '8px',
                         marginBottom: '20px',
                         borderLeft: '4px solid var(--primary)'
                     }}>
@@ -305,9 +307,9 @@ function RegisterForm() {
                             maxLength={6}
                             required
                             disabled={loading}
-                            style={{ 
-                                width: '100%', 
-                                padding: '12px', 
+                            style={{
+                                width: '100%',
+                                padding: '12px',
                                 borderRadius: '8px',
                                 fontSize: '1.5rem',
                                 letterSpacing: '8px',
@@ -326,8 +328,8 @@ function RegisterForm() {
 
                     <div style={{ textAlign: 'center', marginTop: '20px' }}>
                         <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '10px' }}>
-                            {resendCountdown > 0 
-                                ? `Resend code in ${resendCountdown}s` 
+                            {resendCountdown > 0
+                                ? `Resend code in ${resendCountdown}s`
                                 : "Didn't receive the code?"}
                         </p>
                         <button

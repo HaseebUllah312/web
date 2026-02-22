@@ -1,83 +1,65 @@
-// OTP storage using Supabase — works correctly across all Vercel serverless instances.
-// Uses an `otp_verifications` table with auto-cleanup via expiry checks.
+/**
+ * Stateless OTP storage using signed JWTs.
+ * No database table required — works perfectly on Vercel serverless.
+ *
+ * Flow:
+ *  1. storeOTP()  → returns a signed token (string) containing the OTP
+ *  2. Frontend stores the token (returned in API response)
+ *  3. verifyOTP() → validates the token signature + checks OTP + checks expiry
+ */
 
-import { supabase } from '@/app/lib/supabase';
+import { SignJWT, jwtVerify } from 'jose';
 
+const SECRET = new TextEncoder().encode(
+    process.env.SESSION_SECRET || 'otp-secret-change-in-production'
+);
+
+interface OTPPayload {
+    email: string;
+    username: string;
+    otp: string;
+    type: string;
+}
+
+/** Creates a signed OTP token valid until expiresAt */
 export async function storeOTP(
     email: string,
     username: string,
     otp: string,
     expiresAt: Date
-): Promise<void> {
-    const normalizedEmail = email.toLowerCase().trim();
+): Promise<string> {
+    const token = await new SignJWT({ email: email.toLowerCase().trim(), username, otp, type: 'otp' })
+        .setProtectedHeader({ alg: 'HS256' })
+        .setIssuedAt()
+        .setExpirationTime(Math.floor(expiresAt.getTime() / 1000))
+        .sign(SECRET);
 
-    // Upsert — replace any existing OTP for this email
-    await supabase
-        .from('otp_verifications')
-        .upsert(
-            {
-                email: normalizedEmail,
-                username,
-                otp,
-                expires_at: expiresAt.toISOString(),
-                attempts: 0,
-            },
-            { onConflict: 'email' }
-        );
-
-    console.log(`OTP stored in Supabase for ${normalizedEmail}`);
+    return token;
 }
 
+/** Verifies the OTP token and checks the provided OTP matches */
 export async function verifyOTP(
-    email: string,
+    token: string,
     providedOTP: string
-): Promise<{ valid: boolean; message: string }> {
-    const normalizedEmail = email.toLowerCase().trim();
+): Promise<{ valid: boolean; message: string; email?: string; username?: string }> {
+    try {
+        const { payload } = await jwtVerify(token, SECRET);
+        const data = payload as unknown as OTPPayload;
 
-    const { data: record, error } = await supabase
-        .from('otp_verifications')
-        .select('*')
-        .eq('email', normalizedEmail)
-        .maybeSingle();
+        if (data.otp !== providedOTP) {
+            return { valid: false, message: 'Incorrect OTP. Please check your email and try again.' };
+        }
 
-    if (error || !record) {
-        return { valid: false, message: 'OTP not found. Please request a new verification code.' };
+        return {
+            valid: true,
+            message: 'OTP verified successfully.',
+            email: data.email,
+            username: data.username,
+        };
+    } catch (err: any) {
+        if (err?.code === 'ERR_JWT_EXPIRED') {
+            return { valid: false, message: 'OTP has expired. Please request a new verification code.' };
+        }
+        return { valid: false, message: 'Invalid verification code. Please request a new one.' };
     }
-
-    if (new Date() > new Date(record.expires_at)) {
-        await supabase.from('otp_verifications').delete().eq('email', normalizedEmail);
-        return { valid: false, message: 'OTP has expired. Please request a new verification code.' };
-    }
-
-    if (record.attempts >= 3) {
-        await supabase.from('otp_verifications').delete().eq('email', normalizedEmail);
-        return { valid: false, message: 'Too many incorrect attempts. Please request a new verification code.' };
-    }
-
-    if (record.otp !== providedOTP) {
-        await supabase
-            .from('otp_verifications')
-            .update({ attempts: record.attempts + 1 })
-            .eq('email', normalizedEmail);
-        return { valid: false, message: `Incorrect OTP. ${3 - record.attempts - 1} attempts remaining.` };
-    }
-
-    // OTP is valid — delete it
-    await supabase.from('otp_verifications').delete().eq('email', normalizedEmail);
-    return { valid: true, message: 'OTP verified successfully.' };
-}
-
-export async function getOTPRecord(email: string) {
-    const normalizedEmail = email.toLowerCase().trim();
-    const { data } = await supabase
-        .from('otp_verifications')
-        .select('*')
-        .eq('email', normalizedEmail)
-        .maybeSingle();
-    return data ?? undefined;
-}
-
-export async function clearOTP(email: string): Promise<void> {
-    const normalizedEmail = email.toLowerCase().trim();
-    await supabase.from('otp_verifications').delete().eq('email', normalizedEmail);
 }

@@ -7,6 +7,7 @@ export default function ForgotPasswordPage() {
   const [step, setStep] = useState(1); // 1: Email, 2: OTP, 3: New Password
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
+  const [otpToken, setOtpToken] = useState(''); // Signed JWT from server
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -33,6 +34,7 @@ export default function ForgotPasswordPage() {
         return;
       }
 
+      setOtpToken(data.otpToken); // Save JWT token for later verification
       setMessage(data.message || 'Reset code sent to your email');
       setStep(2);
     } catch (err) {
@@ -83,11 +85,11 @@ export default function ForgotPasswordPage() {
       const res = await fetch('/api/auth/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          email, 
-          otp, 
-          newPassword: password, 
-          confirmPassword 
+        body: JSON.stringify({
+          otpToken,      // Signed JWT containing the OTP
+          otp,
+          newPassword: password,
+          confirmPassword
         })
       });
 

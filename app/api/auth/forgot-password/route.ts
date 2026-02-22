@@ -41,8 +41,8 @@ export async function POST(req: Request) {
         const otp = generateOTP();
         const expiryTime = getOTPExpiryTime();
 
-        // Store OTP in memory
-        await storeOTP(email.toLowerCase().trim(), user.username, otp, expiryTime);
+        // Store OTP in signed JWT token (stateless)
+        const otpToken = await storeOTP(email.toLowerCase().trim(), user.username, otp, expiryTime);
 
         // Send OTP email
         const emailSent = await sendEmail(
@@ -62,7 +62,8 @@ export async function POST(req: Request) {
             {
                 success: true,
                 message: 'Reset code sent to your email. Please check your inbox (and spam folder).',
-                email: email // Return email for display
+                email: email, // Return email for display
+                otpToken, // Frontend must send this back during password reset
             },
             { status: 200 }
         );

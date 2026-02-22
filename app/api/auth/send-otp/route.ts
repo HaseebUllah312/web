@@ -56,8 +56,8 @@ export async function POST(req: Request) {
         const expiryTime = getOTPExpiryTime();
         const normalizedEmail = email.toLowerCase().trim();
 
-        // Store OTP with normalized email
-        await storeOTP(normalizedEmail, username, otp, expiryTime);
+        // Store OTP in a signed JWT token (stateless — no DB needed)
+        const otpToken = await storeOTP(normalizedEmail, username, otp, expiryTime);
 
         // Send OTP email
         const html = getOTPEmailTemplate(username, otp, 'registration');
@@ -77,7 +77,8 @@ export async function POST(req: Request) {
         return NextResponse.json({
             success: true,
             message: 'Verification code sent to your email. Please check your inbox.',
-            email: normalizedEmail, // Return normalized email
+            email: normalizedEmail,
+            otpToken, // Frontend must send this back during verification
         });
 
     } catch (error) {

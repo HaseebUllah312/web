@@ -59,22 +59,29 @@ export async function GET(req: Request) {
         if (!existingUser) {
             console.log('Creating new Google user:', googleUser.email);
             userId = crypto.randomUUID();
-            username = googleUser.name;
+            // Build a clean username from name or email (no spaces/special chars)
+            username = (googleUser.name || googleUser.email.split('@')[0])
+                .replace(/[^a-zA-Z0-9_]/g, '_')
+                .slice(0, 30);
             role = 'student';
 
-            const { error } = await supabase.from('users').insert({
+            const insertData: Record<string, any> = {
                 id: userId,
                 username,
                 email: googleUser.email,
-                image: googleUser.picture,
                 provider: 'google',
                 role,
                 created_at: new Date().toISOString(),
-            });
+            };
+
+            // Add optional fields only if they exist in schema
+            if (googleUser.picture) insertData.image = googleUser.picture;
+
+            const { error } = await supabase.from('users').insert(insertData);
 
             if (error) {
-                console.error('Supabase insert error:', error);
-                return NextResponse.redirect(new URL('/login?error=Account creation failed', req.url));
+                console.error('Supabase insert error:', error.message, error.details);
+                return NextResponse.redirect(new URL(`/login?error=${encodeURIComponent('Account creation failed: ' + error.message)}`, req.url));
             }
         } else {
             console.log('Google user found:', existingUser.email);
