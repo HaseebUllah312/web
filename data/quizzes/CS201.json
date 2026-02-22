@@ -1,0 +1,151 @@
+{
+    "subject": "CS201",
+    "title": "Introduction to Programming",
+    "topics": [
+        {
+            "id": "data_types",
+            "name": "Data Types & Variables",
+            "term": "Midterm",
+            "questions": [
+                {
+                    "id": 101,
+                    "difficulty": "Easy",
+                    "question": "Which data type is used to store 'True' or 'False' values in C++?",
+                    "options": [
+                        "int",
+                        "char",
+                        "bool",
+                        "float"
+                    ],
+                    "correct": 2,
+                    "explanation": "The **bool** data type is used to store boolean values (true/false)."
+                },
+                {
+                    "id": 102,
+                    "difficulty": "Easy",
+                    "question": "What is the size of an 'int' in a typical 32-bit architecture?",
+                    "options": [
+                        "1 byte",
+                        "2 bytes",
+                        "4 bytes",
+                        "8 bytes"
+                    ],
+                    "correct": 2,
+                    "explanation": "Typically, an **int** occupies 4 bytes (32 bits) of memory."
+                },
+                {
+                    "id": 103,
+                    "difficulty": "Medium",
+                    "question": "Which header file is required for input/output in C++?",
+                    "options": [
+                        "stdio.h",
+                        "iostream",
+                        "conio.h",
+                        "math.h"
+                    ],
+                    "correct": 1,
+                    "explanation": "**<iostream>** is the standard input/output stream library in C++."
+                }
+            ]
+        },
+        {
+            "id": "loops",
+            "name": "Control Structures (Loops)",
+            "term": "Midterm",
+            "questions": [
+                {
+                    "id": 201,
+                    "difficulty": "Medium",
+                    "question": "Which loop guarantees at least one execution of the body?",
+                    "options": [
+                        "for loop",
+                        "while loop",
+                        "do-while loop",
+                        "nested loop"
+                    ],
+                    "correct": 2,
+                    "explanation": "The **do-while** loop is an exit-controlled loop, ensuring the body runs at least once before the condition check."
+                },
+                {
+                    "id": 202,
+                    "difficulty": "Hard",
+                    "question": "What is the output of: for(int i=0; i<3; i++) cout<<i;",
+                    "options": [
+                        "0123",
+                        "123",
+                        "012",
+                        "Infinite"
+                    ],
+                    "correct": 2,
+                    "explanation": "The loop runs for i=0, 1, 2. When i=3, condition fails. Output is **012**."
+                }
+            ]
+        },
+        {
+            "id": "arrays",
+            "name": "Arrays & Strings",
+            "term": "Final",
+            "questions": [
+                {
+                    "id": 301,
+                    "difficulty": "Medium",
+                    "question": "Array index in C++ starts from:",
+                    "options": [
+                        "1",
+                        "0",
+                        "-1",
+                        "Any number"
+                    ],
+                    "correct": 1,
+                    "explanation": "Array indexing in C++ (and most languages) is **0-based**."
+                },
+                {
+                    "id": 302,
+                    "difficulty": "Hard",
+                    "question": "Which character ends a C-style string?",
+                    "options": [
+                        ".",
+                        "/n",
+                        "\\0",
+                        "EOF"
+                    ],
+                    "correct": 2,
+                    "explanation": "C-style strings are null-terminated with the **\\0** (null) character."
+                }
+            ]
+        },
+        {
+            "id": "pointers",
+            "name": "Pointers",
+            "term": "Final",
+            "questions": [
+                {
+                    "id": 401,
+                    "difficulty": "Hard",
+                    "question": "A pointer holds the ______ of a variable.",
+                    "options": [
+                        "Value",
+                        "Address",
+                        "Name",
+                        "Type"
+                    ],
+                    "correct": 1,
+                    "explanation": "A pointer is a variable that stores the **memory address** of another variable."
+                },
+                {
+                    "id": 402,
+                    "difficulty": "Expert",
+                    "question": "What is the operator used to access the value at a pointer's address?",
+                    "options": [
+                        "&",
+                        "*",
+                        "->",
+                        "."
+                    ],
+                    "correct": 1,
+                    "explanation": "The **dereference operator (*)** is used to access the value stored at the pointer's address."
+                }
+            ]
+        }
+    ]
+}

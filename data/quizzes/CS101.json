@@ -1,0 +1,453 @@
+{
+    "subject": "CS101",
+    "title": "Introduction to Computing",
+    "topics": [
+        {
+            "id": "basics",
+            "name": "Computer Basics & History",
+            "term": "Midterm",
+            "questions": [
+                {
+                    "id": 101,
+                    "difficulty": "Easy",
+                    "question": "Which component is considered the 'brain' of the computer?",
+                    "options": [
+                        "RAM",
+                        "Hard Drive",
+                        "CPU",
+                        "Motherboard"
+                    ],
+                    "correct": 2,
+                    "explanation": "The **CPU (Central Processing Unit)** executes instructions and controls all other parts of the computer, acting as its brain."
+                },
+                {
+                    "id": 102,
+                    "difficulty": "Medium",
+                    "question": "Which generation of computers introduced the use of Transistors?",
+                    "options": [
+                        "First Generation",
+                        "Second Generation",
+                        "Third Generation",
+                        "Fourth Generation"
+                    ],
+                    "correct": 1,
+                    "explanation": "**Second Generation (1956-1963)** computers replaced vacuum tubes with transistors, making them smaller, faster, and more reliable."
+                },
+                {
+                    "id": 105,
+                    "difficulty": "Easy",
+                    "question": "Which of the following describes the first generation of computers?",
+                    "options": [
+                        "Integrated Circuits",
+                        "Vacuum Tubes",
+                        "Transistors",
+                        "Microprocessors"
+                    ],
+                    "correct": 1,
+                    "explanation": "First generation computers (1940-1956) used **Vacuum Tubes** for circuitry and magnetic drums for memory."
+                },
+                {
+                    "id": 106,
+                    "difficulty": "Easy",
+                    "question": "What is the smallest unit of data in a computer?",
+                    "options": [
+                        "Bit",
+                        "Byte",
+                        "Kilobyte",
+                        "Megabyte"
+                    ],
+                    "correct": 0,
+                    "explanation": "A **Bit** (Binary Digit) is the smallest unit of data, represented as either a 0 or a 1."
+                }
+            ]
+        },
+        {
+            "id": "word_processing",
+            "name": "Word Processing (MS Word)",
+            "term": "Midterm",
+            "questions": [
+                {
+                    "id": 151,
+                    "difficulty": "Easy",
+                    "question": "Which shortcut key is used to Undo an action?",
+                    "options": [
+                        "Ctrl + C",
+                        "Ctrl + V",
+                        "Ctrl + Z",
+                        "Ctrl + Y"
+                    ],
+                    "correct": 2,
+                    "explanation": "**Ctrl + Z** is the standard shortcut to Undo the last action in most applications."
+                },
+                {
+                    "id": 152,
+                    "difficulty": "Medium",
+                    "question": "Which feature is used to send the same letter to multiple recipients?",
+                    "options": [
+                        "Macro",
+                        "Mail Merge",
+                        "Template",
+                        "AutoCorrect"
+                    ],
+                    "correct": 1,
+                    "explanation": "**Mail Merge** allows you to create a batch of documents that are personalized for each recipient."
+                }
+            ]
+        },
+        {
+            "id": "data_rep",
+            "name": "Data Representation (Binary)",
+            "term": "Midterm",
+            "questions": [
+                {
+                    "id": 201,
+                    "difficulty": "Medium",
+                    "question": "What is the binary equivalent of the decimal number 10?",
+                    "options": [
+                        "1001",
+                        "1010",
+                        "1100",
+                        "1000"
+                    ],
+                    "correct": 1,
+                    "explanation": "Decimal 10 = 8 + 2. In binary (8 4 2 1), this is **1010**."
+                },
+                {
+                    "id": 202,
+                    "difficulty": "Hard",
+                    "question": "How many bits are in one Byte?",
+                    "options": [
+                        "4",
+                        "8",
+                        "16",
+                        "32"
+                    ],
+                    "correct": 1,
+                    "explanation": "**1 Byte = 8 bits**. 4 bits is called a Nibble."
+                },
+                {
+                    "id": 205,
+                    "difficulty": "Hard",
+                    "question": "Which coding scheme uses 16 bits to represent characters?",
+                    "options": [
+                        "ASCII",
+                        "EBCDIC",
+                        "Unicode",
+                        "BCD"
+                    ],
+                    "correct": 2,
+                    "explanation": "**Unicode** typically uses 16 bits (or more) to represent characters, allowing it to cover symbols from nearly all languages."
+                }
+            ]
+        },
+        {
+            "id": "software",
+            "name": "Software & Operating Systems",
+            "term": "Midterm",
+            "questions": [
+                {
+                    "id": 301,
+                    "difficulty": "Medium",
+                    "question": "Which of these is System Software?",
+                    "options": [
+                        "Microsoft Word",
+                        "Google Chrome",
+                        "Windows 10",
+                        "VLC Player"
+                    ],
+                    "correct": 2,
+                    "explanation": "**Windows 10** is an Operating System, which is System Software. The others are Application Software."
+                },
+                {
+                    "id": 305,
+                    "difficulty": "Medium",
+                    "question": "The core of the operating system that handles memory and CPU management is called the:",
+                    "options": [
+                        "Shell",
+                        "Kernel",
+                        "Interface",
+                        "Register"
+                    ],
+                    "correct": 1,
+                    "explanation": "The **Kernel** is the central part of an OS, bridging applications and data processing at the hardware level."
+                }
+            ]
+        },
+        {
+            "id": "programming",
+            "name": "Programming Basics",
+            "term": "Final",
+            "questions": [
+                {
+                    "id": 401,
+                    "difficulty": "Medium",
+                    "question": "Which of these is a valid variable name in most languages?",
+                    "options": [
+                        "2students",
+                        "total_sum",
+                        "consumer name",
+                        "if"
+                    ],
+                    "correct": 1,
+                    "explanation": "**total_sum** is valid. Variable names cannot start with a number (`2students`), contain spaces (`consumer name`), or be a keyword (`if`)."
+                },
+                {
+                    "id": 402,
+                    "difficulty": "Hard",
+                    "question": "What is the output of: `if (5 > 10) print('A'); else print('B');`?",
+                    "options": [
+                        "A",
+                        "B",
+                        "Error",
+                        "Nothing"
+                    ],
+                    "correct": 1,
+                    "explanation": "Since `5 > 10` is False, the `else` block executes, printing **B**."
+                }
+            ]
+        },
+        {
+            "id": "algorithms",
+            "name": "Algorithms & Flowcharts",
+            "term": "Final",
+            "questions": [
+                {
+                    "id": 450,
+                    "difficulty": "Easy",
+                    "question": "A step-by-step procedure to solve a problem is called an:",
+                    "options": [
+                        "Algorithm",
+                        "Program",
+                        "Syntax",
+                        "Bug"
+                    ],
+                    "correct": 0,
+                    "explanation": "An **Algorithm** is a defined set of steps to solve a specific problem."
+                },
+                {
+                    "id": 451,
+                    "difficulty": "Medium",
+                    "question": "In a flowchart, a diamond shape represents:",
+                    "options": [
+                        "Process",
+                        "Input/Output",
+                        "Decision",
+                        "Start/End"
+                    ],
+                    "correct": 2,
+                    "explanation": "A **Diamond** shape represents a Decision (e.g., Yes/No, True/False)."
+                }
+            ]
+        },
+        {
+            "id": "web",
+            "name": "Internet & Web",
+            "term": "Final",
+            "questions": [
+                {
+                    "id": 501,
+                    "difficulty": "Medium",
+                    "question": "What does HTTP stand for?",
+                    "options": [
+                        "HyperText Transfer Protocol",
+                        "High Transfer Text Protocol",
+                        "HyperText Transmission Process",
+                        "Hyperlink Text Transfer Protocol"
+                    ],
+                    "correct": 0,
+                    "explanation": "**HTTP** (HyperText Transfer Protocol) is the foundation of data communication for the World Wide Web."
+                },
+                {
+                    "id": 505,
+                    "difficulty": "Hard",
+                    "question": "Which protocol is used for sending emails?",
+                    "options": [
+                        "POP3",
+                        "SMTP",
+                        "IMAP",
+                        "HTTP"
+                    ],
+                    "correct": 1,
+                    "explanation": "**SMTP** (Simple Mail Transfer Protocol) is primarily used for SENDING emails."
+                }
+            ]
+        },
+        {
+            "id": "database",
+            "name": "Database Basics",
+            "term": "Final",
+            "questions": [
+                {
+                    "id": 601,
+                    "difficulty": "Medium",
+                    "question": "SQL stands for:",
+                    "options": [
+                        "Structured Question Language",
+                        "Structured Query Language",
+                        "Simple Query Logic",
+                        "System Query Link"
+                    ],
+                    "correct": 1,
+                    "explanation": "**SQL** (Structured Query Language) is the standard language for relational database management."
+                },
+                {
+                    "id": 602,
+                    "difficulty": "Hard",
+                    "question": "Which Key uniquely identifies a record in a table?",
+                    "options": [
+                        "Foreign Key",
+                        "Primary Key",
+                        "Secondary Key",
+                        "Super Key"
+                    ],
+                    "correct": 1,
+                    "explanation": "A **Primary Key** uniquely identifies each record in a database table."
+                }
+            ]
+        },
+        {
+            "id": "web_dev",
+            "name": "Web Development Basics",
+            "term": "Final",
+            "questions": [
+                {
+                    "id": 601,
+                    "difficulty": "Easy",
+                    "question": "What does HTML stand for?",
+                    "options": [
+                        "Hyper Text Markup Language",
+                        "High Tech Modern Language",
+                        "Hyper Transfer Mode Link",
+                        "Home Tool Markup Language"
+                    ],
+                    "correct": 0,
+                    "explanation": "HTML (Hyper Text Markup Language) is the standard markup language for documents designed to be displayed in a web browser."
+                },
+                {
+                    "id": 602,
+                    "difficulty": "Medium",
+                    "question": "Which tag is used for the largest heading in HTML?",
+                    "options": [
+                        "<head>",
+                        "<h1>",
+                        "<h6>",
+                        "<header>"
+                    ],
+                    "correct": 1,
+                    "explanation": "<h1> defines the most important heading. <h6> defines the least important heading."
+                },
+                {
+                    "id": 603,
+                    "difficulty": "Medium",
+                    "question": "Which CSS property changes the background color?",
+                    "options": [
+                        "color",
+                        "bgcolor",
+                        "background-color",
+                        "background-image"
+                    ],
+                    "correct": 2,
+                    "explanation": "**background-color** is the correct CSS property to set the background color of an element."
+                },
+                {
+                    "id": 604,
+                    "difficulty": "Hard",
+                    "question": "What is the correct HTML element for inserting a line break?",
+                    "options": [
+                        "<lb>",
+                        "<break>",
+                        "<br>",
+                        "<newline>"
+                    ],
+                    "correct": 2,
+                    "explanation": "The **<br>** tag inserts a single line break."
+                },
+                {
+                    "id": 605,
+                    "difficulty": "Hard",
+                    "question": "Which protocol is stateless?",
+                    "options": [
+                        "FTP",
+                        "HTTP",
+                        "SMTP",
+                        "POP3"
+                    ],
+                    "correct": 1,
+                    "explanation": "HTTP is a stateless protocol, meaning the server does not keep any data (state) between two requests."
+                }
+            ]
+        },
+        {
+            "id": "dbms",
+            "name": "Database Systems",
+            "term": "Final",
+            "questions": [
+                {
+                    "id": 701,
+                    "difficulty": "Easy",
+                    "question": "What is a Primary Key?",
+                    "options": [
+                        "A key that opens the database",
+                        "First column of a table",
+                        "Unique identifier for a record",
+                        "A password"
+                    ],
+                    "correct": 2,
+                    "explanation": "A **Primary Key** is a unique identifier for each record in a database table."
+                },
+                {
+                    "id": 702,
+                    "difficulty": "Medium",
+                    "question": "What does SQL stand for?",
+                    "options": [
+                        "Structured Question List",
+                        "Simple Query Language",
+                        "Structured Query Language",
+                        "System Query Link"
+                    ],
+                    "correct": 2,
+                    "explanation": "SQL stands for **Structured Query Language**."
+                },
+                {
+                    "id": 703,
+                    "difficulty": "Hard",
+                    "question": "Which command removes all records but keeps the table structure?",
+                    "options": [
+                        "DROP",
+                        "DELETE",
+                        "TRUNCATE",
+                        "REMOVE"
+                    ],
+                    "correct": 2,
+                    "explanation": "**TRUNCATE** removes all rows from a table, but the table structure and its columns, constraints, indexes, etc., remain."
+                },
+                {
+                    "id": 704,
+                    "difficulty": "Expert",
+                    "question": "In an ER diagram, a rectangle represents:",
+                    "options": [
+                        "Attribute",
+                        "Relationship",
+                        "Entity",
+                        "Key"
+                    ],
+                    "correct": 2,
+                    "explanation": "In Entity-Relationship diagrams, an **Entity** is represented by a rectangle."
+                },
+                {
+                    "id": 705,
+                    "difficulty": "Medium",
+                    "question": "Which of these is NOT a DBMS?",
+                    "options": [
+                        "MySQL",
+                        "Oracle",
+                        "Python",
+                        "PostgreSQL"
+                    ],
+                    "correct": 2,
+                    "explanation": "**Python** is a programming language, not a Database Management System."
+                }
+            ]
+        }
+    ]
+}
