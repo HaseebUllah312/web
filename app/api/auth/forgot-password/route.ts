@@ -42,7 +42,7 @@ export async function POST(req: Request) {
         const expiryTime = getOTPExpiryTime();
 
         // Store OTP in memory
-        storeOTP(email.toLowerCase().trim(), user.username, otp, expiryTime);
+        await storeOTP(email.toLowerCase().trim(), user.username, otp, expiryTime);
 
         // Send OTP email
         const emailSent = await sendEmail(

@@ -1,61 +1,83 @@
-// In-memory OTP store — works on Vercel serverless (no fs/disk writes)
-// OTPs are short-lived (10 min) so in-memory is perfectly safe.
+// OTP storage using Supabase — works correctly across all Vercel serverless instances.
+// Uses an `otp_verifications` table with auto-cleanup via expiry checks.
 
-interface OTPRecord {
-    otp: string;
-    email: string;
-    username: string;
-    expiresAt: string;
-    attempts: number;
+import { supabase } from '@/app/lib/supabase';
+
+export async function storeOTP(
+    email: string,
+    username: string,
+    otp: string,
+    expiresAt: Date
+): Promise<void> {
+    const normalizedEmail = email.toLowerCase().trim();
+
+    // Upsert — replace any existing OTP for this email
+    await supabase
+        .from('otp_verifications')
+        .upsert(
+            {
+                email: normalizedEmail,
+                username,
+                otp,
+                expires_at: expiresAt.toISOString(),
+                attempts: 0,
+            },
+            { onConflict: 'email' }
+        );
+
+    console.log(`OTP stored in Supabase for ${normalizedEmail}`);
 }
 
-const otpStore = new Map<string, OTPRecord>();
-
-export function storeOTP(email: string, username: string, otp: string, expiresAt: Date) {
+export async function verifyOTP(
+    email: string,
+    providedOTP: string
+): Promise<{ valid: boolean; message: string }> {
     const normalizedEmail = email.toLowerCase().trim();
-    otpStore.set(normalizedEmail, {
-        otp,
-        email: normalizedEmail,
-        username,
-        expiresAt: expiresAt.toISOString(),
-        attempts: 0,
-    });
-    console.log(`OTP stored for ${normalizedEmail}`);
-}
 
-export function verifyOTP(email: string, providedOTP: string): { valid: boolean; message: string } {
-    const normalizedEmail = email.toLowerCase().trim();
-    const record = otpStore.get(normalizedEmail);
+    const { data: record, error } = await supabase
+        .from('otp_verifications')
+        .select('*')
+        .eq('email', normalizedEmail)
+        .maybeSingle();
 
-    if (!record) {
+    if (error || !record) {
         return { valid: false, message: 'OTP not found. Please request a new verification code.' };
     }
 
-    if (new Date() > new Date(record.expiresAt)) {
-        otpStore.delete(normalizedEmail);
+    if (new Date() > new Date(record.expires_at)) {
+        await supabase.from('otp_verifications').delete().eq('email', normalizedEmail);
         return { valid: false, message: 'OTP has expired. Please request a new verification code.' };
     }
 
     if (record.attempts >= 3) {
-        otpStore.delete(normalizedEmail);
+        await supabase.from('otp_verifications').delete().eq('email', normalizedEmail);
         return { valid: false, message: 'Too many incorrect attempts. Please request a new verification code.' };
     }
 
     if (record.otp !== providedOTP) {
-        record.attempts++;
-        return { valid: false, message: `Incorrect OTP. ${3 - record.attempts} attempts remaining.` };
+        await supabase
+            .from('otp_verifications')
+            .update({ attempts: record.attempts + 1 })
+            .eq('email', normalizedEmail);
+        return { valid: false, message: `Incorrect OTP. ${3 - record.attempts - 1} attempts remaining.` };
     }
 
-    otpStore.delete(normalizedEmail);
+    // OTP is valid — delete it
+    await supabase.from('otp_verifications').delete().eq('email', normalizedEmail);
     return { valid: true, message: 'OTP verified successfully.' };
 }
 
-export function getOTPRecord(email: string): OTPRecord | undefined {
+export async function getOTPRecord(email: string) {
     const normalizedEmail = email.toLowerCase().trim();
-    return otpStore.get(normalizedEmail);
+    const { data } = await supabase
+        .from('otp_verifications')
+        .select('*')
+        .eq('email', normalizedEmail)
+        .maybeSingle();
+    return data ?? undefined;
 }
 
-export function clearOTP(email: string) {
+export async function clearOTP(email: string): Promise<void> {
     const normalizedEmail = email.toLowerCase().trim();
-    otpStore.delete(normalizedEmail);
+    await supabase.from('otp_verifications').delete().eq('email', normalizedEmail);
 }

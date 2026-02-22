@@ -23,7 +23,7 @@ export async function POST(req: Request) {
         }
 
         // Verify OTP
-        const otpVerification = verifyOTP(email, otp);
+        const otpVerification = await verifyOTP(email, otp);
         if (!otpVerification.valid) {
             return NextResponse.json(
                 { error: otpVerification.message },
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
             .maybeSingle();
 
         if (existingUser) {
-            clearOTP(email);
+            await clearOTP(email);
             return NextResponse.json(
                 { error: 'Username already taken.' },
                 { status: 409 }
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
             .maybeSingle();
 
         if (existingEmail) {
-            clearOTP(email);
+            await clearOTP(email);
             return NextResponse.json(
                 { error: 'Email already registered.' },
                 { status: 409 }
@@ -81,8 +81,8 @@ export async function POST(req: Request) {
 
         if (insertError) {
             console.error('Supabase insert error:', insertError);
-            clearOTP(email);
-            
+            await clearOTP(email);
+
             // Check if it's a column missing error
             if (insertError.message?.includes('email') || insertError.message?.includes('column')) {
                 return NextResponse.json(
@@ -90,7 +90,7 @@ export async function POST(req: Request) {
                     { status: 500 }
                 );
             }
-            
+
             return NextResponse.json(
                 { error: 'Failed to create account: ' + (insertError.message || 'Unknown error') },
                 { status: 500 }
@@ -106,7 +106,7 @@ export async function POST(req: Request) {
         );
 
         // Clear OTP after successful registration
-        clearOTP(email);
+        await clearOTP(email);
 
         return NextResponse.json({
             success: true,

@@ -57,7 +57,7 @@ export async function POST(req: Request) {
         const normalizedEmail = email.toLowerCase().trim();
 
         // Store OTP with normalized email
-        storeOTP(normalizedEmail, username, otp, expiryTime);
+        await storeOTP(normalizedEmail, username, otp, expiryTime);
 
         // Send OTP email
         const html = getOTPEmailTemplate(username, otp, 'registration');

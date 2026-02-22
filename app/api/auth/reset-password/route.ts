@@ -31,7 +31,7 @@ export async function POST(req: Request) {
         }
 
         // Verify OTP
-        const otpResult = verifyOTP(email.toLowerCase().trim(), otp);
+        const otpResult = await verifyOTP(email.toLowerCase().trim(), otp);
 
         if (!otpResult.valid) {
             return NextResponse.json(
