@@ -2,13 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
+// Max questions Gemini can reliably generate in one call with good quality
+const MAX_PER_CALL = 20;
+
 // GET /api/quiz/data?subject=CS101&type=midterm&count=20
-// Returns quiz questions: first tries local JSON, then generates via Gemini AI
 export async function GET(req: NextRequest) {
     const { searchParams } = req.nextUrl;
     const subject = searchParams.get('subject')?.toUpperCase();
     const type = searchParams.get('type') || 'midterm';
-    const count = parseInt(searchParams.get('count') || '20');
+    const count = Math.min(parseInt(searchParams.get('count') || '20'), 50); // cap at 50
 
     if (!subject) {
         return NextResponse.json({ error: 'Subject code required' }, { status: 400 });
@@ -30,115 +32,161 @@ export async function GET(req: NextRequest) {
     }
 
     const examLabel = type === 'midterm' ? 'Midterm' : 'Final Term';
-    const easyCount = Math.floor(count * 0.30); // 30% easy
-    const mediumCount = Math.floor(count * 0.45); // 45% medium
-    const hardCount = count - easyCount - mediumCount; // 25% hard
 
-    const prompt = `You are an expert VU (Virtual University of Pakistan) exam question designer with 10+ years of experience creating VU past papers.
+    // Split into batches of MAX_PER_CALL to avoid token limits
+    // e.g. count=50 → batches of [20, 20, 10]
+    const batches: number[] = [];
+    let remaining = count;
+    while (remaining > 0) {
+        const batchSize = Math.min(remaining, MAX_PER_CALL);
+        batches.push(batchSize);
+        remaining -= batchSize;
+    }
 
-Your task: Generate exactly ${count} MCQs for the VU subject **${subject}** for the **${examLabel}** exam.
+    try {
+        // Run all batches in parallel for speed
+        const batchResults = await Promise.all(
+            batches.map((batchCount, batchIndex) =>
+                generateBatch(apiKey, subject, examLabel, batchCount, batchIndex, batches.length)
+            )
+        );
 
-## Quality Requirements:
+        // Merge all topic arrays from all batches
+        const allTopics: any[] = [];
+        for (const result of batchResults) {
+            if (result && result.topics) {
+                for (const topic of result.topics) {
+                    // Merge into existing topic if name matches, else add new
+                    const existing = allTopics.find(t => t.name === topic.name);
+                    if (existing) {
+                        existing.questions.push(...(topic.questions || []));
+                    } else {
+                        allTopics.push({ ...topic });
+                    }
+                }
+            }
+        }
 
-### 1. Question Types — Mix all of these:
-- **Conceptual** (student must understand the concept, not just memorize): ~40%
-- **Application-based** (apply the concept to a real scenario or example): ~30%
-- **Past-paper style** (questions that commonly appear in actual VU ${examLabel} exams): ~30%
+        if (allTopics.length === 0) {
+            return NextResponse.json({ error: 'AI failed to generate questions. Please try again.' }, { status: 500 });
+        }
 
-### 2. Difficulty Distribution (strictly follow this):
-- **Easy** (basic recall / definition level): ${easyCount} questions
-- **Medium** (requires real understanding of the concept): ${mediumCount} questions
-- **Hard** (requires analysis, comparison, or application): ${hardCount} questions
+        return NextResponse.json({
+            subject,
+            term: examLabel,
+            topics: allTopics,
+        });
 
-### 3. Explanation Quality — THIS IS THE MOST IMPORTANT PART:
+    } catch (err: any) {
+        console.error('Quiz generation error:', err);
+        return NextResponse.json({ error: 'Failed to generate quiz. Please try again.' }, { status: 500 });
+    }
+}
+
+async function generateBatch(
+    apiKey: string,
+    subject: string,
+    examLabel: string,
+    batchCount: number,
+    batchIndex: number,
+    totalBatches: number
+): Promise<any> {
+    const easyCount = Math.floor(batchCount * 0.30);
+    const mediumCount = Math.floor(batchCount * 0.45);
+    const hardCount = batchCount - easyCount - mediumCount;
+
+    // For multiple batches, tell AI to cover different topics per batch
+    const topicHint = totalBatches > 1
+        ? `This is batch ${batchIndex + 1} of ${totalBatches}. Cover DIFFERENT topics than other batches — focus on ${batchIndex === 0 ? 'fundamental/early' : batchIndex === 1 ? 'intermediate/middle' : 'advanced/late'} topics of the ${examLabel} syllabus.`
+        : '';
+
+    const prompt = `You are an expert VU (Virtual University of Pakistan) exam question designer.
+
+Generate exactly ${batchCount} MCQs for VU subject **${subject}** for the **${examLabel}** exam.
+${topicHint}
+
+## Requirements:
+
+### Difficulty (strictly follow):
+- Easy (basic recall/definition): ${easyCount} questions
+- Medium (requires understanding): ${mediumCount} questions
+- Hard (requires analysis/application): ${hardCount} questions
+
+### Question Types:
+- 40% Conceptual (test understanding, not memorization)
+- 30% Application-based (apply concept to a scenario)
+- 30% Past-paper style (common VU exam pattern)
+
+### Explanation Rules (CRITICAL):
 Each explanation MUST:
-- Clearly explain **WHY the correct answer is right** with reasoning
-- Briefly mention **why the other options are wrong** (common misconceptions)
-- **Teach the underlying concept** — a student who reads it should understand the topic better
-- Be 3-5 sentences, educational, and use simple clear English
-- Reference the VU course context where relevant
+- Explain WHY the correct answer is right (with the actual concept reasoning)
+- Mention why the popular wrong options are incorrect
+- Be educational — a student reading it should learn the concept
+- Be 2-3 sentences, simple clear English
 
-### 4. Question Quality Rules (strictly follow):
-- NO trivial or trick questions — every question must test real understanding
-- All 4 options must be plausible (wrong options = common student misconceptions)
-- Cover DIFFERENT topics — no two similar questions
-- Use VU handout terminology and standard academic language
-- Questions must genuinely help a student prepare for their VU ${examLabel} exam
+### Quality Rules:
+- NO trivial questions — every question tests real understanding
+- All 4 options must be plausible (wrong options = common student mistakes)
+- NO repeated or similar questions within this batch
+- Use VU handout terminology and VU exam style
+- Be genuinely useful for exam preparation
 
-### 5. Coverage:
-Group questions into 4-6 main topics/chapters of ${subject}.
-Ensure all major topics of the ${examLabel} syllabus are covered.
-
-Return ONLY valid JSON (no markdown, no extra text):
+Return ONLY valid JSON (no markdown, no extra text, no code blocks):
 {
   "subject": "${subject}",
   "term": "${examLabel}",
   "topics": [
     {
-      "name": "Topic/Chapter Name",
+      "name": "Topic Name",
       "term": "${examLabel}",
       "questions": [
         {
-          "question": "Clear, well-worded question that tests genuine understanding?",
-          "options": ["Option A", "Option B", "Option C", "Option D"],
+          "question": "Exam-quality question?",
+          "options": ["Plausible A", "Plausible B", "Plausible C", "Plausible D"],
           "correct": 0,
-          "explanation": "Option A is correct because [specific reason with concept explanation]. Options B/C/D are wrong because [brief reason addressing common misconceptions]. This concept is important because [why it matters in ${subject}]."
+          "explanation": "A is correct because [concept reasoning]. B/C are wrong because [misconception reason]. This matters because [relevance]."
         }
       ]
     }
   ]
 }
 
-Generate exactly ${count} questions total (${easyCount} easy + ${mediumCount} medium + ${hardCount} hard) across 4-6 topics. Every question must be genuinely exam-worthy and educationally valuable for a VU student.`;
+Generate exactly ${batchCount} questions (${easyCount} easy + ${mediumCount} medium + ${hardCount} hard) across 3-4 topics.`;
+
+    const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                generationConfig: {
+                    temperature: 0.65,
+                    maxOutputTokens: 8192, // Max for flash — easily handles 20 questions
+                    responseMimeType: 'application/json',
+                    topP: 0.9,
+                },
+            }),
+        }
+    );
+
+    if (!response.ok) {
+        console.error(`Batch ${batchIndex + 1} Gemini error:`, response.status);
+        return null;
+    }
+
+    const geminiData = await response.json();
+    const rawText = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!rawText) return null;
 
     try {
-        const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{ role: 'user', parts: [{ text: prompt }] }],
-                    generationConfig: {
-                        temperature: 0.65, // Balanced: creative but accurate
-                        maxOutputTokens: 6000,
-                        responseMimeType: 'application/json',
-                        topP: 0.9,
-                    },
-                }),
-            }
-        );
-
-        if (!response.ok) {
-            console.error('Gemini error:', response.status, await response.text());
-            return NextResponse.json({ error: 'AI generation failed. Please try again.' }, { status: 503 });
+        return JSON.parse(rawText);
+    } catch {
+        const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+            try { return JSON.parse(jsonMatch[0]); } catch { }
         }
-
-        const geminiData = await response.json();
-        const rawText = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-        if (!rawText) {
-            return NextResponse.json({ error: 'No questions generated. Try again.' }, { status: 500 });
-        }
-
-        // Parse the JSON response
-        let quizData;
-        try {
-            quizData = JSON.parse(rawText);
-        } catch {
-            // Try to extract JSON from the text
-            const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-            if (jsonMatch) {
-                quizData = JSON.parse(jsonMatch[0]);
-            } else {
-                return NextResponse.json({ error: 'Failed to parse AI response.' }, { status: 500 });
-            }
-        }
-
-        return NextResponse.json(quizData);
-
-    } catch (err: any) {
-        console.error('Quiz generation error:', err);
-        return NextResponse.json({ error: 'Failed to generate quiz. Please try again.' }, { status: 500 });
+        return null;
     }
 }
