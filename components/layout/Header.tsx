@@ -17,6 +17,7 @@ interface User {
     id: string;
     username: string;
     email?: string;
+    role: string;
 }
 
 export default function Header() {
@@ -33,7 +34,11 @@ export default function Header() {
                 const res = await fetch('/api/auth/me');
                 if (res.ok) {
                     const data = await res.json();
-                    setUser(data);
+                    if (data.user) {
+                        setUser(data.user);
+                    } else {
+                        setUser(null);
+                    }
                 }
             } catch (error) {
                 setUser(null);
@@ -114,6 +119,20 @@ export default function Header() {
                                                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
                                                 zIndex: 1000
                                             }}>
+                                                {(user.role === 'admin' || user.role === 'owner') && (
+                                                    <Link href="/admin" style={{
+                                                        display: 'block',
+                                                        padding: '12px 16px',
+                                                        color: '#ff9800', // Distinct gold color for admin
+                                                        textDecoration: 'none',
+                                                        fontSize: '0.95rem',
+                                                        fontWeight: '600',
+                                                        borderBottom: '1px solid var(--border)',
+                                                        transition: 'background 0.2s'
+                                                    }} onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 152, 0, 0.1)'} onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+                                                        ⚙️ Admin Dashboard
+                                                    </Link>
+                                                )}
                                                 <Link href="/dashboard" style={{
                                                     display: 'block',
                                                     padding: '12px 16px',
@@ -184,6 +203,11 @@ export default function Header() {
                 ))}
                 {user ? (
                     <>
+                        {(user.role === 'admin' || user.role === 'owner') && (
+                            <Link href="/admin" onClick={() => setMobileOpen(false)} style={{ color: '#ff9800', fontWeight: 'bold' }}>
+                                ⚙️ Admin Dashboard
+                            </Link>
+                        )}
                         <Link href="/dashboard" onClick={() => setMobileOpen(false)}>📊 Dashboard</Link>
                         <Link href="/profile" onClick={() => setMobileOpen(false)}>👤 My Profile</Link>
                         <button onClick={handleLogout} style={{

@@ -12,6 +12,8 @@ export default async function DashboardPage() {
         redirect('/login');
     }
 
+    const isAdmin = session.role === 'admin' || session.role === 'owner';
+
     return (
         <div className="page">
             {/* Welcome Section */}
@@ -102,6 +104,7 @@ export default async function DashboardPage() {
             <section style={{ marginBottom: '50px' }}>
                 <h2 style={{ fontSize: '1.8rem', marginBottom: '30px' }}>Quick Access</h2>
                 <DashboardNavGrid items={[
+                    ...(isAdmin ? [{ icon: '⚙️', label: 'Admin Dashboard', href: '/admin' }] : []),
                     { icon: '📚', label: 'Subjects', href: '/subjects' },
                     { icon: '✅', label: 'MCQ Practice', href: '/mcq-practice' },
                     { icon: '📖', label: 'Resources', href: '/resources' },
@@ -109,8 +112,8 @@ export default async function DashboardPage() {
                     { icon: '❓', label: 'Q&A Forum', href: '/qna' },
                     { icon: '🏆', label: 'Leaderboard', href: '/leaderboard' },
                     { icon: '📤', label: 'Upload Files', href: '/upload' },
-                    { icon: '�️', label: 'Services', href: '/services' },
-                    { icon: '�👤', label: 'My Profile', href: '/profile' }
+                    { icon: '🛠️', label: 'Services', href: '/services' },
+                    { icon: '👤', label: 'My Profile', href: '/profile' }
                 ]} />
             </section>
 
