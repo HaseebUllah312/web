@@ -99,12 +99,17 @@ export default function VUExamMode({ questions, subject, examType, customLabel, 
                 position: 'relative',
             }}>
                 {/* Subject */}
-                <div style={{ color: 'white' }}>
-                    <div style={{ color: 'white', fontWeight: 'bold', fontSize: '1.2rem' }}>
-                        {subject} - {customLabel || (examType === 'midterm' ? 'Midterm' : 'Final Term')} MCQs
+                <div style={{ color: 'white', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <div style={{ padding: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '12px' }}>
+                        <span style={{ fontSize: '1.5rem' }}>🎓</span>
                     </div>
-                    <div style={{ fontSize: '0.78rem', color: '#a5b4fc' }}>
-                        {examLabel} Exam Simulation
+                    <div>
+                        <div style={{ color: 'white', fontWeight: 'bold', fontSize: '1.25rem', letterSpacing: '0.02em' }}>
+                            {subject} - {customLabel || (examType === 'midterm' ? 'Midterm' : 'Final Term')}
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: '#a5b4fc', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '600' }}>
+                            {examLabel} Assessment Portal
+                        </div>
                     </div>
                 </div>
 
@@ -296,55 +301,61 @@ export default function VUExamMode({ questions, subject, examType, customLabel, 
 
                 {/* RIGHT: Summary Sidebar */}
                 <div style={{
-                    width: '200px',
+                    width: '260px',
                     background: '#1e1b4b',
-                    borderLeft: '2px solid #7c3aed',
+                    borderLeft: '1px solid rgba(255,255,255,0.1)',
                     display: 'flex',
                     flexDirection: 'column',
                     overflowY: 'auto',
                 }}>
                     <div style={{
-                        background: '#7c3aed',
+                        background: 'rgba(124,58,237,0.2)',
                         color: 'white',
-                        padding: '10px 16px',
+                        padding: '16px',
                         fontWeight: '700',
-                        fontSize: '0.9rem',
+                        fontSize: '0.85rem',
                         textAlign: 'center',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        borderBottom: '1px solid rgba(255,255,255,0.1)'
                     }}>
-                        Summary
+                        Question Palette
                     </div>
 
                     {/* Question Number Grid */}
-                    <div style={{ padding: '12px', display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center' }}>
+                    <div style={{ padding: '20px', display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px' }}>
                         {questions.map((_, i) => {
                             const isAnswered = answers[i] !== null;
                             const isFlagged = flagged[i];
                             const isActive = i === currentQ;
-                            let bg = '#374151'; // unanswered
-                            if (isAnswered) bg = '#22c55e'; // answered
-                            if (isFlagged) bg = '#f59e0b'; // flagged
-                            if (isActive) bg = '#7c3aed'; // current
+                            let bg = 'rgba(255,255,255,0.05)'; // unanswered
+                            let color = '#9ca3af';
+                            let border = '1px solid rgba(255,255,255,0.1)';
+
+                            if (isAnswered) { bg = '#22c55e'; color = 'white'; border = 'none'; }
+                            if (isFlagged) { bg = '#f59e0b'; color = 'white'; border = 'none'; }
+                            if (isActive) { bg = '#7c3aed'; color = 'white'; border = '2px solid white'; }
 
                             return (
                                 <div
                                     key={i}
                                     onClick={() => goTo(i)}
                                     style={{
-                                        width: '32px', height: '32px',
-                                        borderRadius: '50%',
+                                        aspectRatio: '1',
+                                        borderRadius: '8px',
                                         background: bg,
-                                        color: 'white',
+                                        color: color,
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        fontSize: '0.75rem',
+                                        fontSize: '0.8rem',
                                         fontWeight: '700',
                                         cursor: 'pointer',
-                                        border: isActive ? '2px solid white' : '2px solid transparent',
-                                        transition: 'all 0.15s',
+                                        border: border,
+                                        transition: 'all 0.2s',
                                     }}
                                 >
-                                    {String(i + 1).padStart(2, '0')}
+                                    {i + 1}
                                 </div>
                             );
                         })}

@@ -122,57 +122,64 @@ async function generateBatch(
         ? `This is batch ${batchIndex + 1} of ${totalBatches}. Cover DIFFERENT sub-topics than other batches.`
         : '';
 
-    const prompt = `You are an expert VU (Virtual University of Pakistan) exam designer specializing in "Concept Clearing" questions.
+    const prompt = `You are a Senior Academic Content Designer specializing in high-stakes university examinations (VU style).
 
-Generate exactly ${batchCount} high-quality MCQs for VU subject **${subject}** ${focusText}.
+Generate exactly ${batchCount} professional, high-quality MCQs for subject **${subject}** ${focusText}.
 ${topicHint}
 
-## Core Objective: 
-Every question must lead to a "Perfect" understanding of the concept. DO NOT generate trivial or simple lookup questions.
+## Core Directive:
+Produce content that is academically rigorous, logically sound, and perfectly formatted. Avoid all triviality.
 
-## Requirements:
+## Quality Standards:
 
-### Conceptual Depth:
-- Focus on logic, architecture, and "How it works" rather than simple "What is X" questions.
-- Distractors (wrong options) MUST be plausible misconceptions that students often have.
+### 1. Academic Rigor & Tone:
+- Use formal, precise university-level English.
+- Focus on conceptual logic, "how/why" mechanisms, and theoretical frameworks.
+- For technical subjects, include specific terminology and (where applicable) markdown-formatted code snippets or mathematical expressions.
 
-### Difficulty (strictly follow):
-- Easy (basic conceptual understanding): ${easyCount} questions
-- Medium (requires deep understanding): ${mediumCount} questions
-- Hard (requires analysis/application): ${hardCount} questions
+### 2. Option Neutrality & Balance:
+- Distractors (wrong options) must be highly plausible misconceptions or related but incorrect concepts.
+- Avoid "None of the above" or "All of the above" unless absolutely necessary.
+- **Length Neutrality**: Ensure all 4 options are approximately the same length. Avoid making the correct answer significantly longer or more detailed than distractors.
+- **Logical Ordering**: If options are numerical or chronological, list them in ascending/descending order.
 
-### Explanation Style (CRITICAL for learning):
-Each explanation MUST be a "mini-lesson":
-1. Start with WHY the correct answer is logically right.
-2. Explicitly explain WHY the significant wrong options are incorrect to clear common confusion.
-3. Keep it educational and encouraging. Use 3-4 clear sentences.
+### 3. Difficulty Mapping (Strict):
+- Easy (Conceptual Foundation): ${easyCount} questions
+- Medium (Analytical Understanding): ${mediumCount} questions
+- Hard (Complex Application/Synthesis): ${hardCount} questions
 
-### Quality Standards:
-- Use standard VU terminology.
-- No repeated questions.
-- Ensure the JSON format is perfect.
+### 4. Professional Explanations (The "Mini-Lesson"):
+Each explanation must be a self-contained scholarly paragraph:
+- Start with the definitive logical proof of the correct answer.
+- Explicitly deconstruct the main distractors to clarify common confusion.
+- Use professional terms. Format important concepts in **bold**.
 
-Return ONLY valid JSON:
+### 5. Markdown Precision:
+- Use \`inline code\` for variables, functions, or small technical terms.
+- Use fenced code blocks (\`\`\`language) for any code snippets.
+- Use high-quality markdown for emphasis.
+
+Return ONLY valid JSON (no preamble, no markdown formatting outside the JSON):
 {
   "subject": "${subject}",
   "term": "${examLabel}",
   "topics": [
     {
-      "name": "Topic Name",
+      "name": "Academic Topic Name",
       "term": "${examLabel}",
       "questions": [
         {
-          "question": "Deep conceptual question?",
-          "options": ["Correct Option", "Plausible Wrong A", "Plausible Wrong B", "Plausible Wrong C"],
+          "question": "Logically structured, professional question?",
+          "options": ["Balanced Option A", "Balanced Option B", "Balanced Option C", "Balanced Option D"],
           "correct": 0,
-          "explanation": "This is correct because... On the other hand, [Option B] is a common mistake because... but in reality..."
+          "explanation": "The correct answer is [Option A] because... Traditionally, students confuse this with [Option B], however..."
         }
       ]
     }
   ]
 }
 
-Generate exactly ${batchCount} distinct, high-quality questions.`;
+Ensure exactly ${batchCount} distinct, exam-tier questions.`;
 
     const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,

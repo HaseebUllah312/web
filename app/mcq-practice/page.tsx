@@ -146,138 +146,165 @@ export default function MCQPracticePage() {
 
     if (stage === 'setup') {
         return (
-            <div className="page">
-                <div className="container" style={{ maxWidth: '600px' }}>
-                    <div className="page-header">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <div>
-                                <h1>🧠 MCQ Practice</h1>
-                                <p>Test your knowledge with subject-wise MCQ quizzes</p>
-                            </div>
-                            <Link href="/mcq-practice/submit" className="btn btn-outline btn-sm">
-                                ➕ Submit Question
-                            </Link>
-                        </div>
+            <div className="page anim-fade-in" style={{ paddingBottom: '60px' }}>
+                <div className="container" style={{ maxWidth: '700px' }}>
+                    <div className="page-header" style={{ textAlign: 'center', marginBottom: '40px' }}>
+                        <h1 style={{ fontSize: '2.5rem', marginBottom: '12px', background: 'linear-gradient(135deg, #fff 0%, #a5b4fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                            🧠 Advanced MCQ Practice
+                        </h1>
+                        <p style={{ fontSize: '1.1rem', color: '#a5b4fc', opacity: 0.9 }}>
+                            Master your VU subjects with AI-powered conceptual clearing.
+                        </p>
                     </div>
 
-                    <div className="card" style={{ padding: '32px' }}>
+                    <div className="card" style={{
+                        padding: '40px',
+                        background: 'rgba(30, 27, 75, 0.4)',
+                        backdropFilter: 'blur(12px)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        boxShadow: '0 20px 50px rgba(0,0,0,0.3)',
+                        borderRadius: '24px'
+                    }}>
                         <div className="form-group">
-                            <label className="form-label">Select Subject</label>
-                            <select className="form-select" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)}>
-                                {allSubjects.map(code => {
+                            <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Select Subject</label>
+                            <select className="form-select" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}>
+                                {allSubjects.sort().map(code => {
                                     const s = subjects.find(x => x.code === code);
-                                    return <option key={code} value={code}>{code} {s ? `- ${s.name}` : ''}</option>;
+                                    return <option key={code} value={code} style={{ background: '#1e1b4b' }}>{code} {s ? `- ${s.name}` : ''}</option>;
                                 })}
                             </select>
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">Selection Mode</label>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
-                                <button
-                                    className={`btn btn-sm ${selectionMode === 'exam' ? 'btn-primary' : 'btn-secondary'}`}
-                                    onClick={() => setSelectionMode('exam')}
-                                >
-                                    Standard Exam
-                                </button>
-                                <button
-                                    className={`btn btn-sm ${selectionMode === 'lecture' ? 'btn-primary' : 'btn-secondary'}`}
-                                    onClick={() => setSelectionMode('lecture')}
-                                >
-                                    Lecture Based
-                                </button>
-                                <button
-                                    className={`btn btn-sm ${selectionMode === 'topic' ? 'btn-primary' : 'btn-secondary'}`}
-                                    onClick={() => setSelectionMode('topic')}
-                                >
-                                    Custom Topic
-                                </button>
+                            <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Selection Mode</label>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
+                                {['exam', 'lecture', 'topic'].map((mode) => (
+                                    <button
+                                        key={mode}
+                                        className={`btn btn-sm ${selectionMode === mode ? 'btn-primary' : 'btn-secondary'}`}
+                                        onClick={() => setSelectionMode(mode as any)}
+                                        style={{
+                                            padding: '12px',
+                                            fontSize: '0.8rem',
+                                            borderRadius: '12px',
+                                            border: selectionMode === mode ? 'none' : '1px solid rgba(255,255,255,0.1)',
+                                            background: selectionMode === mode ? '' : 'rgba(255,255,255,0.02)'
+                                        }}
+                                    >
+                                        {mode === 'exam' ? '🎓 Exam' : mode === 'lecture' ? '📚 Lecture' : '🔍 Topic'}
+                                    </button>
+                                ))}
                             </div>
                         </div>
 
-                        {selectionMode === 'exam' && (
-                            <div className="form-group anim-fade-in">
-                                <label className="form-label">Exam Type</label>
-                                <div style={{ display: 'flex', gap: '8px' }}>
-                                    <button className={`btn ${selectedType === 'midterm' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setSelectedType('midterm')}>Midterm (Lec 1-22)</button>
-                                    <button className={`btn ${selectedType === 'final' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setSelectedType('final')}>Final Term (Lec 23-45)</button>
+                        <div style={{ minHeight: '100px', transition: 'all 0.3s ease' }}>
+                            {selectionMode === 'exam' && (
+                                <div className="form-group anim-fade-in">
+                                    <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Exam Target</label>
+                                    <div style={{ display: 'flex', gap: '12px' }}>
+                                        <button
+                                            className={`btn ${selectedType === 'midterm' ? 'btn-primary' : 'btn-secondary'}`}
+                                            onClick={() => setSelectedType('midterm')}
+                                            style={{ flex: 1, borderRadius: '12px', background: selectedType === 'midterm' ? '' : 'rgba(255,255,255,0.02)' }}
+                                        >
+                                            Midterm (1-22)
+                                        </button>
+                                        <button
+                                            className={`btn ${selectedType === 'final' ? 'btn-primary' : 'btn-secondary'}`}
+                                            onClick={() => setSelectedType('final')}
+                                            style={{ flex: 1, borderRadius: '12px', background: selectedType === 'final' ? '' : 'rgba(255,255,255,0.02)' }}
+                                        >
+                                            Final (23-45)
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
 
-                        {selectionMode === 'lecture' && (
-                            <div className="form-group anim-fade-in">
-                                <label className="form-label">Lecture Range (e.g., 1-5 or 10,12,15)</label>
-                                <input
-                                    type="text"
-                                    className="form-input"
-                                    placeholder="Enter lecture numbers..."
-                                    value={lectureRange}
-                                    onChange={e => setLectureRange(e.target.value)}
-                                />
-                            </div>
-                        )}
+                            {selectionMode === 'lecture' && (
+                                <div className="form-group anim-fade-in">
+                                    <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Lecture Focus (Range or List)</label>
+                                    <input
+                                        type="text"
+                                        className="form-input"
+                                        placeholder="e.g., 1-5 or 10,12,15"
+                                        value={lectureRange}
+                                        onChange={e => setLectureRange(e.target.value)}
+                                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                                    />
+                                </div>
+                            )}
 
-                        {selectionMode === 'topic' && (
-                            <div className="form-group anim-fade-in">
-                                <label className="form-label">Search Custom Topic</label>
-                                <input
-                                    type="text"
-                                    className="form-input"
-                                    placeholder="e.g., Networking or Binary Conversion"
-                                    value={customTopic}
-                                    onChange={e => setCustomTopic(e.target.value)}
-                                />
-                                <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                                    ✨ AI will generate questions specifically for this topic.
-                                </p>
-                            </div>
-                        )}
+                            {selectionMode === 'topic' && (
+                                <div className="form-group anim-fade-in">
+                                    <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Custom Topic Semantic Search</label>
+                                    <input
+                                        type="text"
+                                        className="form-input"
+                                        placeholder="e.g., Binary Search Tree or SQL Normalization"
+                                        value={customTopic}
+                                        onChange={e => setCustomTopic(e.target.value)}
+                                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                                    />
+                                    <p style={{ fontSize: '0.75rem', color: '#a5b4fc', opacity: 0.7, marginTop: '6px' }}>
+                                        🤖 AI will curate a professional set of questions for this specific domain.
+                                    </p>
+                                </div>
+                            )}
+                        </div>
 
                         <div className="form-group">
-                            <label className="form-label">Number of Questions</label>
-                            <div style={{ display: 'flex', gap: '8px' }}>
+                            <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Batch Size</label>
+                            <div style={{ display: 'flex', gap: '12px' }}>
                                 {[10, 20, 50].map(n => (
-                                    <button key={n} className={`btn ${questionCount === n ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setQuestionCount(n)}>{n} MCQs</button>
+                                    <button
+                                        key={n}
+                                        className={`btn ${questionCount === n ? 'btn-primary' : 'btn-secondary'}`}
+                                        onClick={() => setQuestionCount(n)}
+                                        style={{ flex: 1, borderRadius: '12px', background: questionCount === n ? '' : 'rgba(255,255,255,0.02)' }}
+                                    >
+                                        {n} MCQs
+                                    </button>
                                 ))}
                             </div>
                         </div>
 
                         {/* Mode Selector */}
                         <div className="form-group">
-                            <label className="form-label">Quiz Mode</label>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                            <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Experience Mode</label>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                                 <div
                                     onClick={() => setExamMode('practice')}
                                     style={{
-                                        padding: '14px',
-                                        borderRadius: '10px',
-                                        border: `2px solid ${examMode === 'practice' ? 'var(--primary, #667eea)' : 'rgba(102,126,234,0.2)'}`,
-                                        background: examMode === 'practice' ? 'rgba(102,126,234,0.1)' : 'transparent',
+                                        padding: '20px',
+                                        borderRadius: '16px',
+                                        border: `2px solid ${examMode === 'practice' ? '#667eea' : 'rgba(255,255,255,0.05)'}`,
+                                        background: examMode === 'practice' ? 'rgba(102,126,234,0.1)' : 'rgba(255,255,255,0.02)',
                                         cursor: 'pointer',
                                         textAlign: 'center',
-                                        transition: 'all 0.2s',
+                                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        transform: examMode === 'practice' ? 'scale(1.02)' : 'scale(1)',
                                     }}
                                 >
-                                    <div style={{ fontSize: '1.5rem' }}>⚡</div>
-                                    <div style={{ fontWeight: '600', fontSize: '0.9rem', marginTop: '4px' }}>Practice Mode</div>
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' }}>Instant feedback per question</div>
+                                    <div style={{ fontSize: '2rem' }}>⚡</div>
+                                    <div style={{ fontWeight: '700', fontSize: '1rem', marginTop: '8px', color: 'white' }}>Quick Practice</div>
+                                    <div style={{ fontSize: '0.75rem', color: '#a5b4fc', marginTop: '4px', opacity: 0.8 }}>Real-time guidance and explanations</div>
                                 </div>
                                 <div
                                     onClick={() => setExamMode('vu-style')}
                                     style={{
-                                        padding: '14px',
-                                        borderRadius: '10px',
-                                        border: `2px solid ${examMode === 'vu-style' ? '#7c3aed' : 'rgba(124,58,237,0.2)'}`,
-                                        background: examMode === 'vu-style' ? 'rgba(124,58,237,0.1)' : 'transparent',
+                                        padding: '20px',
+                                        borderRadius: '16px',
+                                        border: `2px solid ${examMode === 'vu-style' ? '#7c3aed' : 'rgba(255,255,255,0.05)'}`,
+                                        background: examMode === 'vu-style' ? 'rgba(124,58,237,0.1)' : 'rgba(255,255,255,0.02)',
                                         cursor: 'pointer',
                                         textAlign: 'center',
-                                        transition: 'all 0.2s',
+                                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        transform: examMode === 'vu-style' ? 'scale(1.02)' : 'scale(1)',
                                     }}
                                 >
-                                    <div style={{ fontSize: '1.5rem' }}>🎓</div>
-                                    <div style={{ fontWeight: '600', fontSize: '0.9rem', marginTop: '4px' }}>VU Exam Mode</div>
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' }}>Exact VU exam interface</div>
+                                    <div style={{ fontSize: '2rem' }}>🏛️</div>
+                                    <div style={{ fontWeight: '700', fontSize: '1rem', marginTop: '8px', color: 'white' }}>Exam Simulation</div>
+                                    <div style={{ fontSize: '0.75rem', color: '#a5b4fc', marginTop: '4px', opacity: 0.8 }}>Official VU portal environment</div>
                                 </div>
                             </div>
                         </div>
@@ -293,12 +320,24 @@ export default function MCQPracticePage() {
                             className="btn btn-primary btn-lg btn-block"
                             onClick={startQuiz}
                             disabled={loading}
-                            style={{ position: 'relative' }}
+                            style={{
+                                position: 'relative',
+                                height: '56px',
+                                fontSize: '1.1rem',
+                                borderRadius: '16px',
+                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                border: 'none',
+                                boxShadow: '0 10px 20px rgba(102,126,234,0.3)',
+                                marginTop: '10px'
+                            }}
                         >
                             {loading ? (
-                                <span>🤖 AI is generating your quiz... hold on!</span>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
+                                    <div className="spinner" style={{ width: '20px', height: '20px', border: '3px solid rgba(255,255,255,0.3)', borderTopColor: 'white' }} />
+                                    <span>Curating Specialized MCQs...</span>
+                                </div>
                             ) : (
-                                <span>Start Quiz 🚀</span>
+                                <span>Initialize Learning Session 🚀</span>
                             )}
                         </button>
                         {loading && (
@@ -447,28 +486,38 @@ export default function MCQPracticePage() {
             <div className="container" style={{ maxWidth: '760px' }}>
 
                 {/* Score Header */}
-                <div className="card" style={{ padding: '36px', textAlign: 'center', marginBottom: '24px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '32px', flexWrap: 'wrap', marginBottom: '20px' }}>
+                <div className="card" style={{
+                    padding: '48px',
+                    textAlign: 'center',
+                    marginBottom: '32px',
+                    background: 'rgba(30, 27, 75, 0.4)',
+                    backdropFilter: 'blur(12px)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '24px'
+                }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '48px', flexWrap: 'wrap' }}>
                         {/* Score Circle */}
-                        <div style={{ position: 'relative', width: '120px', height: '120px' }}>
-                            <svg width="120" height="120">
-                                <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(102,126,234,0.15)" strokeWidth="10" />
-                                <circle cx="60" cy="60" r="52" fill="none" stroke={gradeColor} strokeWidth="10"
-                                    strokeDasharray={`${(percentage / 100) * 327} 327`}
-                                    strokeLinecap="round" transform="rotate(-90 60 60)"
-                                    style={{ transition: 'stroke-dasharray 1s ease' }}
+                        <div style={{ position: 'relative', width: '150px', height: '150px' }}>
+                            <svg width="150" height="150">
+                                <circle cx="75" cy="75" r="65" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="12" />
+                                <circle cx="75" cy="75" r="65" fill="none" stroke={gradeColor} strokeWidth="12"
+                                    strokeDasharray={`${(percentage / 100) * 408} 408`}
+                                    strokeLinecap="round" transform="rotate(-90 75 75)"
+                                    style={{ transition: 'stroke-dasharray 1.5s cubic-bezier(0.4, 0, 0.2, 1)' }}
                                 />
-                                <text x="60" y="55" textAnchor="middle" fill="white" fontSize="22" fontWeight="bold">{percentage}%</text>
-                                <text x="60" y="72" textAnchor="middle" fill="#9ca3af" fontSize="11">{score}/{questions.length}</text>
+                                <text x="75" y="70" textAnchor="middle" fill="white" fontSize="32" fontWeight="900">{percentage}%</text>
+                                <text x="75" y="92" textAnchor="middle" fill="#a5b4fc" fontSize="12" fontWeight="bold" style={{ textTransform: 'uppercase', letterSpacing: '0.1em' }}>Score</text>
                             </svg>
                         </div>
 
                         {/* Grade + Message */}
                         <div style={{ textAlign: 'left' }}>
-                            <div style={{ fontSize: '3.5rem', fontWeight: '900', color: gradeColor, lineHeight: 1 }}>Grade {grade}</div>
-                            <div style={{ fontSize: '1.1rem', marginTop: '8px' }}>{motivation.emoji} {motivation.msg}</div>
-                            <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '6px' }}>
-                                {selectedSubject} • {selectedType === 'midterm' ? 'Midterm' : 'Final Term'} • {questions.length} Questions
+                            <div style={{ fontSize: '0.9rem', color: '#a5b4fc', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.2em', marginBottom: '8px' }}>Performance Result</div>
+                            <div style={{ fontSize: '4rem', fontWeight: '900', color: gradeColor, lineHeight: 1, textShadow: `0 0 20px ${gradeColor}44` }}>Grade {grade}</div>
+                            <div style={{ fontSize: '1.25rem', marginTop: '16px', color: 'white', fontWeight: '500' }}>{motivation.emoji} {motivation.msg}</div>
+                            <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+                                <span style={{ padding: '4px 12px', background: 'rgba(255,255,255,0.05)', borderRadius: '20px', fontSize: '0.75rem', color: '#a5b4fc' }}>{selectedSubject}</span>
+                                <span style={{ padding: '4px 12px', background: 'rgba(255,255,255,0.05)', borderRadius: '20px', fontSize: '0.75rem', color: '#a5b4fc' }}>{questions.length} Items</span>
                             </div>
                         </div>
                     </div>
