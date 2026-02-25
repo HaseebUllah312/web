@@ -17,6 +17,7 @@ export default function MCQPracticePage() {
     }, []);
     const [selectedType, setSelectedType] = useState<'midterm' | 'final'>('midterm');
     const [selectionMode, setSelectionMode] = useState<'exam' | 'lecture' | 'topic'>('exam');
+    const [isManualCode, setIsManualCode] = useState(false);
     const [lectureRange, setLectureRange] = useState('1-22');
     const [customTopic, setCustomTopic] = useState('');
     const [questionCount, setQuestionCount] = useState(20);
@@ -187,13 +188,33 @@ export default function MCQPracticePage() {
                         borderRadius: '24px'
                     }}>
                         <div className="form-group">
-                            <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Select Subject</label>
-                            <select className="form-select" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}>
-                                {allSubjects.sort().map(code => {
-                                    const s = subjects.find(x => x.code === code);
-                                    return <option key={code} value={code} style={{ background: '#1e1b4b' }}>{code} {s ? `- ${s.name}` : ''}</option>;
-                                })}
-                            </select>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                                <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem', margin: 0 }}>Select Subject</label>
+                                <button
+                                    onClick={() => setIsManualCode(!isManualCode)}
+                                    style={{ background: 'transparent', border: 'none', color: '#a5b4fc', fontSize: '0.7rem', cursor: 'pointer', textDecoration: 'underline', opacity: 0.8 }}
+                                >
+                                    {isManualCode ? 'Use Dropdown' : 'Manual Code Entry'}
+                                </button>
+                            </div>
+
+                            {isManualCode ? (
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="Enter Subject Code (e.g. CS201)"
+                                    value={selectedSubject}
+                                    onChange={e => setSelectedSubject(e.target.value.toUpperCase())}
+                                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                                />
+                            ) : (
+                                <select className="form-select" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}>
+                                    {allSubjects.sort().map(code => {
+                                        const s = subjects.find(x => x.code === code);
+                                        return <option key={code} value={code} style={{ background: '#1e1b4b' }}>{code} {s ? `- ${s.name}` : ''}</option>;
+                                    })}
+                                </select>
+                            )}
                         </div>
 
                         <div className="form-group">

@@ -153,19 +153,21 @@ async function generateBatch(
         ? `This is batch ${batchIndex + 1} of ${totalBatches}. Cover DIFFERENT sub-topics than previous batches.`
         : '';
 
-    const prompt = `You are a Senior Academic Content Designer specializing in VU university examinations.
+    const prompt = `You are a Senior Academic Content Designer specializing in university examinations for the **Virtual University of Pakistan (VU)**.
 
-Task: Generate exactly ${batchCount} professional MCQs for:
-Course: ${subject} - ${subjectName}
+Task: Generate exactly ${batchCount} professional MCQs for the following VU course:
+Course Code: ${subject}
+Course Name: ${subjectName}
 Exam Focus: ${examLabel}
 Context: ${focusText}
 ${topicHint}
 
 ## Instructions:
-1. Academic language (formal, precise English).
-2. Logical distractors (misconceptions, not trivial).
-3. Professional explanations (Scholarly paragraph explaining why the answer is correct and why others are wrong).
-4. Difficulty: ${easyCount} Easy, ${mediumCount} Medium, ${hardCount} Hard.
+1. Use the official **Virtual University of Pakistan (VU)** curriculum and handout context where applicable.
+2. Academic language (formal, precise English).
+3. Logical distractors (misconceptions, not trivial).
+4. Professional explanations (Scholarly paragraph explaining why the answer is correct and why others are wrong).
+5. Difficulty: ${easyCount} Easy, ${mediumCount} Medium, ${hardCount} Hard.
 
 Return ONLY a JSON object with this exact structure:
 {
