@@ -1,13 +1,9 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import path from 'path';
-import fs from 'fs';
+import { supabase } from '@/app/lib/supabase';
 import { verifySession } from '@/app/lib/session';
 
-const usersFilePath = path.join(process.cwd(), 'data/users.json');
-
-// Helper to get current user
-async function getCurrentUser() {
+const getCurrentUser = async () => {
     const cookie = (await cookies()).get('session')?.value;
     if (!cookie) return null;
     return await verifySession(cookie);
@@ -20,19 +16,22 @@ export async function GET() {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
-    if (!fs.existsSync(usersFilePath)) return NextResponse.json([]);
+    try {
+        const { data: users, error } = await supabase
+            .from('users')
+            .select('id, username, email, role, provider, created_at, is_email_verified')
+            .order('created_at', { ascending: false });
 
-    const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
+        if (error) {
+            console.error('Supabase fetch users error:', error);
+            return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });
+        }
 
-    // Return sanitized users
-    const sanitizedUsers = users.map((u: any) => ({
-        id: u.id,
-        username: u.username,
-        role: u.role,
-        createdAt: u.createdAt
-    }));
-
-    return NextResponse.json(sanitizedUsers);
+        return NextResponse.json(users);
+    } catch (error) {
+        console.error('Admin users GET error:', error);
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    }
 }
 
 export async function PATCH(req: Request) {
@@ -51,20 +50,18 @@ export async function PATCH(req: Request) {
             return NextResponse.json({ error: 'Invalid role' }, { status: 400 });
         }
 
-        const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
-        const userIndex = users.findIndex((u: any) => u.id === userId);
+        // Update in Supabase
+        const { error: updateError } = await supabase
+            .from('users')
+            .update({ role: newRole })
+            .eq('id', userId)
+            // Safety: cannot demote an owner
+            .neq('role', 'owner');
 
-        if (userIndex === -1) {
-            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+        if (updateError) {
+            console.error('Supabase update role error:', updateError);
+            return NextResponse.json({ error: 'Failed to update user role' }, { status: 500 });
         }
-
-        // Prevent modifying other owners (if multiple exist in future) or self (though self-demotion might be valid, let's block for safety)
-        if (users[userIndex].role === 'owner') {
-            return NextResponse.json({ error: 'Cannot modify Owner role' }, { status: 403 });
-        }
-
-        users[userIndex].role = newRole;
-        fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 4));
 
         return NextResponse.json({ success: true, message: `User role updated to ${newRole}` });
 
