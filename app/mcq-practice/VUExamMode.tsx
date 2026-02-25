@@ -14,11 +14,12 @@ interface VUExamModeProps {
     questions: Question[];
     subject: string;
     examType: string;
+    customLabel?: string;
     onFinish: (answers: (number | null)[], score: number) => void;
     onBack: () => void;
 }
 
-export default function VUExamMode({ questions, subject, examType, onFinish, onBack }: VUExamModeProps) {
+export default function VUExamMode({ questions, subject, examType, customLabel, onFinish, onBack }: VUExamModeProps) {
     const [currentQ, setCurrentQ] = useState(0);
     const [answers, setAnswers] = useState<(number | null)[]>(new Array(questions.length).fill(null));
     const [flagged, setFlagged] = useState<boolean[]>(new Array(questions.length).fill(false));
@@ -99,8 +100,8 @@ export default function VUExamMode({ questions, subject, examType, onFinish, onB
             }}>
                 {/* Subject */}
                 <div style={{ color: 'white' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: '1rem' }}>
-                        {subject} — VU Academic Hub Practice
+                    <div style={{ color: 'white', fontWeight: 'bold', fontSize: '1.2rem' }}>
+                        {subject} - {customLabel || (examType === 'midterm' ? 'Midterm' : 'Final Term')} MCQs
                     </div>
                     <div style={{ fontSize: '0.78rem', color: '#a5b4fc' }}>
                         {examLabel} Exam Simulation

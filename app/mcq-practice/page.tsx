@@ -319,12 +319,17 @@ export default function MCQPracticePage() {
                 questions={questions}
                 subject={selectedSubject}
                 examType={selectedType}
-                onFinish={(ans, sc) => {
+                customLabel={
+                    selectionMode === 'lecture' ? `Lectures ${lectureRange}` :
+                        selectionMode === 'topic' ? `Topic: ${customTopic}` :
+                            undefined
+                }
+                onBack={() => setStage('setup')}
+                onFinish={(ans, score) => {
                     setAnswers(ans);
-                    setScore(sc);
+                    setScore(score);
                     setStage('result');
                 }}
-                onBack={() => setStage('setup')}
             />
         );
     }
