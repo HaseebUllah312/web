@@ -10,15 +10,18 @@ export async function GET(req: NextRequest) {
     const { searchParams } = req.nextUrl;
     const subject = searchParams.get('subject')?.toUpperCase();
     const type = searchParams.get('type') || 'midterm';
+    const lec = searchParams.get('lec');
+    const topicParam = searchParams.get('topic');
     const count = Math.min(parseInt(searchParams.get('count') || '20'), 50); // cap at 50
 
     if (!subject) {
         return NextResponse.json({ error: 'Subject code required' }, { status: 400 });
     }
 
-    // 1. Try local JSON file first
     const filePath = path.join(process.cwd(), 'data', 'quizzes', `${subject}.json`);
-    if (fs.existsSync(filePath)) {
+    // Only use cache for general exam TERM requests (midterm/final)
+    // For specific lectures or topics, always use AI for precision
+    if (fs.existsSync(filePath) && !lec && !topicParam) {
         try {
             const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
             const examTerm = type === 'midterm' ? 'midterm' : 'final';
@@ -31,7 +34,6 @@ export async function GET(req: NextRequest) {
             });
 
             // If we have enough questions in cache, use them. 
-            // Otherwise, let AI generate fresh ones to meet the requested count.
             if (matchingQs.length >= count) {
                 return NextResponse.json(data);
             }
@@ -48,6 +50,7 @@ export async function GET(req: NextRequest) {
     }
 
     const examLabel = type === 'midterm' ? 'Midterm' : 'Final Term';
+    const focusLabel = topicParam ? `Topic: ${topicParam}` : lec ? `Lectures: ${lec}` : examLabel;
 
     // Split into batches of MAX_PER_CALL to avoid token limits
     const batches: number[] = [];
@@ -62,7 +65,7 @@ export async function GET(req: NextRequest) {
         // Run all batches in parallel
         const batchResults = await Promise.all(
             batches.map((batchCount, batchIndex) =>
-                generateBatch(apiKey, subject, examLabel, batchCount, batchIndex, batches.length)
+                generateBatch(apiKey, subject, examLabel, batchCount, batchIndex, batches.length, lec, topicParam)
             )
         );
 
@@ -103,19 +106,25 @@ async function generateBatch(
     examLabel: string,
     batchCount: number,
     batchIndex: number,
-    totalBatches: number
+    totalBatches: number,
+    lec?: string | null,
+    topicParam?: string | null
 ): Promise<any> {
     const easyCount = Math.floor(batchCount * 0.20); // Fewer easy, more deep questions
     const mediumCount = Math.floor(batchCount * 0.50);
     const hardCount = batchCount - easyCount - mediumCount;
 
+    let focusText = `for the **${examLabel}** exam`;
+    if (topicParam) focusText = `specifically for the topic: **"${topicParam}"**`;
+    else if (lec) focusText = `strictly from VU lectures: **${lec}**`;
+
     const topicHint = totalBatches > 1
-        ? `This is batch ${batchIndex + 1} of ${totalBatches}. Cover DIFFERENT topics than other batches — focus on ${batchIndex === 0 ? 'fundamental/early' : batchIndex === 1 ? 'intermediate/middle' : 'advanced/late'} topics of the ${examLabel} syllabus.`
+        ? `This is batch ${batchIndex + 1} of ${totalBatches}. Cover DIFFERENT sub-topics than other batches.`
         : '';
 
     const prompt = `You are an expert VU (Virtual University of Pakistan) exam designer specializing in "Concept Clearing" questions.
 
-Generate exactly ${batchCount} high-quality MCQs for VU subject **${subject}** for the **${examLabel}** exam.
+Generate exactly ${batchCount} high-quality MCQs for VU subject **${subject}** ${focusText}.
 ${topicHint}
 
 ## Core Objective: 

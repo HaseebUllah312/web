@@ -16,6 +16,9 @@ export default function MCQPracticePage() {
         fetch('/api/subjects').then(r => r.json()).then(setAllSubjects);
     }, []);
     const [selectedType, setSelectedType] = useState<'midterm' | 'final'>('midterm');
+    const [selectionMode, setSelectionMode] = useState<'exam' | 'lecture' | 'topic'>('exam');
+    const [lectureRange, setLectureRange] = useState('1-22');
+    const [customTopic, setCustomTopic] = useState('');
     const [questionCount, setQuestionCount] = useState(20);
     const [timerEnabled, setTimerEnabled] = useState(true);
     const [questions, setQuestions] = useState<typeof mcqs>([]);
@@ -48,8 +51,18 @@ export default function MCQPracticePage() {
         try {
             let loadedQuestions: any[] = [];
 
-            // Fetch from API (tries local JSON first, then AI-generates)
-            const res = await fetch(`/api/quiz/data?subject=${selectedSubject}&type=${selectedType}&count=${questionCount}`);
+            // Fetch from API (tries local JSON first for exam mode, else AI-generates)
+            let apiUrl = `/api/quiz/data?subject=${selectedSubject}&count=${questionCount}`;
+
+            if (selectionMode === 'exam') {
+                apiUrl += `&type=${selectedType}`;
+            } else if (selectionMode === 'lecture') {
+                apiUrl += `&lec=${encodeURIComponent(lectureRange)}`;
+            } else if (selectionMode === 'topic') {
+                apiUrl += `&topic=${encodeURIComponent(customTopic)}`;
+            }
+
+            const res = await fetch(apiUrl);
 
             if (res.ok) {
                 const data = await res.json();
@@ -159,12 +172,67 @@ export default function MCQPracticePage() {
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">Exam Type</label>
-                            <div style={{ display: 'flex', gap: '8px' }}>
-                                <button className={`btn ${selectedType === 'midterm' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setSelectedType('midterm')}>Midterm</button>
-                                <button className={`btn ${selectedType === 'final' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setSelectedType('final')}>Final Term</button>
+                            <label className="form-label">Selection Mode</label>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
+                                <button
+                                    className={`btn btn-sm ${selectionMode === 'exam' ? 'btn-primary' : 'btn-secondary'}`}
+                                    onClick={() => setSelectionMode('exam')}
+                                >
+                                    Standard Exam
+                                </button>
+                                <button
+                                    className={`btn btn-sm ${selectionMode === 'lecture' ? 'btn-primary' : 'btn-secondary'}`}
+                                    onClick={() => setSelectionMode('lecture')}
+                                >
+                                    Lecture Based
+                                </button>
+                                <button
+                                    className={`btn btn-sm ${selectionMode === 'topic' ? 'btn-primary' : 'btn-secondary'}`}
+                                    onClick={() => setSelectionMode('topic')}
+                                >
+                                    Custom Topic
+                                </button>
                             </div>
                         </div>
+
+                        {selectionMode === 'exam' && (
+                            <div className="form-group anim-fade-in">
+                                <label className="form-label">Exam Type</label>
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <button className={`btn ${selectedType === 'midterm' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setSelectedType('midterm')}>Midterm (Lec 1-22)</button>
+                                    <button className={`btn ${selectedType === 'final' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setSelectedType('final')}>Final Term (Lec 23-45)</button>
+                                </div>
+                            </div>
+                        )}
+
+                        {selectionMode === 'lecture' && (
+                            <div className="form-group anim-fade-in">
+                                <label className="form-label">Lecture Range (e.g., 1-5 or 10,12,15)</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="Enter lecture numbers..."
+                                    value={lectureRange}
+                                    onChange={e => setLectureRange(e.target.value)}
+                                />
+                            </div>
+                        )}
+
+                        {selectionMode === 'topic' && (
+                            <div className="form-group anim-fade-in">
+                                <label className="form-label">Search Custom Topic</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="e.g., Networking or Binary Conversion"
+                                    value={customTopic}
+                                    onChange={e => setCustomTopic(e.target.value)}
+                                />
+                                <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                                    ✨ AI will generate questions specifically for this topic.
+                                </p>
+                            </div>
+                        )}
 
                         <div className="form-group">
                             <label className="form-label">Number of Questions</label>
@@ -235,7 +303,7 @@ export default function MCQPracticePage() {
                         </button>
                         {loading && (
                             <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '10px' }}>
-                                ✨ Gemini AI is creating fresh {questionCount} MCQs for {selectedSubject} {selectedType === 'midterm' ? 'Midterm' : 'Final Term'}...
+                                ✨ AI is creating {questionCount} "{selectionMode === 'topic' ? customTopic : selectionMode === 'lecture' ? `Lec ${lectureRange}` : selectedType}" MCQs...
                             </p>
                         )}
                     </div>
