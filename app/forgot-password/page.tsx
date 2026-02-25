@@ -14,6 +14,8 @@ export default function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleSendReset = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -64,13 +66,18 @@ export default function ForgotPasswordPage() {
     }
   };
 
+  const validatePassword = (pass: string) => {
+    const strongPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    return strongPasswordRegex.test(pass);
+  };
+
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters');
+    if (!validatePassword(password)) {
+      setError('Password must be at least 8 characters and include letters, numbers, and special characters.');
       setLoading(false);
       return;
     }
@@ -241,33 +248,57 @@ export default function ForgotPasswordPage() {
           <form onSubmit={handleResetPassword}>
             <div style={{ marginBottom: '20px' }}>
               <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>🔑 New Password</label>
-              <input
-                type="password"
-                className="form-input"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                disabled={loading}
-                style={{ width: '100%', padding: '12px', borderRadius: '8px' }}
-              />
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '6px' }}>
-                Minimum 8 characters
+              <div style={{ position: 'relative' }}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="form-input"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  disabled={loading}
+                  style={{ width: '100%', padding: '12px 45px 12px 12px', borderRadius: '8px' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: '10px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--text-secondary)',
+                    cursor: 'pointer',
+                    fontSize: '0.8rem'
+                  }}
+                >
+                  {showPassword ? '🙈' : '👁️'}
+                </button>
+              </div>
+              <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '8px', lineHeight: '1.4' }}>
+                Requirements:<br />
+                • Minimum 8 characters<br />
+                • At least one letter & one number<br />
+                • At least one special character (@$!%*#?&)
               </p>
             </div>
 
             <div style={{ marginBottom: '25px' }}>
               <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>🔐 Confirm Password</label>
-              <input
-                type="password"
-                className="form-input"
-                placeholder="••••••••"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                disabled={loading}
-                style={{ width: '100%', padding: '12px', borderRadius: '8px' }}
-              />
+              <div style={{ position: 'relative' }}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="form-input"
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  disabled={loading}
+                  style={{ width: '100%', padding: '12px 45px 12px 12px', borderRadius: '8px' }}
+                />
+              </div>
             </div>
 
             <button

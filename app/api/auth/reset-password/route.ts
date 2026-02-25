@@ -14,9 +14,11 @@ export async function POST(req: Request) {
             );
         }
 
-        if (newPassword.length < 8) {
+        // Strong password regex: min 8 chars, at least one letter, one number, and one special character
+        const strongPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+        if (!strongPasswordRegex.test(newPassword)) {
             return NextResponse.json(
-                { error: 'Password must be at least 8 characters.' },
+                { error: 'Password must be at least 8 characters and include letters, numbers, and special characters.' },
                 { status: 400 }
             );
         }
@@ -50,7 +52,6 @@ export async function POST(req: Request) {
             .update({
                 password_hash: hash,
                 salt: salt,
-                updated_at: new Date().toISOString()
             })
             .eq('email', email);
 
