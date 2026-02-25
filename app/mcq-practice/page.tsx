@@ -68,7 +68,7 @@ export default function MCQPracticePage() {
                 const data = await res.json();
 
                 if (data.error) {
-                    alert(`Could not load questions: ${data.error}`);
+                    alert(`AI Generation Error: ${data.error}`);
                     setLoading(false);
                     return;
                 }
@@ -83,20 +83,41 @@ export default function MCQPracticePage() {
                     }))
                 );
 
-                // Filter by selected type
-                loadedQuestions = allQs.filter((q: any) =>
-                    q.type === selectedType || (data.term?.toLowerCase().includes('mid') ? 'midterm' : 'final') === selectedType
-                );
+                // For custom topic/lecture, don't filter by term (AI already focused)
+                if (selectionMode !== 'exam') {
+                    loadedQuestions = allQs;
+                } else {
+                    // Filter by selected type for standard exam mode
+                    loadedQuestions = allQs.filter((q: any) =>
+                        q.type === selectedType || (data.term?.toLowerCase().includes('mid') ? 'midterm' : 'final') === selectedType
+                    );
+                }
 
                 // If no type match, use all (AI generates for specific type)
                 if (loadedQuestions.length === 0) loadedQuestions = allQs;
 
             } else {
-                // Fallback to static MCQs
-                loadedQuestions = getRandomMCQs(selectedSubject, selectedType, questionCount);
+                // If API failed (e.g., 500 error from AI)
+                const errorData = await res.json().catch(() => ({}));
+                if (errorData.error) {
+                    alert(`Oops! ${errorData.error}`);
+                    setLoading(false);
+                    return;
+                }
+
+                // Only fallback to static MCQs for standard "exam" mode
+                // Fallback for custom topic/lecture is illogical (data won't match)
+                if (selectionMode === 'exam') {
+                    console.log('API failed, attempting static fallback...');
+                    loadedQuestions = getRandomMCQs(selectedSubject, selectedType, questionCount);
+                } else {
+                    alert('AI could not generate questions for this specific request. Please try a different topic or subject.');
+                    setLoading(false);
+                    return;
+                }
             }
 
-            // Final fallback to static
+            // Final check
             if (loadedQuestions.length === 0) {
                 loadedQuestions = getRandomMCQs(selectedSubject, selectedType, questionCount);
             }

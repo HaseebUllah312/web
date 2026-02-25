@@ -3,7 +3,9 @@ import fs from 'fs';
 import path from 'path';
 
 // Max questions Gemini can reliably generate in one call with good quality
-const MAX_PER_CALL = 20;
+// Max questions Gemini can reliably generate in one call without truncation or quality loss
+// 10 is the sweet spot for professional, long-explanation MCQs.
+const MAX_PER_CALL = 10;
 
 // GET /api/quiz/data?subject=CS101&type=midterm&count=20
 export async function GET(req: NextRequest) {
@@ -14,32 +16,32 @@ export async function GET(req: NextRequest) {
     const topicParam = searchParams.get('topic');
     const count = Math.min(parseInt(searchParams.get('count') || '20'), 50); // cap at 50
 
+    console.log(`Quiz Request: ${subject} | ${type} | Count: ${count}`);
+
     if (!subject) {
         return NextResponse.json({ error: 'Subject code required' }, { status: 400 });
     }
 
     const filePath = path.join(process.cwd(), 'data', 'quizzes', `${subject}.json`);
-    // Only use cache for general exam TERM requests (midterm/final)
-    // For specific lectures or topics, always use AI for precision
+
+    // 1. Try Cache (only for standard midterm/final)
     if (fs.existsSync(filePath) && !lec && !topicParam) {
         try {
             const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
             const examTerm = type === 'midterm' ? 'midterm' : 'final';
 
-            // Filter questions by term
             const matchingQs = (data.topics || []).flatMap((t: any) => {
                 const isMatch = t.term?.toLowerCase().includes(examTerm) ||
                     (data.term && data.term.toLowerCase().includes(examTerm));
                 return isMatch ? (t.questions || []) : [];
             });
 
-            // If we have enough questions in cache, use them. 
             if (matchingQs.length >= count) {
                 return NextResponse.json(data);
             }
-            console.log(`Cache for ${subject} ${type} has only ${matchingQs.length} questions. Generating ${count} fresh MCQs via AI.`);
+            console.log(`Cache insufficient (${matchingQs.length}/${count}). Falling back to AI.`);
         } catch (err) {
-            console.error('Error reading quiz cache:', err);
+            console.error('Cache read error:', err);
         }
     }
 
@@ -50,9 +52,6 @@ export async function GET(req: NextRequest) {
     }
 
     const examLabel = type === 'midterm' ? 'Midterm' : 'Final Term';
-    const focusLabel = topicParam ? `Topic: ${topicParam}` : lec ? `Lectures: ${lec}` : examLabel;
-
-    // Split into batches of MAX_PER_CALL to avoid token limits
     const batches: number[] = [];
     let remaining = count;
     while (remaining > 0) {
@@ -62,19 +61,26 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-        // Run all batches in parallel
-        const batchResults = await Promise.all(
-            batches.map((batchCount, batchIndex) =>
-                generateBatch(apiKey, subject, examLabel, batchCount, batchIndex, batches.length, lec, topicParam)
-            )
+        console.log(`Generating ${count} MCQs in ${batches.length} batches...`);
+
+        // Parallel batches with individual error handling
+        const batchPromises = batches.map((batchCount, idx) =>
+            generateWithRetry(apiKey, subject, examLabel, batchCount, idx, batches.length, lec, topicParam)
         );
+
+        const batchResults = await Promise.all(batchPromises);
 
         // Merge results
         const allTopics: any[] = [];
+        let totalQsFound = 0;
+
         for (const result of batchResults) {
             if (result && result.topics) {
                 for (const topic of result.topics) {
                     const existing = allTopics.find(t => t.name === topic.name);
+                    const qCount = topic.questions?.length || 0;
+                    totalQsFound += qCount;
+
                     if (existing) {
                         existing.questions.push(...(topic.questions || []));
                     } else {
@@ -84,10 +90,12 @@ export async function GET(req: NextRequest) {
             }
         }
 
-        if (allTopics.length === 0) {
-            return NextResponse.json({ error: 'AI failed to generate questions. Please try again.' }, { status: 500 });
+        if (totalQsFound === 0) {
+            console.error(`AI failed all batches for ${subject}`);
+            return NextResponse.json({ error: 'AI generation failed. The subject might be too specialized or safety filters blocked the request.' }, { status: 500 });
         }
 
+        console.log(`Successfully generated ${totalQsFound} questions for ${subject}`);
         return NextResponse.json({
             subject,
             term: examLabel,
@@ -95,9 +103,27 @@ export async function GET(req: NextRequest) {
         });
 
     } catch (err: any) {
-        console.error('Quiz generation error:', err);
-        return NextResponse.json({ error: 'Failed to generate quiz. Please try again.' }, { status: 500 });
+        console.error('Final merge error:', err);
+        return NextResponse.json({ error: 'System error during quiz generation.' }, { status: 500 });
     }
+}
+
+async function generateWithRetry(
+    apiKey: string, subject: string, examLabel: string,
+    batchCount: number, batchIndex: number, totalBatches: number,
+    lec?: string | null, topicParam?: string | null,
+    retries = 2
+): Promise<any> {
+    for (let i = 0; i <= retries; i++) {
+        try {
+            const result = await generateBatch(apiKey, subject, examLabel, batchCount, batchIndex, totalBatches, lec, topicParam);
+            if (result && result.topics && result.topics.length > 0) return result;
+            console.warn(`Batch ${batchIndex + 1} incomplete, retrying... (${i + 1}/${retries})`);
+        } catch (e) {
+            console.warn(`Batch ${batchIndex + 1} failed, retrying... (${i + 1}/${retries})`);
+        }
+    }
+    return null;
 }
 
 async function generateBatch(
