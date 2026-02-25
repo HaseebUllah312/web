@@ -2,10 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-// Max questions Gemini can reliably generate in one call with good quality
 // Max questions Gemini can reliably generate in one call without truncation or quality loss
 // 10 is the sweet spot for professional, long-explanation MCQs.
 const MAX_PER_CALL = 10;
+
+import { getSubjectByCode } from '@/data/subjects';
 
 // GET /api/quiz/data?subject=CS101&type=midterm&count=20
 export async function GET(req: NextRequest) {
@@ -16,11 +17,14 @@ export async function GET(req: NextRequest) {
     const topicParam = searchParams.get('topic');
     const count = Math.min(parseInt(searchParams.get('count') || '20'), 50); // cap at 50
 
-    console.log(`Quiz Request: ${subject} | ${type} | Count: ${count}`);
-
     if (!subject) {
         return NextResponse.json({ error: 'Subject code required' }, { status: 400 });
     }
+
+    const subjectData = getSubjectByCode(subject);
+    const subjectName = subjectData ? subjectData.name : subject;
+
+    console.log(`Quiz Request: ${subject} (${subjectName}) | ${type} | Count: ${count}`);
 
     const filePath = path.join(process.cwd(), 'data', 'quizzes', `${subject}.json`);
 
@@ -61,11 +65,11 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-        console.log(`Generating ${count} MCQs in ${batches.length} batches...`);
+        console.log(`Generating ${count} MCQs for ${subjectName} in ${batches.length} batches...`);
 
         // Parallel batches with individual error handling
         const batchPromises = batches.map((batchCount, idx) =>
-            generateWithRetry(apiKey, subject, examLabel, batchCount, idx, batches.length, lec, topicParam)
+            generateWithRetry(apiKey, subject, subjectName, examLabel, batchCount, idx, batches.length, lec, topicParam)
         );
 
         const batchResults = await Promise.all(batchPromises);
@@ -78,11 +82,11 @@ export async function GET(req: NextRequest) {
             if (result && result.topics) {
                 for (const topic of result.topics) {
                     const existing = allTopics.find(t => t.name === topic.name);
-                    const qCount = topic.questions?.length || 0;
-                    totalQsFound += qCount;
+                    const questions = topic.questions || [];
+                    totalQsFound += questions.length;
 
                     if (existing) {
-                        existing.questions.push(...(topic.questions || []));
+                        existing.questions.push(...questions);
                     } else {
                         allTopics.push({ ...topic });
                     }
@@ -91,7 +95,7 @@ export async function GET(req: NextRequest) {
         }
 
         if (totalQsFound === 0) {
-            console.error(`AI failed all batches for ${subject}`);
+            console.error(`AI failed all batches for ${subject} (${subjectName})`);
             return NextResponse.json({ error: 'AI generation failed. The subject might be too specialized or safety filters blocked the request.' }, { status: 500 });
         }
 
@@ -109,18 +113,18 @@ export async function GET(req: NextRequest) {
 }
 
 async function generateWithRetry(
-    apiKey: string, subject: string, examLabel: string,
+    apiKey: string, subject: string, subjectName: string, examLabel: string,
     batchCount: number, batchIndex: number, totalBatches: number,
     lec?: string | null, topicParam?: string | null,
     retries = 2
 ): Promise<any> {
     for (let i = 0; i <= retries; i++) {
         try {
-            const result = await generateBatch(apiKey, subject, examLabel, batchCount, batchIndex, totalBatches, lec, topicParam);
+            const result = await generateBatch(apiKey, subject, subjectName, examLabel, batchCount, batchIndex, totalBatches, lec, topicParam);
             if (result && result.topics && result.topics.length > 0) return result;
-            console.warn(`Batch ${batchIndex + 1} incomplete, retrying... (${i + 1}/${retries})`);
+            console.warn(`Batch ${batchIndex + 1} for ${subject} attempt ${i + 1} failed, retry remaining: ${retries - i}`);
         } catch (e) {
-            console.warn(`Batch ${batchIndex + 1} failed, retrying... (${i + 1}/${retries})`);
+            console.warn(`Batch ${batchIndex + 1} for ${subject} exception, retry remaining: ${retries - i}`);
         }
     }
     return null;
@@ -129,6 +133,7 @@ async function generateWithRetry(
 async function generateBatch(
     apiKey: string,
     subject: string,
+    subjectName: string,
     examLabel: string,
     batchCount: number,
     batchIndex: number,
@@ -136,7 +141,7 @@ async function generateBatch(
     lec?: string | null,
     topicParam?: string | null
 ): Promise<any> {
-    const easyCount = Math.floor(batchCount * 0.20); // Fewer easy, more deep questions
+    const easyCount = Math.floor(batchCount * 0.20);
     const mediumCount = Math.floor(batchCount * 0.50);
     const hardCount = batchCount - easyCount - mediumCount;
 
@@ -145,67 +150,41 @@ async function generateBatch(
     else if (lec) focusText = `strictly from VU lectures: **${lec}**`;
 
     const topicHint = totalBatches > 1
-        ? `This is batch ${batchIndex + 1} of ${totalBatches}. Cover DIFFERENT sub-topics than other batches.`
+        ? `This is batch ${batchIndex + 1} of ${totalBatches}. Cover DIFFERENT sub-topics than previous batches.`
         : '';
 
-    const prompt = `You are a Senior Academic Content Designer specializing in high-stakes university examinations (VU style).
+    const prompt = `You are a Senior Academic Content Designer specializing in VU university examinations.
 
-Generate exactly ${batchCount} professional, high-quality MCQs for subject **${subject}** ${focusText}.
+Task: Generate exactly ${batchCount} professional MCQs for:
+Course: ${subject} - ${subjectName}
+Exam Focus: ${examLabel}
+Context: ${focusText}
 ${topicHint}
 
-## Core Directive:
-Produce content that is academically rigorous, logically sound, and perfectly formatted. Avoid all triviality.
+## Instructions:
+1. Academic language (formal, precise English).
+2. Logical distractors (misconceptions, not trivial).
+3. Professional explanations (Scholarly paragraph explaining why the answer is correct and why others are wrong).
+4. Difficulty: ${easyCount} Easy, ${mediumCount} Medium, ${hardCount} Hard.
 
-## Quality Standards:
-
-### 1. Academic Rigor & Tone:
-- Use formal, precise university-level English.
-- Focus on conceptual logic, "how/why" mechanisms, and theoretical frameworks.
-- For technical subjects, include specific terminology and (where applicable) markdown-formatted code snippets or mathematical expressions.
-
-### 2. Option Neutrality & Balance:
-- Distractors (wrong options) must be highly plausible misconceptions or related but incorrect concepts.
-- Avoid "None of the above" or "All of the above" unless absolutely necessary.
-- **Length Neutrality**: Ensure all 4 options are approximately the same length. Avoid making the correct answer significantly longer or more detailed than distractors.
-- **Logical Ordering**: If options are numerical or chronological, list them in ascending/descending order.
-
-### 3. Difficulty Mapping (Strict):
-- Easy (Conceptual Foundation): ${easyCount} questions
-- Medium (Analytical Understanding): ${mediumCount} questions
-- Hard (Complex Application/Synthesis): ${hardCount} questions
-
-### 4. Professional Explanations (The "Mini-Lesson"):
-Each explanation must be a self-contained scholarly paragraph:
-- Start with the definitive logical proof of the correct answer.
-- Explicitly deconstruct the main distractors to clarify common confusion.
-- Use professional terms. Format important concepts in **bold**.
-
-### 5. Markdown Precision:
-- Use \`inline code\` for variables, functions, or small technical terms.
-- Use fenced code blocks (\`\`\`language) for any code snippets.
-- Use high-quality markdown for emphasis.
-
-Return ONLY valid JSON (no preamble, no markdown formatting outside the JSON):
+Return ONLY a JSON object with this exact structure:
 {
   "subject": "${subject}",
   "term": "${examLabel}",
   "topics": [
     {
       "name": "Academic Topic Name",
-      "term": "${examLabel}",
       "questions": [
         {
-          "question": "Logically structured, professional question?",
-          "options": ["Balanced Option A", "Balanced Option B", "Balanced Option C", "Balanced Option D"],
+          "question": "Logically structured question?",
+          "options": ["Option A", "Option B", "Option C", "Option D"],
           "correct": 0,
-          "explanation": "The correct answer is [Option A] because... Traditionally, students confuse this with [Option B], however..."
+          "explanation": "Detailed explanation..."
         }
       ]
     }
   ]
-}
-
-Ensure exactly ${batchCount} distinct, exam-tier questions.`;
+}`;
 
     const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
@@ -215,28 +194,30 @@ Ensure exactly ${batchCount} distinct, exam-tier questions.`;
             body: JSON.stringify({
                 contents: [{ role: 'user', parts: [{ text: prompt }] }],
                 generationConfig: {
-                    temperature: 0.65,
-                    maxOutputTokens: 8192, // Max for flash — easily handles 20 questions
+                    temperature: 0.7,
+                    maxOutputTokens: 8192,
                     responseMimeType: 'application/json',
-                    topP: 0.9,
                 },
+                safetySettings: [
+                    { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+                    { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
+                    { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
+                    { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
+                ],
             }),
         }
     );
 
-    if (!response.ok) {
-        console.error(`Batch ${batchIndex + 1} Gemini error:`, response.status);
-        return null;
-    }
+    if (!response.ok) return null;
 
-    const geminiData = await response.json();
-    const rawText = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
-
+    const data = await response.json();
+    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!rawText) return null;
 
     try {
         return JSON.parse(rawText);
     } catch {
+        // If JSON.parse fails, try to extract JSON from the text
         const jsonMatch = rawText.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
             try { return JSON.parse(jsonMatch[0]); } catch { }
