@@ -6,21 +6,27 @@ import { verifyPassword } from '@/app/lib/password';
 export async function POST(req: Request) {
     try {
         const { username, password } = await req.json();
-        const trimmedUsername = username?.trim();
-        console.log('Login attempt for:', trimmedUsername);
+        const identifier = username?.trim();
+        console.log('Login attempt for:', identifier);
 
-        if (!trimmedUsername || !password) {
+        if (!identifier || !password) {
             return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
         }
 
-        const { data: user } = await supabase
+        // Look up user by username OR email (case-insensitive)
+        const { data: user, error: fetchError } = await supabase
             .from('users')
             .select('*')
-            .eq('username', trimmedUsername)
+            .or(`username.ilike.${identifier},email.ilike.${identifier}`)
             .maybeSingle();
 
+        if (fetchError) {
+            console.error('Database fetch error during login:', fetchError);
+            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+        }
+
         if (!user) {
-            console.log('User not found');
+            console.log('User not found for identifier:', identifier);
             return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
         }
 
