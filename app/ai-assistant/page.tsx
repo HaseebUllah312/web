@@ -24,11 +24,18 @@ export default function AIAssistantPage() {
         chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages, loading]);
 
-    const sendMessage = async () => {
-        if (!input.trim() || loading) return;
-        const userMsg = input.trim();
-        setInput('');
-        const newMessages = [...messages, { role: 'user', text: userMsg }];
+    // Handle initial query from URL (e.g., ?q=Topic)
+    useEffect(() => {
+        const query = new URLSearchParams(window.location.search).get('q');
+        if (query && messages.length === 1) {
+            handleSendMessage(query);
+        }
+    }, []);
+
+    const handleSendMessage = async (text: string) => {
+        if (!text.trim() || loading) return;
+
+        const newMessages = [...messages, { role: 'user', text }];
         setMessages(newMessages);
         setLoading(true);
 
@@ -37,10 +44,10 @@ export default function AIAssistantPage() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: userMsg,
+                    message: text,
                     mode,
-                    // Send last 6 messages as history for context
-                    history: newMessages.slice(-7, -1),
+                    // Filter history to exclude the initial bot welcome message for cleaner context
+                    history: messages.slice(1),
                 }),
             });
             const data = await res.json();
@@ -49,6 +56,13 @@ export default function AIAssistantPage() {
             setMessages(prev => [...prev, { role: 'bot', text: '⚠️ Connection error. Please check your internet and try again.' }]);
         }
         setLoading(false);
+    };
+
+    const sendMessage = () => {
+        if (!input.trim()) return;
+        const msg = input.trim();
+        setInput('');
+        handleSendMessage(msg);
     };
 
     return (

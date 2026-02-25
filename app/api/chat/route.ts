@@ -55,12 +55,23 @@ ${modeInstructions[mode] || modeInstructions.quick}
 - Format math formulas clearly using text notation (e.g., f'(x) = 2x instead of LaTeX)`;
 
         // Build conversation history for context
-        const conversationHistory = history.slice(-6).map((msg: any) => ({
-            role: msg.role === 'user' ? 'user' : 'model',
-            parts: [{ text: msg.text }],
-        }));
+        // CRITICAL: Gemini requires the first message in contents to be from the 'user'
+        let conversationHistory = history
+            .filter((msg: any) => msg.text && msg.text.trim())
+            .map((msg: any) => ({
+                role: msg.role === 'user' ? 'user' : 'model',
+                parts: [{ text: msg.text }],
+            }));
 
-        // Add current message
+        // Remove any leading 'model' turns to satisfy Gemini API requirements
+        while (conversationHistory.length > 0 && conversationHistory[0].role === 'model') {
+            conversationHistory.shift();
+        }
+
+        // Keep only last 6 turns to keep context window clean
+        conversationHistory = conversationHistory.slice(-6);
+
+        // Add current user message
         conversationHistory.push({
             role: 'user',
             parts: [{ text: message }],
