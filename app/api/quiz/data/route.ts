@@ -21,8 +21,24 @@ export async function GET(req: NextRequest) {
     if (fs.existsSync(filePath)) {
         try {
             const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-            return NextResponse.json(data);
-        } catch { }
+            const examTerm = type === 'midterm' ? 'midterm' : 'final';
+
+            // Filter questions by term
+            const matchingQs = (data.topics || []).flatMap((t: any) => {
+                const isMatch = t.term?.toLowerCase().includes(examTerm) ||
+                    (data.term && data.term.toLowerCase().includes(examTerm));
+                return isMatch ? (t.questions || []) : [];
+            });
+
+            // If we have enough questions in cache, use them. 
+            // Otherwise, let AI generate fresh ones to meet the requested count.
+            if (matchingQs.length >= count) {
+                return NextResponse.json(data);
+            }
+            console.log(`Cache for ${subject} ${type} has only ${matchingQs.length} questions. Generating ${count} fresh MCQs via AI.`);
+        } catch (err) {
+            console.error('Error reading quiz cache:', err);
+        }
     }
 
     // 2. Generate via Gemini AI
@@ -34,7 +50,6 @@ export async function GET(req: NextRequest) {
     const examLabel = type === 'midterm' ? 'Midterm' : 'Final Term';
 
     // Split into batches of MAX_PER_CALL to avoid token limits
-    // e.g. count=50 → batches of [20, 20, 10]
     const batches: number[] = [];
     let remaining = count;
     while (remaining > 0) {
@@ -44,19 +59,18 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-        // Run all batches in parallel for speed
+        // Run all batches in parallel
         const batchResults = await Promise.all(
             batches.map((batchCount, batchIndex) =>
                 generateBatch(apiKey, subject, examLabel, batchCount, batchIndex, batches.length)
             )
         );
 
-        // Merge all topic arrays from all batches
+        // Merge results
         const allTopics: any[] = [];
         for (const result of batchResults) {
             if (result && result.topics) {
                 for (const topic of result.topics) {
-                    // Merge into existing topic if name matches, else add new
                     const existing = allTopics.find(t => t.name === topic.name);
                     if (existing) {
                         existing.questions.push(...(topic.questions || []));
@@ -91,47 +105,45 @@ async function generateBatch(
     batchIndex: number,
     totalBatches: number
 ): Promise<any> {
-    const easyCount = Math.floor(batchCount * 0.30);
-    const mediumCount = Math.floor(batchCount * 0.45);
+    const easyCount = Math.floor(batchCount * 0.20); // Fewer easy, more deep questions
+    const mediumCount = Math.floor(batchCount * 0.50);
     const hardCount = batchCount - easyCount - mediumCount;
 
-    // For multiple batches, tell AI to cover different topics per batch
     const topicHint = totalBatches > 1
         ? `This is batch ${batchIndex + 1} of ${totalBatches}. Cover DIFFERENT topics than other batches — focus on ${batchIndex === 0 ? 'fundamental/early' : batchIndex === 1 ? 'intermediate/middle' : 'advanced/late'} topics of the ${examLabel} syllabus.`
         : '';
 
-    const prompt = `You are an expert VU (Virtual University of Pakistan) exam question designer.
+    const prompt = `You are an expert VU (Virtual University of Pakistan) exam designer specializing in "Concept Clearing" questions.
 
-Generate exactly ${batchCount} MCQs for VU subject **${subject}** for the **${examLabel}** exam.
+Generate exactly ${batchCount} high-quality MCQs for VU subject **${subject}** for the **${examLabel}** exam.
 ${topicHint}
+
+## Core Objective: 
+Every question must lead to a "Perfect" understanding of the concept. DO NOT generate trivial or simple lookup questions.
 
 ## Requirements:
 
+### Conceptual Depth:
+- Focus on logic, architecture, and "How it works" rather than simple "What is X" questions.
+- Distractors (wrong options) MUST be plausible misconceptions that students often have.
+
 ### Difficulty (strictly follow):
-- Easy (basic recall/definition): ${easyCount} questions
-- Medium (requires understanding): ${mediumCount} questions
+- Easy (basic conceptual understanding): ${easyCount} questions
+- Medium (requires deep understanding): ${mediumCount} questions
 - Hard (requires analysis/application): ${hardCount} questions
 
-### Question Types:
-- 40% Conceptual (test understanding, not memorization)
-- 30% Application-based (apply concept to a scenario)
-- 30% Past-paper style (common VU exam pattern)
+### Explanation Style (CRITICAL for learning):
+Each explanation MUST be a "mini-lesson":
+1. Start with WHY the correct answer is logically right.
+2. Explicitly explain WHY the significant wrong options are incorrect to clear common confusion.
+3. Keep it educational and encouraging. Use 3-4 clear sentences.
 
-### Explanation Rules (CRITICAL):
-Each explanation MUST:
-- Explain WHY the correct answer is right (with the actual concept reasoning)
-- Mention why the popular wrong options are incorrect
-- Be educational — a student reading it should learn the concept
-- Be 2-3 sentences, simple clear English
+### Quality Standards:
+- Use standard VU terminology.
+- No repeated questions.
+- Ensure the JSON format is perfect.
 
-### Quality Rules:
-- NO trivial questions — every question tests real understanding
-- All 4 options must be plausible (wrong options = common student mistakes)
-- NO repeated or similar questions within this batch
-- Use VU handout terminology and VU exam style
-- Be genuinely useful for exam preparation
-
-Return ONLY valid JSON (no markdown, no extra text, no code blocks):
+Return ONLY valid JSON:
 {
   "subject": "${subject}",
   "term": "${examLabel}",
@@ -141,17 +153,17 @@ Return ONLY valid JSON (no markdown, no extra text, no code blocks):
       "term": "${examLabel}",
       "questions": [
         {
-          "question": "Exam-quality question?",
-          "options": ["Plausible A", "Plausible B", "Plausible C", "Plausible D"],
+          "question": "Deep conceptual question?",
+          "options": ["Correct Option", "Plausible Wrong A", "Plausible Wrong B", "Plausible Wrong C"],
           "correct": 0,
-          "explanation": "A is correct because [concept reasoning]. B/C are wrong because [misconception reason]. This matters because [relevance]."
+          "explanation": "This is correct because... On the other hand, [Option B] is a common mistake because... but in reality..."
         }
       ]
     }
   ]
 }
 
-Generate exactly ${batchCount} questions (${easyCount} easy + ${mediumCount} medium + ${hardCount} hard) across 3-4 topics.`;
+Generate exactly ${batchCount} distinct, high-quality questions.`;
 
     const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
