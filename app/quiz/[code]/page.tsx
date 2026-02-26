@@ -46,23 +46,15 @@ export default function QuizPage() {
 
     // Fetch Quiz Data
     useEffect(() => {
-        // In a real app, strict fetch. For now, we import the JSON directly or fetch it.
-        // We will simulate fetching the CS101.json we just created.
         const fetchQuiz = async () => {
             try {
-                // Dynamic import for the data file based on code
-                // improved: fetch from public or api. For prototype, we'll try to require it
-                // Since this is client side, we might need an API route. 
-                // Let's use a default loader for now for CS101.
-                if (code === 'CS101') {
-                    const data = await import('@/data/quizzes/CS101.json');
-                    setQuizData(data.default as unknown as QuizData);
-                } else {
-                    // Fallback or empty
-                    setQuizData(null);
-                }
+                const response = await fetch(`/api/quiz/data?subject=${code}`);
+                if (!response.ok) throw new Error('Failed to fetch quiz data');
+                const data = await response.json();
+                setQuizData(data as QuizData);
             } catch (error) {
                 console.error("Failed to load quiz", error);
+                setQuizData(null);
             } finally {
                 setLoading(false);
             }
@@ -70,8 +62,35 @@ export default function QuizPage() {
         fetchQuiz();
     }, [code]);
 
+    const shuffleArray = <T,>(array: T[]): T[] => {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    };
+
     const handleTopicSelect = (topic: Topic) => {
-        setSelectedTopic(topic);
+        // Randomize questions
+        const shuffledQuestions = shuffleArray(topic.questions).map(q => {
+            // Randomize options for each question
+            const originalOptions = [...q.options];
+            const correctOptionText = originalOptions[q.correct];
+            const shuffledOptions = shuffleArray(originalOptions);
+            const newCorrectIndex = shuffledOptions.indexOf(correctOptionText);
+
+            return {
+                ...q,
+                options: shuffledOptions,
+                correct: newCorrectIndex
+            };
+        });
+
+        setSelectedTopic({
+            ...topic,
+            questions: shuffledQuestions
+        });
         setCurrentQuestionIndex(0);
         setScore(0);
         setIsFinished(false);

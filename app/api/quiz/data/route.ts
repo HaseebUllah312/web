@@ -26,24 +26,38 @@ export async function GET(req: NextRequest) {
 
     console.log(`Quiz Request: ${subject} (${subjectName}) | ${type} | Count: ${count}`);
 
-    const filePath = path.join(process.cwd(), 'data', 'quizzes', `${subject}.json`);
+    // 1. Try Cache (check multiple case variations)
+    const quizDir = path.join(process.cwd(), 'data', 'quizzes');
+    const variations = [`${subject}.json`, `${subject.toLowerCase()}.json`].filter((v, i, a) => a.indexOf(v) === i);
 
-    // 1. Try Cache (only for standard midterm/final)
-    if (fs.existsSync(filePath) && !lec && !topicParam) {
+    let filePath = null;
+    for (const v of variations) {
+        const p = path.join(quizDir, v);
+        if (fs.existsSync(p)) {
+            filePath = p;
+            break;
+        }
+    }
+
+    if (filePath && !lec && !topicParam) {
         try {
             const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
             const examTerm = type === 'midterm' ? 'midterm' : 'final';
 
+            // Check if any questions match the term
             const matchingQs = (data.topics || []).flatMap((t: any) => {
                 const isMatch = t.term?.toLowerCase().includes(examTerm) ||
                     (data.term && data.term.toLowerCase().includes(examTerm));
                 return isMatch ? (t.questions || []) : [];
             });
 
-            if (matchingQs.length >= count) {
+            // If we have questions, return the data even if it's less than requested count
+            // This prioritizes local data as requested.
+            if (matchingQs.length > 0) {
+                console.log(`Using cache for ${subject} (${matchingQs.length} questions found)`);
                 return NextResponse.json(data);
             }
-            console.log(`Cache insufficient (${matchingQs.length}/${count}). Falling back to AI.`);
+            console.log(`Cache has no questions for ${type}. Falling back to AI.`);
         } catch (err) {
             console.error('Cache read error:', err);
         }

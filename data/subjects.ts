@@ -159,6 +159,19 @@ export const subjects: Subject[] = [
         difficulty: "Medium",
         teachers: ["Dr. Ishfaq"],
         description: "Introduction to business finance, time value of money, and financial analysis.",
+    },
+    {
+        code: "ACC311",
+        name: "Fundamentals of Auditing",
+        creditHours: 3,
+        category: "Management",
+        rating: 4.7,
+        totalReviews: 180,
+        totalFiles: 45,
+        downloads: 6200,
+        difficulty: "Medium",
+        teachers: ["Sir Haseeb", "Mam Sara"],
+        description: "Principles and practices of auditing, internal controls, and ethical standards for auditors.",
     }
 ];
 
