@@ -48,6 +48,7 @@ next-env.d.ts
 *.backup
 
 # local data / scripts / docs (not needed in production)
-/data/
 /scripts/
 /docs/
+
+

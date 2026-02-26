@@ -39,27 +39,43 @@ export async function GET(req: NextRequest) {
         }
     }
 
-    if (filePath && !lec && !topicParam) {
+    if (filePath) {
         try {
             const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
             const examTerm = type === 'midterm' ? 'midterm' : 'final';
 
-            // Check if any questions match the term
-            const matchingQs = (data.topics || []).flatMap((t: any) => {
+            // 1. Try to find questions matching the term
+            let matchingQs = (data.topics || []).flatMap((t: any) => {
                 const isMatch = t.term?.toLowerCase().includes(examTerm) ||
                     (data.term && data.term.toLowerCase().includes(examTerm));
                 return isMatch ? (t.questions || []) : [];
             });
 
-            // If we have questions, return the data even if it's less than requested count
-            // This prioritizes local data as requested.
-            if (matchingQs.length > 0) {
-                console.log(`Using cache for ${subject} (${matchingQs.length} questions found)`);
+            // 2. If topic specified, try to find matching topics locally
+            if (topicParam) {
+                const searchTopic = topicParam.toLowerCase();
+                const topicQs = (data.topics || []).filter((t: any) =>
+                    t.name.toLowerCase().includes(searchTopic) ||
+                    (t.id && t.id.toLowerCase().includes(searchTopic))
+                ).flatMap((t: any) => t.questions || []);
+
+                if (topicQs.length > 0) matchingQs = topicQs;
+            }
+
+            // 3. If lec specified, check if it's Mid or Final range as approximation
+            // (VU Midterm is usually 1-22, Final is 23-45)
+            // If local data exists but no specific lecture metadata, we'll try to provide the requested term
+
+            // 4. Return local data if we found ANYTHING, or if it's a general exam request
+            // Even if no term matches, if this is a local file for the subject, return it
+            if (matchingQs.length > 0 || !lec && !topicParam) {
+                console.log(`Using local data for ${subject} (${matchingQs.length || (data.topics || []).reduce((acc: number, t: any) => acc + (t.questions?.length || 0), 0)} questions)`);
                 return NextResponse.json(data);
             }
-            console.log(`Cache has no questions for ${type}. Falling back to AI.`);
+
+            console.log(`Local file found for ${subject} but no specific matches for type/topic. Evaluating AI fallback...`);
         } catch (err) {
-            console.error('Cache read error:', err);
+            console.error('Local data read error:', err);
         }
     }
 
