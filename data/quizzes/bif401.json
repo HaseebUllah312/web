@@ -66,7 +66,7 @@
                         "Evolutionary Studies"
                     ],
                     "correct": 2,
-                    "explanation": "Systems Biology, according to Module 005, focuses on modeling regulatory mechanisms. This allows for the identification of key regulators and the evaluation of drugs to treat them, moving beyond individual sequences to complex biological interactions. [cite: 57, 58, 59]"
+                    "explanation": "Systems Biology, according to Module 005, focuses on modeling regulatory mechanisms. This allows for the identification of key regulators and the evaluation of drugs to treat them, moving beyond individual sequences to complex biological interactions. "
                 }
             ]
         },
@@ -83,7 +83,7 @@
                         "Translating DNA into RNA"
                     ],
                     "correct": 2,
-                    "explanation": "Module 008 explains that personalize medicine is a frontier because not all medicines work the same for every patient. Bioinformatics helps evaluate and personalize drugs for exact cures, which is a major goal for 21st-century medicine. [cite: 85, 86, 87]"
+                    "explanation": "Module 008 explains that personalize medicine is a frontier because not all medicines work the same for every patient. Bioinformatics helps evaluate and personalize drugs for exact cures, which is a major goal for 21st-century medicine. "
                 }
             ]
         },
@@ -117,7 +117,7 @@
                         "Nitrogenous base"
                     ],
                     "correct": 1,
-                    "explanation": "Module 003 of Chapter 2 and Figure 0.3 illustrate that Ribose sugar (RNA) has an OH group at the 2' carbon, while 2-deoxyribose (DNA) has only an H atom. This difference contributes to RNA's shorter lifespan due to repulsion between the two OH groups. [cite: 121, 468]"
+                    "explanation": "Module 003 of Chapter 2 and Figure 0.3 illustrate that Ribose sugar (RNA) has an OH group at the 2' carbon, while 2-deoxyribose (DNA) has only an H atom. This difference contributes to RNA's shorter lifespan due to repulsion between the two OH groups. "
                 }
             ]
         },
@@ -151,7 +151,7 @@
                         "Golgi Apparatus"
                     ],
                     "correct": 2,
-                    "explanation": "Module 004 states that translation takes place in the ribosome. The ribosome reads mRNA codons and collects the corresponding amino acids from the cytosol to form a protein chain. [cite: 123, 126]"
+                    "explanation": "Module 004 states that translation takes place in the ribosome. The ribosome reads mRNA codons and collects the corresponding amino acids from the cytosol to form a protein chain. "
                 }
             ]
         },
@@ -185,7 +185,7 @@
                         "Phosphodiester bond"
                     ],
                     "correct": 2,
-                    "explanation": "Module 005 and Figure 0.5 specify that amino acids are joined by peptide bonds. This bond forms during a polymerization reaction where a water molecule is released, resulting in a dipeptide and eventually a polypeptide chain. [cite: 131, 132]"
+                    "explanation": "Module 005 and Figure 0.5 specify that amino acids are joined by peptide bonds. This bond forms during a polymerization reaction where a water molecule is released, resulting in a dipeptide and eventually a polypeptide chain. "
                 }
             ]
         },
@@ -202,7 +202,7 @@
                         "Ensembl"
                     ],
                     "correct": 2,
-                    "explanation": "Module 006 identifies UniProt as the public database for protein sequences. While GenBank is the NIH database for DNA and RNA, UniProt focuses on comprehensive protein sequence and functional information. [cite: 147, 1534]"
+                    "explanation": "Module 006 identifies UniProt as the public database for protein sequences. While GenBank is the NIH database for DNA and RNA, UniProt focuses on comprehensive protein sequence and functional information. "
                 }
             ]
         },
@@ -253,7 +253,7 @@
                         "Heuristic Alignment"
                     ],
                     "correct": 1,
-                    "explanation": "Module 017 defines Global Alignment as an approach where sequences are compared from end to end. Local alignment, by contrast, focuses only on highly matching portions or segments. [cite: 206, 207]"
+                    "explanation": "Module 017 defines Global Alignment as an approach where sequences are compared from end to end. Local alignment, by contrast, focuses only on highly matching portions or segments. "
                 }
             ]
         },
@@ -304,7 +304,7 @@
                         "When visualizing dot plots for large genomes"
                     ],
                     "correct": 1,
-                    "explanation": "Module 021 explains that dynamic programming is an algorithmic technique used when recursion would be inefficient because it would repeatedly solve the same sub-problems. It builds on previously solved sub-problems to find an optimal alignment. [cite: 225, 226]"
+                    "explanation": "Module 021 explains that dynamic programming is an algorithmic technique used when recursion would be inefficient because it would repeatedly solve the same sub-problems. It builds on previously solved sub-problems to find an optimal alignment. "
                 }
             ]
         },
@@ -338,7 +338,7 @@
                         "Dot Plot Visualization"
                     ],
                     "correct": 1,
-                    "explanation": "Module 029 and 033 specify that the Needleman-Wunsch algorithm is used to obtain Global Alignment by starting the traceback from the bottom right of the matrix and moving towards the top left. [cite: 2283, 264]"
+                    "explanation": "Module 029 and 033 specify that the Needleman-Wunsch algorithm is used to obtain Global Alignment by starting the traceback from the bottom right of the matrix and moving towards the top left. "
                 }
             ]
         },
@@ -355,7 +355,7 @@
                         "Chou-Fasman"
                     ],
                     "correct": 2,
-                    "explanation": "Module 033 explains that Smith-Waterman is used for local pairwise alignment. Unlike Needleman-Wunsch, its top row and column are set to zero, and the alignment can end anywhere, starting the traceback from the highest score. [cite: 264, 266, 267]"
+                    "explanation": "Module 033 explains that Smith-Waterman is used for local pairwise alignment. Unlike Needleman-Wunsch, its top row and column are set to zero, and the alignment can end anywhere, starting the traceback from the highest score. "
                 }
             ]
         },
@@ -389,7 +389,7 @@
                         "Peptide Analysis Model"
                     ],
                     "correct": 1,
-                    "explanation": "Module 041 defines PAM as 'Point Accepted Mutation'. It refers to the substitution of one amino acid with another such that the protein's function remains conserved over time. [cite: 2940, 2941]"
+                    "explanation": "Module 041 defines PAM as 'Point Accepted Mutation'. It refers to the substitution of one amino acid with another such that the protein's function remains conserved over time. "
                 }
             ]
         },
@@ -406,7 +406,7 @@
                         "100%"
                     ],
                     "correct": 1,
-                    "explanation": "Module 041 clarifies that a PAM unit is the time during which 1% of amino acids undergo an acceptable mutation. Thus, PAM 250 would indicate a much longer evolutionary time than PAM 1. [cite: 296, 297]"
+                    "explanation": "Module 041 clarifies that a PAM unit is the time during which 1% of amino acids undergo an acceptable mutation. Thus, PAM 250 would indicate a much longer evolutionary time than PAM 1. "
                 }
             ]
         },
@@ -440,7 +440,7 @@
                         "Identity Calculation"
                     ],
                     "correct": 2,
-                    "explanation": "Module 043 explains that while dynamic programming works for pairwise alignment, it is too expensive for MSA. The solution is 'Progressive Alignment', which builds the alignment by repeatedly applying pairwise alignment to the most similar sequences. [cite: 2978, 2979, 311]"
+                    "explanation": "Module 043 explains that while dynamic programming works for pairwise alignment, it is too expensive for MSA. The solution is 'Progressive Alignment', which builds the alignment by repeatedly applying pairwise alignment to the most similar sequences. "
                 }
             ]
         },
@@ -474,7 +474,7 @@
                         "It requires sequences to be >80% identical"
                     ],
                     "correct": 2,
-                    "explanation": "Module 045 notes that a shortcoming of progressive alignment is its dependence on initial alignments. If sequences are dissimilar, errors in the first steps are propagated through the final result. Solution involves iterative refinement. [cite: 317, 318]"
+                    "explanation": "Module 045 notes that a shortcoming of progressive alignment is its dependence on initial alignments. If sequences are dissimilar, errors in the first steps are propagated through the final result. Solution involves iterative refinement. "
                 }
             ]
         },
@@ -491,7 +491,7 @@
                         "Binary Trees"
                     ],
                     "correct": 1,
-                    "explanation": "Module 001 of Chapter 3 distinguishes between Scaled Trees, where branch lengths are equal to the magnitude of change, and Unscaled Trees, which only represent the relationship between sequences. [cite: 409, 410]"
+                    "explanation": "Module 001 of Chapter 3 distinguishes between Scaled Trees, where branch lengths are equal to the magnitude of change, and Unscaled Trees, which only represent the relationship between sequences. "
                 }
             ]
         },
@@ -542,7 +542,7 @@
                         "It is easily digested by lysosomes"
                     ],
                     "correct": 1,
-                    "explanation": "Module 001 of Chapter 4 explains that RNA contains ribose sugar, which has two OH groups. The repulsion between these OH groups leads to a shorter lifespan compared to the more stable deoxyribose in DNA. [cite: 468, 469]"
+                    "explanation": "Module 001 of Chapter 4 explains that RNA contains ribose sugar, which has two OH groups. The repulsion between these OH groups leads to a shorter lifespan compared to the more stable deoxyribose in DNA. "
                 }
             ]
         },
@@ -559,7 +559,7 @@
                         "Zuker's Algorithm"
                     ],
                     "correct": 2,
-                    "explanation": "Module 011 of Chapter 4 describes X-ray Crystallography as a technique where crystallized RNA diffracts X-rays to help estimate atomic positions. [cite: 472, 473]"
+                    "explanation": "Module 011 of Chapter 4 describes X-ray Crystallography as a technique where crystallized RNA diffracts X-rays to help estimate atomic positions. "
                 }
             ]
         },
@@ -576,7 +576,7 @@
                         "Smith-Waterman Algorithm"
                     ],
                     "correct": 2,
-                    "explanation": "Module 024 of Chapter 4 compares algorithms and notes that Zuker's Algorithm involves energy minimization and is an improved version that can incorporate phylogenetic info. Nussinov-Jacobson focuses on maximizing base pairs (stacking). [cite: 499, 501, 505]"
+                    "explanation": "Module 024 of Chapter 4 compares algorithms and notes that Zuker's Algorithm involves energy minimization and is an improved version that can incorporate phylogenetic info. Nussinov-Jacobson focuses on maximizing base pairs (stacking). "
                 }
             ]
         },
@@ -593,7 +593,7 @@
                         "Dynamic Traceback"
                     ],
                     "correct": 1,
-                    "explanation": "Module 024 of Chapter 4 identifies NJ's Algorithm as a 'Nucleotides Stacking' algorithm, which works by maximizing the number of paired nucleotides to find the best structure. [cite: 501, 502]"
+                    "explanation": "Module 024 of Chapter 4 identifies NJ's Algorithm as a 'Nucleotides Stacking' algorithm, which works by maximizing the number of paired nucleotides to find the best structure. "
                 }
             ]
         },
@@ -610,7 +610,7 @@
                         "It only identifies purines"
                     ],
                     "correct": 1,
-                    "explanation": "Module 005 of Chapter 5 states that Edman degradation is restricted to chains of approximately 60 residues and is very time-consuming (40-50 amino acids per day). [cite: 537, 538]"
+                    "explanation": "Module 005 of Chapter 5 states that Edman degradation is restricted to chains of approximately 60 residues and is very time-consuming (40-50 amino acids per day). "
                 }
             ]
         },
@@ -627,7 +627,7 @@
                         "Shotgun Proteomics"
                     ],
                     "correct": 1,
-                    "explanation": "Module 008 of Chapter 5 defines Top-down Proteomics as a methodology that measures the intact proteins first, followed by fragmentation into peptides. Bottom-up proteomics measures peptides produced after enzymatic digestion of the protein. [cite: 550, 554]"
+                    "explanation": "Module 008 of Chapter 5 defines Top-down Proteomics as a methodology that measures the intact proteins first, followed by fragmentation into peptides. Bottom-up proteomics measures peptides produced after enzymatic digestion of the protein. "
                 }
             ]
         },
@@ -644,7 +644,7 @@
                         "Topoisomerase"
                     ],
                     "correct": 2,
-                    "explanation": "Module 009 of Chapter 5 identifies Trypsin as a site-specific enzyme used to cleave proteins into peptides for mass analysis in bottom-up protocols. [cite: 557, 559]"
+                    "explanation": "Module 009 of Chapter 5 identifies Trypsin as a site-specific enzyme used to cleave proteins into peptides for mass analysis in bottom-up protocols. "
                 }
             ]
         },
@@ -661,7 +661,7 @@
                         "Predicting RNA tertiary structures"
                     ],
                     "correct": 2,
-                    "explanation": "Module 033 of Chapter 5 identifies Mascot as a widely used online search engine for Bottom-up Proteomics, capable of searching peptide mass fingerprinting and shotgun proteomics data. [cite: 656, 657]"
+                    "explanation": "Module 033 of Chapter 5 identifies Mascot as a widely used online search engine for Bottom-up Proteomics, capable of searching peptide mass fingerprinting and shotgun proteomics data. "
                 }
             ]
         },
@@ -678,7 +678,7 @@
                         "The amount of ATP in the cell"
                     ],
                     "correct": 2,
-                    "explanation": "Module 010 of Chapter 6 describes Anfinsen's dogma as the postulate that the native structure of small globular proteins is determined only by the protein's amino acid sequence. [cite: 694, 695]"
+                    "explanation": "Module 010 of Chapter 6 describes Anfinsen's dogma as the postulate that the native structure of small globular proteins is determined only by the protein's amino acid sequence. "
                 }
             ]
         },
@@ -695,7 +695,7 @@
                         "Quaternary (4')"
                     ],
                     "correct": 3,
-                    "explanation": "Module 016 of Chapter 6 defines the Quaternary (4') structure as the level where 3' structures combine with other polypeptide units to form functional protein complexes. [cite: 714, 715]"
+                    "explanation": "Module 016 of Chapter 6 defines the Quaternary (4') structure as the level where 3' structures combine with other polypeptide units to form functional protein complexes. "
                 }
             ]
         },
@@ -712,7 +712,7 @@
                         "Quaternary Structure"
                     ],
                     "correct": 0,
-                    "explanation": "Module 017 of Chapter 6 confirms that Primary (1') structures are essentially the amino acid sequence of the protein. This sequence determines the initial properties and foundation for folding. [cite: 717, 720]"
+                    "explanation": "Module 017 of Chapter 6 confirms that Primary (1') structures are essentially the amino acid sequence of the protein. This sequence determines the initial properties and foundation for folding. "
                 }
             ]
         },
@@ -729,7 +729,7 @@
                         "Covalent disulfide bridges"
                     ],
                     "correct": 1,
-                    "explanation": "Module 018 and 019 of Chapter 6 explain that secondary structures form due to hydrogen bond formation between the N and C termini atoms in the protein backbone. [cite: 723, 726]"
+                    "explanation": "Module 018 and 019 of Chapter 6 explain that secondary structures form due to hydrogen bond formation between the N and C termini atoms in the protein backbone. "
                 }
             ]
         },
@@ -746,7 +746,7 @@
                         "6"
                     ],
                     "correct": 1,
-                    "explanation": "Module 056 of Chapter 6 states that 4 amino acids are needed to start an Alpha Helix, and their propensity must be greater than 1.0. [cite: 849, 852]"
+                    "explanation": "Module 056 of Chapter 6 states that 4 amino acids are needed to start an Alpha Helix, and their propensity must be greater than 1.0. "
                 }
             ]
         },
@@ -763,7 +763,7 @@
                         "Cysteine"
                     ],
                     "correct": 2,
-                    "explanation": "Module 053 of Chapter 6 mentions that by surveying the PDB, Alanine is mostly found in Alpha Helices. Therefore, a high concentration of Alanine can be used as an anticipation for helix formation. [cite: 830, 831]"
+                    "explanation": "Module 053 of Chapter 6 mentions that by surveying the PDB, Alanine is mostly found in Alpha Helices. Therefore, a high concentration of Alanine can be used as an anticipation for helix formation. "
                 }
             ]
         },
@@ -780,7 +780,7 @@
                         "Picometer"
                     ],
                     "correct": 2,
-                    "explanation": "Module 025 of Chapter 6 identifies the Ångström as the unit used to express the size of atoms and bond lengths in biological structures, equal to 10^-10 meters or 0.1 nm. [cite: 731, 732]"
+                    "explanation": "Module 025 of Chapter 6 identifies the Ångström as the unit used to express the size of atoms and bond lengths in biological structures, equal to 10^-10 meters or 0.1 nm. "
                 }
             ]
         },
@@ -797,7 +797,7 @@
                         "Oxygen"
                     ],
                     "correct": 2,
-                    "explanation": "Module 028 of Chapter 6 explains that to trace the backbone of a protein, C-Alpha (CA) atoms coordinates are used. These coordinates are available in PDB files for over 50,000 proteins. [cite: 733, 744, 745]"
+                    "explanation": "Module 028 of Chapter 6 explains that to trace the backbone of a protein, C-Alpha (CA) atoms coordinates are used. These coordinates are available in PDB files for over 50,000 proteins. "
                 }
             ]
         },
@@ -814,7 +814,7 @@
                         "Surface View"
                     ],
                     "correct": 2,
-                    "explanation": "Module 030 of Chapter 6 defines CPK Diagrams as a technique where each atom is represented by a solid sphere equal to its atomic van der Waals radius. [cite: 751, 752]"
+                    "explanation": "Module 030 of Chapter 6 defines CPK Diagrams as a technique where each atom is represented by a solid sphere equal to its atomic van der Waals radius. "
                 }
             ]
         },
@@ -831,7 +831,7 @@
                         "Identity Percentage"
                     ],
                     "correct": 2,
-                    "explanation": "Module 049 of Chapter 6 explains that Root Mean Square Deviation (RMSD) is computed between the positions of Alpha Carbons to assess structural similarity. A lower RMSD indicates higher similarity. [cite: 814, 818]"
+                    "explanation": "Module 049 of Chapter 6 explains that Root Mean Square Deviation (RMSD) is computed between the positions of Alpha Carbons to assess structural similarity. A lower RMSD indicates higher similarity. "
                 }
             ]
         },
@@ -848,7 +848,7 @@
                         "Complexity"
                     ],
                     "correct": 1,
-                    "explanation": "Module 045 of Chapter 6 states that CATH classifies proteins by structural similarity into Class, Architecture, Topology, and Homology. [cite: 788, 789]"
+                    "explanation": "Module 045 of Chapter 6 states that CATH classifies proteins by structural similarity into Class, Architecture, Topology, and Homology. "
                 }
             ]
         }

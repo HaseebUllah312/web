@@ -43,7 +43,7 @@
                         "Kingdom, Domain, Class, Phylum, Order, Family, Genus, Species"
                     ],
                     "correct": 1,
-                    "explanation": "Taxonomy is the science of naming, describing and classifying organisms. The formal hierarchy provided in the text lists Domain Eukarya, Kingdom Animalia, Phylum Chordata, Class Mammalia, Order Carnivora, Family Canidae, Genus Vulpes, and Species vulpes[cite: 1228, 1230, 1232, 1234, 1236, 1238, 1239, 1240]. This definitively establishes the descending order as Domain, Kingdom, Phylum, Class, Order, Family, Genus, and Species."
+                    "explanation": "Taxonomy is the science of naming, describing and classifying organisms. The formal hierarchy provided in the text lists Domain Eukarya, Kingdom Animalia, Phylum Chordata, Class Mammalia, Order Carnivora, Family Canidae, Genus Vulpes, and Species vulpes. This definitively establishes the descending order as Domain, Kingdom, Phylum, Class, Order, Family, Genus, and Species."
                 }
             ]
         },
@@ -82,7 +82,7 @@
                         "Mesosome"
                     ],
                     "correct": 1,
-                    "explanation": "Pilli are protein tubes that extend out from the outer membrane. Specifically, fimbriae usually function to facilitate the attachment of a bacterium to a surface (e.g. to form a biofilm) or to other cells. In contrast, flagella are used for movement , and plasmids are used to exchange DNA between bacterial cells[cite: 1414, 1415]."
+                    "explanation": "Pilli are protein tubes that extend out from the outer membrane. Specifically, fimbriae usually function to facilitate the attachment of a bacterium to a surface (e.g. to form a biofilm) or to other cells. In contrast, flagella are used for movement , and plasmids are used to exchange DNA between bacterial cells."
                 }
             ]
         },
@@ -99,7 +99,7 @@
                         "Large amounts of lipid substances known as mycolic acids."
                     ],
                     "correct": 2,
-                    "explanation": " Gram-positive cell walls are thick and the peptidoglycan (also known as murein) layer constitutes almost 95% of the cell wall. The gram-positive bacteria take up the crystal violet dye and are stained purple. Gram-negative walls, stained pink, contain a thin peptidoglycan layer[cite: 1377, 1378]."
+                    "explanation": " Gram-positive cell walls are thick and the peptidoglycan (also known as murein) layer constitutes almost 95% of the cell wall. The gram-positive bacteria take up the crystal violet dye and are stained purple. Gram-negative walls, stained pink, contain a thin peptidoglycan layer."
                 },
                 {
                     "question": "Chemoautotrophs are organisms that synthesize their own organic matter. Which of the following best describes their primary energy source?",
@@ -110,7 +110,7 @@
                         "Organic materials derived from a host organism."
                     ],
                     "correct": 1,
-                    "explanation": "A chemoautotroph is an organism that uses the energy of environmentally available chemical reactions to fix raw materials into energy rich compounds. Photosynthetic bacteria, on the other hand, rely on sunlight captured by bacteriochlorophyll , while heterotrophic organisms like saprobes and parasites feed on other organic materials[cite: 1513, 1514]."
+                    "explanation": "A chemoautotroph is an organism that uses the energy of environmentally available chemical reactions to fix raw materials into energy rich compounds. Photosynthetic bacteria, on the other hand, rely on sunlight captured by bacteriochlorophyll , while heterotrophic organisms like saprobes and parasites feed on other organic materials."
                 },
                 {
                     "question": "During the Acid-Fast staining procedure, which characteristic of Mycobacterium prevents it from being stained by ordinary methods like the Gram stain?",
@@ -234,7 +234,7 @@
                         "Replication of viral components using the host cell's machinery"
                     ],
                     "correct": 3,
-                    "explanation": " The lytic cycle is a five-stage cycle. The correct sequence is Attachment, Penetration, Replication, Assembly, and Lysis[cite: 1802, 1805, 1809, 1814, 1818]. During the replication stage, the virus' nucleic acid uses the host cell's machinery to make large amounts of viral components."
+                    "explanation": " The lytic cycle is a five-stage cycle. The correct sequence is Attachment, Penetration, Replication, Assembly, and Lysis. During the replication stage, the virus' nucleic acid uses the host cell's machinery to make large amounts of viral components."
                 },
                 {
                     "question": "Which of the following events triggers the transition from the lysogenic cycle to the lytic cycle?",
@@ -262,7 +262,7 @@
                         "The integumentary system"
                     ],
                     "correct": 1,
-                    "explanation": "Hormones are chemical messengers that are secreted directly into the blood, which carries them to organs and tissues of the body to exert their functions. This direct secretion into the bloodstream without ducts is characteristic of the endocrine system[cite: 1910, 1980]."
+                    "explanation": "Hormones are chemical messengers that are secreted directly into the blood, which carries them to organs and tissues of the body to exert their functions. This direct secretion into the bloodstream without ducts is characteristic of the endocrine system."
                 },
                 {
                     "question": "Paracrine hormones function by:",

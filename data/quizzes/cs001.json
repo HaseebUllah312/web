@@ -986,7 +986,7 @@
                         "Repeat"
                     ],
                     "correct": 2,
-                    "explanation": "The Undo command is specifically designed to reverse the last action performed by the user in MS Word[cite: 2417, 2465]. It can be accessed via the Quick Access Toolbar or by using the shortcut key CTRL + Z[cite: 2465, 2469]. Redo (Option 0) is only available after an Undo action to restore what was reversed."
+                    "explanation": "The Undo command is specifically designed to reverse the last action performed by the user in MS Word. It can be accessed via the Quick Access Toolbar or by using the shortcut key CTRL + Z. Redo (Option 0) is only available after an Undo action to restore what was reversed."
                 }
             ]
         },
@@ -1003,7 +1003,7 @@
                         "Review Tab"
                     ],
                     "correct": 1,
-                    "explanation": "The Insert Tab contains the Symbol command, which allows users to add mathematical symbols and special characters that are not found on the physical keyboard[cite: 2470, 2472]. The Home Tab (Option 0) is for general formatting, and the Review Tab (Option 3) is for proofreading[cite: 2535, 2714]."
+                    "explanation": "The Insert Tab contains the Symbol command, which allows users to add mathematical symbols and special characters that are not found on the physical keyboard. The Home Tab (Option 0) is for general formatting, and the Review Tab (Option 3) is for proofreading."
                 }
             ]
         },
@@ -1020,7 +1020,7 @@
                         "Ctrl + Z"
                     ],
                     "correct": 1,
-                    "explanation": "In MS Word, the shortcut key Ctrl + X is used to cut the selected text, which removes it from its original position and stores it in the clipboard[cite: 2488, 2491]. Ctrl + C (Option 0) copies text without removing it, while Ctrl + V (Option 2) is used to paste the content[cite: 2487, 2495]."
+                    "explanation": "In MS Word, the shortcut key Ctrl + X is used to cut the selected text, which removes it from its original position and stores it in the clipboard. Ctrl + C (Option 0) copies text without removing it, while Ctrl + V (Option 2) is used to paste the content."
                 }
             ]
         },
@@ -1037,7 +1037,7 @@
                         "Spell Check"
                     ],
                     "correct": 2,
-                    "explanation": "The 'Find and Replace' feature allows users to search for a specific word and replace it with another word throughout the document either one-by-one or all at once[cite: 2510, 2512]. While Find (Option 0) locates the word, it does not change it. Spell Check (Option 3) identifies errors but is not designed for bulk word substitution[cite: 2514, 2707]."
+                    "explanation": "The 'Find and Replace' feature allows users to search for a specific word and replace it with another word throughout the document either one-by-one or all at once. While Find (Option 0) locates the word, it does not change it. Spell Check (Option 3) identifies errors but is not designed for bulk word substitution."
                 }
             ]
         },
@@ -1054,7 +1054,7 @@
                         "A word that is bolded"
                     ],
                     "correct": 1,
-                    "explanation": "MS Word automatically recognizes potential spelling errors by highlighting them with a red wavy underline[cite: 2618, 2706]. Grammatical mistakes are instead indicated by green wavy lines[cite: 2706, 2731]. Users can right-click the red-underlined word to see suggested corrections[cite: 2619, 2719]."
+                    "explanation": "MS Word automatically recognizes potential spelling errors by highlighting them with a red wavy underline. Grammatical mistakes are instead indicated by green wavy lines. Users can right-click the red-underlined word to see suggested corrections."
                 }
             ]
         },
@@ -1071,7 +1071,7 @@
                         "Justify"
                     ],
                     "correct": 3,
-                    "explanation": "The 'Justify' command (shortcut CTRL + J) aligns text to both the left and right margins, adding extra space between words as necessary to achieve a straight edge on both sides[cite: 2581, 3515]. Left, Center, and Right alignments (Options 0, 1, 2) align text to only one side or the middle[cite: 2578, 2579]."
+                    "explanation": "The 'Justify' command (shortcut CTRL + J) aligns text to both the left and right margins, adding extra space between words as necessary to achieve a straight edge on both sides. Left, Center, and Right alignments (Options 0, 1, 2) align text to only one side or the middle."
                 },
                 {
                     "question": "To add a professional-looking 'Header' that appears at the top of every page, which tab should be accessed?",
@@ -1110,7 +1110,7 @@
                         "To insert a new page break automatically."
                     ],
                     "correct": 1,
-                    "explanation": "Indentation is used to add spacing before new lines or to adjust the space between lines in a document[cite: 2565, 2566]. This is often managed using the Tab key for new line space or the Paragraph Tab in the Home Ribbon bar for line spacing[cite: 2568, 2572]."
+                    "explanation": "Indentation is used to add spacing before new lines or to adjust the space between lines in a document. This is often managed using the Tab key for new line space or the Paragraph Tab in the Home Ribbon bar for line spacing."
                 }
             ]
         },
@@ -1127,7 +1127,7 @@
                         "Ctrl + E"
                     ],
                     "correct": 2,
-                    "explanation": "The keyboard shortcut Ctrl + K is the standard way to open the hyperlink dialogue box to link text or objects to a website or another file[cite: 2587, 854]. Ctrl + L (Option 1) is for left alignment, and Ctrl + E (Option 3) is for center alignment."
+                    "explanation": "The keyboard shortcut Ctrl + K is the standard way to open the hyperlink dialogue box to link text or objects to a website or another file. Ctrl + L (Option 1) is for left alignment, and Ctrl + E (Option 3) is for center alignment."
                 }
             ]
         },
@@ -1144,7 +1144,7 @@
                         "Mathematical formulas used to calculate numeric data."
                     ],
                     "correct": 1,
-                    "explanation": "Templates are pre-written and pre-styled document samples provided by MS Word, such as CV layouts or formal letter formats[cite: 2601, 2602]. Users can select 'New from existing' in the File Tab to use these professional designs as a starting point[cite: 2604, 2605]."
+                    "explanation": "Templates are pre-written and pre-styled document samples provided by MS Word, such as CV layouts or formal letter formats. Users can select 'New from existing' in the File Tab to use these professional designs as a starting point."
                 }
             ]
         },
@@ -1161,7 +1161,7 @@
                         "Columns"
                     ],
                     "correct": 2,
-                    "explanation": "The 'Orientation' setting in the Page Layout Ribbon Bar allows users to choose between 'Portrait' (vertical) and 'Landscape' (horizontal) views for their document[cite: 2616, 2748, 2751]. Margins (Option 0) adjust the white space around the edges, and Size (Option 1) selects the paper type like A4 or Letter[cite: 2752, 2753]."
+                    "explanation": "The 'Orientation' setting in the Page Layout Ribbon Bar allows users to choose between 'Portrait' (vertical) and 'Landscape' (horizontal) views for their document. Margins (Option 0) adjust the white space around the edges, and Size (Option 1) selects the paper type like A4 or Letter."
                 },
                 {
                     "question": "What is the function of 'Page Breaks' in a long Microsoft Word document?",

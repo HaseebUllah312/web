@@ -48,7 +48,7 @@ export default function ServicesPage() {
                     <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
                             <span style={{ fontSize: '2rem' }}>🎓</span>
-                            <h2 style={{ margin: 0, fontSize: '1.5rem', color: '#22c55e' }}>Academic Advice is 100% FREE</h2>
+                            <h2 style={{ margin: 0, fontSize: '1.5rem', color: 'var(--success)' }}>Academic Advice is 100% FREE</h2>
                         </div>
                         <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '1rem', maxWidth: '600px', lineHeight: '1.6' }}>
                             Have a question about your VU course, exam, assignment concept, or study plan?
@@ -59,7 +59,7 @@ export default function ServicesPage() {
                             {['✅ Subject Advice', '✅ Study Planning', '✅ Concept Help', '✅ Exam Tips', '✅ Career Guidance'].map(item => (
                                 <span key={item} style={{
                                     background: 'rgba(34, 197, 94, 0.15)',
-                                    color: '#22c55e',
+                                    color: 'var(--success)',
                                     padding: '5px 14px',
                                     borderRadius: '50px',
                                     fontSize: '0.85rem',
@@ -190,12 +190,12 @@ export default function ServicesPage() {
                     margin: '0 auto 60px'
                 }}>
                     <div style={{ fontSize: '2.5rem', marginBottom: '10px' }}>💛</div>
-                    <h3 style={{ color: '#f59e0b', fontSize: '1.4rem', marginBottom: '10px' }}>Special Discount for Needy Students</h3>
+                    <h3 style={{ color: 'var(--warning)', fontSize: '1.4rem', marginBottom: '10px' }}>Special Discount for Needy Students</h3>
                     <p style={{ color: 'var(--text-secondary)', marginBottom: '16px', lineHeight: '1.7', maxWidth: '550px', margin: '0 auto 16px' }}>
                         We understand that not every student can afford paid services.
                         If you are a deserving or financially struggling student,
                         <strong style={{ color: 'var(--text-primary)' }}> contact us privately</strong> — we offer
-                        <strong style={{ color: '#f59e0b' }}> up to 100% discounts</strong> for genuinely needy VU students.
+                        <strong style={{ color: 'var(--warning)' }}> up to 100% discounts</strong> for genuinely needy VU students.
                         No questions asked, your privacy is respected.
                     </p>
                     <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>

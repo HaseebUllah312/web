@@ -171,28 +171,28 @@ export default function MCQPracticePage() {
             <div className="page anim-fade-in" style={{ paddingBottom: '60px' }}>
                 <div className="container" style={{ maxWidth: '700px' }}>
                     <div className="page-header" style={{ textAlign: 'center', marginBottom: '40px' }}>
-                        <h1 style={{ fontSize: '2.5rem', marginBottom: '12px', background: 'linear-gradient(135deg, #fff 0%, #a5b4fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                        <h1 style={{ fontSize: '2.5rem', marginBottom: '12px', background: 'var(--heading-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                             🧠 Advanced MCQ Practice
                         </h1>
-                        <p style={{ fontSize: '1.1rem', color: '#a5b4fc', opacity: 0.9 }}>
+                        <p style={{ fontSize: '1.1rem', color: 'var(--accent-text)', opacity: 0.9 }}>
                             Master your VU subjects with AI-powered conceptual clearing.
                         </p>
                     </div>
 
                     <div className="card" style={{
                         padding: '40px',
-                        background: 'rgba(30, 27, 75, 0.4)',
+                        background: 'var(--glass-card)',
                         backdropFilter: 'blur(12px)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                        boxShadow: '0 20px 50px rgba(0,0,0,0.3)',
+                        border: '1px solid var(--border-color)',
+                        boxShadow: 'var(--shadow-xl)',
                         borderRadius: '24px'
                     }}>
                         <div className="form-group">
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                                <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem', margin: 0 }}>Select Subject</label>
+                                <label className="form-label" style={{ color: 'var(--form-label-color)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem', margin: 0 }}>Select Subject</label>
                                 <button
                                     onClick={() => setIsManualCode(!isManualCode)}
-                                    style={{ background: 'transparent', border: 'none', color: '#a5b4fc', fontSize: '0.7rem', cursor: 'pointer', textDecoration: 'underline', opacity: 0.8 }}
+                                    style={{ background: 'transparent', border: 'none', color: 'var(--accent-text)', fontSize: '0.7rem', cursor: 'pointer', textDecoration: 'underline', opacity: 0.8 }}
                                 >
                                     {isManualCode ? 'Use Dropdown' : 'Manual Code Entry'}
                                 </button>
@@ -205,20 +205,20 @@ export default function MCQPracticePage() {
                                     placeholder="Enter Subject Code (e.g. CS201)"
                                     value={selectedSubject}
                                     onChange={e => setSelectedSubject(e.target.value.toUpperCase())}
-                                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                                    style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}
                                 />
                             ) : (
-                                <select className="form-select" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}>
+                                <select className="form-select" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)} style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
                                     {allSubjects.sort().map(code => {
                                         const s = subjects.find(x => x.code === code);
-                                        return <option key={code} value={code} style={{ background: '#1e1b4b' }}>{code} {s ? `- ${s.name}` : ''}</option>;
+                                        return <option key={code} value={code} style={{ background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}>{code} {s ? `- ${s.name}` : ''}</option>;
                                     })}
                                 </select>
                             )}
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Selection Mode</label>
+                            <label className="form-label" style={{ color: 'var(--form-label-color)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Selection Mode</label>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
                                 {['exam', 'lecture', 'topic'].map((mode) => (
                                     <button
@@ -229,8 +229,8 @@ export default function MCQPracticePage() {
                                             padding: '12px',
                                             fontSize: '0.8rem',
                                             borderRadius: '12px',
-                                            border: selectionMode === mode ? 'none' : '1px solid rgba(255,255,255,0.1)',
-                                            background: selectionMode === mode ? '' : 'rgba(255,255,255,0.02)'
+                                            border: selectionMode === mode ? 'none' : '1px solid var(--border-color)',
+                                            background: selectionMode === mode ? '' : 'var(--bg-secondary)'
                                         }}
                                     >
                                         {mode === 'exam' ? '🎓 Exam' : mode === 'lecture' ? '📚 Lecture' : '🔍 Topic'}
@@ -242,19 +242,19 @@ export default function MCQPracticePage() {
                         <div style={{ minHeight: '100px', transition: 'all 0.3s ease' }}>
                             {selectionMode === 'exam' && (
                                 <div className="form-group anim-fade-in">
-                                    <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Exam Target</label>
+                                    <label className="form-label" style={{ color: 'var(--form-label-color)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Exam Target</label>
                                     <div style={{ display: 'flex', gap: '12px' }}>
                                         <button
                                             className={`btn ${selectedType === 'midterm' ? 'btn-primary' : 'btn-secondary'}`}
                                             onClick={() => setSelectedType('midterm')}
-                                            style={{ flex: 1, borderRadius: '12px', background: selectedType === 'midterm' ? '' : 'rgba(255,255,255,0.02)' }}
+                                            style={{ flex: 1, borderRadius: '12px', background: selectedType === 'midterm' ? '' : 'var(--bg-secondary)' }}
                                         >
                                             Midterm (1-22)
                                         </button>
                                         <button
                                             className={`btn ${selectedType === 'final' ? 'btn-primary' : 'btn-secondary'}`}
                                             onClick={() => setSelectedType('final')}
-                                            style={{ flex: 1, borderRadius: '12px', background: selectedType === 'final' ? '' : 'rgba(255,255,255,0.02)' }}
+                                            style={{ flex: 1, borderRadius: '12px', background: selectedType === 'final' ? '' : 'var(--bg-secondary)' }}
                                         >
                                             Final (23-45)
                                         </button>
@@ -264,30 +264,30 @@ export default function MCQPracticePage() {
 
                             {selectionMode === 'lecture' && (
                                 <div className="form-group anim-fade-in">
-                                    <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Lecture Focus (Range or List)</label>
+                                    <label className="form-label" style={{ color: 'var(--form-label-color)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Lecture Focus (Range or List)</label>
                                     <input
                                         type="text"
                                         className="form-input"
                                         placeholder="e.g., 1-5 or 10,12,15"
                                         value={lectureRange}
                                         onChange={e => setLectureRange(e.target.value)}
-                                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                                        style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}
                                     />
                                 </div>
                             )}
 
                             {selectionMode === 'topic' && (
                                 <div className="form-group anim-fade-in">
-                                    <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Custom Topic Semantic Search</label>
+                                    <label className="form-label" style={{ color: 'var(--form-label-color)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Custom Topic Semantic Search</label>
                                     <input
                                         type="text"
                                         className="form-input"
                                         placeholder="e.g., Binary Search Tree or SQL Normalization"
                                         value={customTopic}
                                         onChange={e => setCustomTopic(e.target.value)}
-                                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                                        style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}
                                     />
-                                    <p style={{ fontSize: '0.75rem', color: '#a5b4fc', opacity: 0.7, marginTop: '6px' }}>
+                                    <p style={{ fontSize: '0.75rem', color: 'var(--accent-text)', opacity: 0.7, marginTop: '6px' }}>
                                         🤖 AI will curate a professional set of questions for this specific domain.
                                     </p>
                                 </div>
@@ -295,14 +295,14 @@ export default function MCQPracticePage() {
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Batch Size</label>
+                            <label className="form-label" style={{ color: 'var(--form-label-color)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Batch Size</label>
                             <div style={{ display: 'flex', gap: '12px' }}>
                                 {[10, 20, 50].map(n => (
                                     <button
                                         key={n}
                                         className={`btn ${questionCount === n ? 'btn-primary' : 'btn-secondary'}`}
                                         onClick={() => setQuestionCount(n)}
-                                        style={{ flex: 1, borderRadius: '12px', background: questionCount === n ? '' : 'rgba(255,255,255,0.02)' }}
+                                        style={{ flex: 1, borderRadius: '12px', background: questionCount === n ? '' : 'var(--bg-secondary)' }}
                                     >
                                         {n} MCQs
                                     </button>
@@ -312,15 +312,15 @@ export default function MCQPracticePage() {
 
                         {/* Mode Selector */}
                         <div className="form-group">
-                            <label className="form-label" style={{ color: '#a5b4fc', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Experience Mode</label>
+                            <label className="form-label" style={{ color: 'var(--form-label-color)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem' }}>Experience Mode</label>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                                 <div
                                     onClick={() => setExamMode('practice')}
                                     style={{
                                         padding: '20px',
                                         borderRadius: '16px',
-                                        border: `2px solid ${examMode === 'practice' ? '#667eea' : 'rgba(255,255,255,0.05)'}`,
-                                        background: examMode === 'practice' ? 'rgba(102,126,234,0.1)' : 'rgba(255,255,255,0.02)',
+                                        border: `2px solid ${examMode === 'practice' ? 'var(--accent-primary)' : 'var(--border-color)'}`,
+                                        background: examMode === 'practice' ? 'var(--accent-glow)' : 'var(--bg-secondary)',
                                         cursor: 'pointer',
                                         textAlign: 'center',
                                         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -328,16 +328,16 @@ export default function MCQPracticePage() {
                                     }}
                                 >
                                     <div style={{ fontSize: '2rem' }}>⚡</div>
-                                    <div style={{ fontWeight: '700', fontSize: '1rem', marginTop: '8px', color: 'white' }}>Quick Practice</div>
-                                    <div style={{ fontSize: '0.75rem', color: '#a5b4fc', marginTop: '4px', opacity: 0.8 }}>Real-time guidance and explanations</div>
+                                    <div style={{ fontWeight: '700', fontSize: '1rem', marginTop: '8px', color: 'var(--text-primary)' }}>Quick Practice</div>
+                                    <div style={{ fontSize: '0.75rem', color: 'var(--accent-text)', marginTop: '4px', opacity: 0.8 }}>Real-time guidance and explanations</div>
                                 </div>
                                 <div
                                     onClick={() => setExamMode('vu-style')}
                                     style={{
                                         padding: '20px',
                                         borderRadius: '16px',
-                                        border: `2px solid ${examMode === 'vu-style' ? '#7c3aed' : 'rgba(255,255,255,0.05)'}`,
-                                        background: examMode === 'vu-style' ? 'rgba(124,58,237,0.1)' : 'rgba(255,255,255,0.02)',
+                                        border: `2px solid ${examMode === 'vu-style' ? 'var(--accent-secondary)' : 'var(--border-color)'}`,
+                                        background: examMode === 'vu-style' ? 'rgba(124,58,237,0.1)' : 'var(--bg-secondary)',
                                         cursor: 'pointer',
                                         textAlign: 'center',
                                         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -345,8 +345,8 @@ export default function MCQPracticePage() {
                                     }}
                                 >
                                     <div style={{ fontSize: '2rem' }}>🏛️</div>
-                                    <div style={{ fontWeight: '700', fontSize: '1rem', marginTop: '8px', color: 'white' }}>Exam Simulation</div>
-                                    <div style={{ fontSize: '0.75rem', color: '#a5b4fc', marginTop: '4px', opacity: 0.8 }}>Official VU portal environment</div>
+                                    <div style={{ fontWeight: '700', fontSize: '1rem', marginTop: '8px', color: 'var(--text-primary)' }}>Exam Simulation</div>
+                                    <div style={{ fontSize: '0.75rem', color: 'var(--accent-text)', marginTop: '4px', opacity: 0.8 }}>Official VU portal environment</div>
                                 </div>
                             </div>
                         </div>
@@ -532,9 +532,9 @@ export default function MCQPracticePage() {
                     padding: '48px',
                     textAlign: 'center',
                     marginBottom: '32px',
-                    background: 'rgba(30, 27, 75, 0.4)',
+                    background: 'var(--glass-card)',
                     backdropFilter: 'blur(12px)',
-                    border: '1px solid rgba(255,255,255,0.1)',
+                    border: '1px solid var(--border-color)',
                     borderRadius: '24px'
                 }}>
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '48px', flexWrap: 'wrap' }}>
@@ -547,19 +547,19 @@ export default function MCQPracticePage() {
                                     strokeLinecap="round" transform="rotate(-90 75 75)"
                                     style={{ transition: 'stroke-dasharray 1.5s cubic-bezier(0.4, 0, 0.2, 1)' }}
                                 />
-                                <text x="75" y="70" textAnchor="middle" fill="white" fontSize="32" fontWeight="900">{percentage}%</text>
-                                <text x="75" y="92" textAnchor="middle" fill="#a5b4fc" fontSize="12" fontWeight="bold" style={{ textTransform: 'uppercase', letterSpacing: '0.1em' }}>Score</text>
+                                <text x="75" y="70" textAnchor="middle" fill="var(--text-primary)" fontSize="32" fontWeight="900">{percentage}%</text>
+                                <text x="75" y="92" textAnchor="middle" fill="var(--accent-text)" fontSize="12" fontWeight="bold" style={{ textTransform: 'uppercase', letterSpacing: '0.1em' }}>Score</text>
                             </svg>
                         </div>
 
                         {/* Grade + Message */}
                         <div style={{ textAlign: 'left' }}>
-                            <div style={{ fontSize: '0.9rem', color: '#a5b4fc', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.2em', marginBottom: '8px' }}>Performance Result</div>
+                            <div style={{ fontSize: '0.9rem', color: 'var(--accent-text)', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.2em', marginBottom: '8px' }}>Performance Result</div>
                             <div style={{ fontSize: '4rem', fontWeight: '900', color: gradeColor, lineHeight: 1, textShadow: `0 0 20px ${gradeColor}44` }}>Grade {grade}</div>
-                            <div style={{ fontSize: '1.25rem', marginTop: '16px', color: 'white', fontWeight: '500' }}>{motivation.emoji} {motivation.msg}</div>
+                            <div style={{ fontSize: '1.25rem', marginTop: '16px', color: 'var(--text-primary)', fontWeight: '500' }}>{motivation.emoji} {motivation.msg}</div>
                             <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
-                                <span style={{ padding: '4px 12px', background: 'rgba(255,255,255,0.05)', borderRadius: '20px', fontSize: '0.75rem', color: '#a5b4fc' }}>{selectedSubject}</span>
-                                <span style={{ padding: '4px 12px', background: 'rgba(255,255,255,0.05)', borderRadius: '20px', fontSize: '0.75rem', color: '#a5b4fc' }}>{questions.length} Items</span>
+                                <span style={{ padding: '4px 12px', background: 'var(--bg-secondary)', borderRadius: '20px', fontSize: '0.75rem', color: 'var(--accent-text)' }}>{selectedSubject}</span>
+                                <span style={{ padding: '4px 12px', background: 'var(--bg-secondary)', borderRadius: '20px', fontSize: '0.75rem', color: 'var(--accent-text)' }}>{questions.length} Items</span>
                             </div>
                         </div>
                     </div>

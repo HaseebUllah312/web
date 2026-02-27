@@ -158,8 +158,8 @@ function RegisterForm() {
     return (
         <div className="card glass-card">
             <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-                <h1 style={{ fontSize: '2rem', marginBottom: '10px', background: 'var(--gradient-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Create Account</h1>
-                <p style={{ color: 'var(--text-secondary)' }}>
+                <h1 style={{ fontSize: '2.4rem', fontWeight: '900', marginBottom: '10px', background: 'var(--heading-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Create Account</h1>
+                <p style={{ color: 'var(--accent-text)', fontWeight: '500' }}>
                     {step === 1 && 'Step 1 of 3: Email Verification'}
                     {step === 2 && 'Step 2 of 3: Create Password'}
                     {step === 3 && 'Step 3 of 3: Verify Code'}
@@ -187,7 +187,7 @@ function RegisterForm() {
             {step === 1 && (
                 <form onSubmit={handleSendOTP}>
                     <div style={{ marginBottom: '20px' }}>
-                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>📧 Email Address</label>
+                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: 'var(--form-label-color)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>📧 Email Address</label>
                         <input
                             className="form-input"
                             type="email"
@@ -204,7 +204,7 @@ function RegisterForm() {
                     </div>
 
                     <div style={{ marginBottom: '25px' }}>
-                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>👤 Username</label>
+                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: 'var(--form-label-color)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>👤 Username</label>
                         <input
                             className="form-input"
                             type="text"
@@ -227,7 +227,7 @@ function RegisterForm() {
             {step === 2 && (
                 <form onSubmit={handleSetPassword}>
                     <div style={{ marginBottom: '20px' }}>
-                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>🔑 Password</label>
+                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: 'var(--form-label-color)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>🔑 Password</label>
                         <input
                             className="form-input"
                             type="password"
@@ -244,7 +244,7 @@ function RegisterForm() {
                     </div>
 
                     <div style={{ marginBottom: '25px' }}>
-                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>🔐 Confirm Password</label>
+                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: 'var(--form-label-color)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>🔐 Confirm Password</label>
                         <input
                             className="form-input"
                             type="password"
@@ -297,7 +297,7 @@ function RegisterForm() {
                     </div>
 
                     <div style={{ marginBottom: '20px' }}>
-                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>🔐 Verification Code</label>
+                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: 'var(--form-label-color)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>🔐 Verification Code</label>
                         <input
                             className="form-input"
                             type="text"

@@ -46,8 +46,8 @@ function LoginForm() {
     return (
         <div className="card glass-card">
             <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-                <h1 style={{ fontSize: '2rem', marginBottom: '10px', background: 'var(--gradient-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Welcome Back</h1>
-                <p style={{ color: 'var(--text-secondary)' }}>Sign in to continue your journey</p>
+                <h1 style={{ fontSize: '2.4rem', fontWeight: '900', marginBottom: '10px', background: 'var(--heading-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Welcome Back</h1>
+                <p style={{ color: 'var(--accent-text)', fontWeight: '500' }}>Sign in to continue your journey</p>
             </div>
 
             {(error || urlError) && (
@@ -58,7 +58,7 @@ function LoginForm() {
 
             <form onSubmit={handleLogin}>
                 <div style={{ marginBottom: '20px' }}>
-                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Username</label>
+                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: 'var(--form-label-color)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Username</label>
                     <input
                         className="form-input"
                         type="text"
@@ -71,7 +71,7 @@ function LoginForm() {
                     />
                 </div>
                 <div style={{ marginBottom: '10px' }}>
-                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Password</label>
+                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: 'var(--form-label-color)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Password</label>
                     <input
                         className="form-input"
                         type="password"

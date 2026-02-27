@@ -15,7 +15,7 @@
                         "Saccharomyces cerevisiae and Caenorhabditis elegans"
                     ],
                     "correct": 1,
-                    "explanation": "According to the handouts, Arabidopsis thaliana (water cress) and Oryza sativa (rice) are the two model crop systems for which complete genomes are currently available. These serve as foundational references for suggesting improvements to other food crops through comparative genetics. Options like Zea mays are mentioned later in the context of transposable elements rather than initial model completion, while others like B. thuringiensis are microbes or animal model systems[cite: 1, 41]."
+                    "explanation": "According to the handouts, Arabidopsis thaliana (water cress) and Oryza sativa (rice) are the two model crop systems for which complete genomes are currently available. These serve as foundational references for suggesting improvements to other food crops through comparative genetics. Options like Zea mays are mentioned later in the context of transposable elements rather than initial model completion, while others like B. thuringiensis are microbes or animal model systems."
                 }
             ]
         },
@@ -32,7 +32,7 @@
                         "Bacillus thuringiensis"
                     ],
                     "correct": 2,
-                    "explanation": "Deinococcus radiodurans is specifically identified as a microbe with potential usefulness in cleaning up waste sites contaminated with radiation and toxic chemicals[cite: 2, 9]. Chlorobium tepidum is mentioned for alternative energy sources , Enterococcus faecalis for antibiotic resistance studies , and Bacillus thuringiensis for insect resistance in crops."
+                    "explanation": "Deinococcus radiodurans is specifically identified as a microbe with potential usefulness in cleaning up waste sites contaminated with radiation and toxic chemicals. Chlorobium tepidum is mentioned for alternative energy sources , Enterococcus faecalis for antibiotic resistance studies , and Bacillus thuringiensis for insect resistance in crops."
                 }
             ]
         },
@@ -66,7 +66,7 @@
                         "Every 24 months"
                     ],
                     "correct": 2,
-                    "explanation": "The handouts state that the growth of GenBank is massive and exponential, with the number of bases doubling approximately every 18 months[cite: 41, 45]. This rapid growth necessitated the development of sophisticated bioinformatics tools for data retrieval and knowledge discovery."
+                    "explanation": "The handouts state that the growth of GenBank is massive and exponential, with the number of bases doubling approximately every 18 months. This rapid growth necessitated the development of sophisticated bioinformatics tools for data retrieval and knowledge discovery."
                 }
             ]
         },
@@ -83,7 +83,7 @@
                         "TIGR"
                     ],
                     "correct": 1,
-                    "explanation": "The International Nucleotide Sequence Database Collaboration (INSDC) is the joint initiative between the DNA DataBank of Japan (DDBJ), the European Bioinformatics Institute (EMBL-EBI), and the National Center for Biotechnology Information (NCBI)[cite: 36, 37]. PIR is a protein resource , ExPASy is a portal for proteomics and other resources in Switzerland , and TIGR was the institute where the first bacterial genome was sequenced."
+                    "explanation": "The International Nucleotide Sequence Database Collaboration (INSDC) is the joint initiative between the DNA DataBank of Japan (DDBJ), the European Bioinformatics Institute (EMBL-EBI), and the National Center for Biotechnology Information (NCBI). PIR is a protein resource , ExPASy is a portal for proteomics and other resources in Switzerland , and TIGR was the institute where the first bacterial genome was sequenced."
                 }
             ]
         },
@@ -117,7 +117,7 @@
                         "Aspartic acid"
                     ],
                     "correct": 2,
-                    "explanation": "Standard amino acid codes are assigned single letters from A to Z, though some are not commonly used. Glutamic acid is represented by 'E'[cite: 160, 164]. Alanine is 'A', Glycine is 'G', and Aspartic acid is 'D'. These codes are essential for compact sequence storage and computational alignment."
+                    "explanation": "Standard amino acid codes are assigned single letters from A to Z, though some are not commonly used. Glutamic acid is represented by 'E'. Alanine is 'A', Glycine is 'G', and Aspartic acid is 'D'. These codes are essential for compact sequence storage and computational alignment."
                 }
             ]
         },
@@ -151,7 +151,7 @@
                         "Functional genomics"
                     ],
                     "correct": 1,
-                    "explanation": "A critical task in genome analysis is identifying and masking out repeats. Repeats can cause the assembly to 'jumble up,' so it is important to identify these regions[cite: 269, 270]. Gene prediction follows assembly , while structural and functional annotations involve identifying specific features and biological roles respectively[cite: 380, 385]."
+                    "explanation": "A critical task in genome analysis is identifying and masking out repeats. Repeats can cause the assembly to 'jumble up,' so it is important to identify these regions. Gene prediction follows assembly , while structural and functional annotations involve identifying specific features and biological roles respectively."
                 }
             ]
         },
@@ -168,7 +168,7 @@
                         "Intranuclear parasitic DNA elements"
                     ],
                     "correct": 2,
-                    "explanation": "The Endosymbiont hypothesis states that organelles like mitochondria and chloroplasts originated as separate prokaryotic organisms (endosymbiotic bacteria) that were taken inside a primordial eukaryotic cell[cite: 2903, 2906]. This relationship became mutually dependent, forming a crucial element in eukaryotic evolution."
+                    "explanation": "The Endosymbiont hypothesis states that organelles like mitochondria and chloroplasts originated as separate prokaryotic organisms (endosymbiotic bacteria) that were taken inside a primordial eukaryotic cell. This relationship became mutually dependent, forming a crucial element in eukaryotic evolution."
                 }
             ]
         }

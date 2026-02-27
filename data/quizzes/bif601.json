@@ -60,7 +60,7 @@
                         "To determine the number of bits used for the score calculation."
                     ],
                     "correct": 1,
-                    "explanation": "BLAST is a heuristic that starts by looking for short, fixed-length 'words' (e.g., length 3 for proteins or 11 for DNA)[cite: 21, 22]. Once a 'hit' is found, the algorithm attempts to extend it into a larger HSP."
+                    "explanation": "BLAST is a heuristic that starts by looking for short, fixed-length 'words' (e.g., length 3 for proteins or 11 for DNA). Once a 'hit' is found, the algorithm attempts to extend it into a larger HSP."
                 },
                 {
                     "question": "In a BLAST search, what is the 'Threshold' (T) parameter used for?",
@@ -1108,7 +1108,7 @@
                         "To align multiple protein profiles into a single consensus."
                     ],
                     "correct": 1,
-                    "explanation": "In a Hidden Markov Model (HMM), we observe the DNA sequence but not the functional states. The Viterbi algorithm is a dynamic programming approach that identifies the 'most likely path' through the hidden states that explains the observed sequence, effectively annotating the gene structure[cite: 31, 32]."
+                    "explanation": "In a Hidden Markov Model (HMM), we observe the DNA sequence but not the functional states. The Viterbi algorithm is a dynamic programming approach that identifies the 'most likely path' through the hidden states that explains the observed sequence, effectively annotating the gene structure."
                 },
                 {
                     "question": "In HMMs, why is the 'Baum-Welch Algorithm' used?",
@@ -1119,7 +1119,7 @@
                         "To generate a dotplot of two divergent sequences."
                     ],
                     "correct": 1,
-                    "explanation": "The Baum-Welch algorithm is an iterative Expectation-Maximization (EM) procedure used to train the parameters of an HMM[cite: 31, 32]. It adjusts the transition and emission probabilities to maximize the likelihood of the observed training sequences."
+                    "explanation": "The Baum-Welch algorithm is an iterative Expectation-Maximization (EM) procedure used to train the parameters of an HMM. It adjusts the transition and emission probabilities to maximize the likelihood of the observed training sequences."
                 },
                 {
                     "question": "In HMM-based gene prediction, what is the 'Emission Probability'?",
@@ -1670,7 +1670,7 @@
                         "Log-odds Model; it calculates the probability of gap occurrence vs. chance."
                     ],
                     "correct": 1,
-                    "explanation": "The Affine Gap Model uses the formula G = go + l * ge. Biologically, a single mutational event frequently results in the insertion or deletion of a block of residues; therefore, opening a gap is penalized more heavily than extending one to better reflect natural selection's parsimony[cite: 9, 23]."
+                    "explanation": "The Affine Gap Model uses the formula G = go + l * ge. Biologically, a single mutational event frequently results in the insertion or deletion of a block of residues; therefore, opening a gap is penalized more heavily than extending one to better reflect natural selection's parsimony."
                 },
                 {
                     "question": "Which component of an Affine Gap Penalty model is typically assigned a higher negative value, and what is the biological rationale?",
@@ -1709,7 +1709,7 @@
                         "The tree construction is faster than linear time."
                     ],
                     "correct": 1,
-                    "explanation": "Once a suffix tree is constructed for a text T (which takes O(n) time), searching for any pattern P of length m takes O(m) time[cite: 17, 30]. This is because the search follows a unique path from the root based only on the characters of P, regardless of how large the genome (text) is."
+                    "explanation": "Once a suffix tree is constructed for a text T (which takes O(n) time), searching for any pattern P of length m takes O(m) time. This is because the search follows a unique path from the root based only on the characters of P, regardless of how large the genome (text) is."
                 },
                 {
                     "question": "In the context of the Z-algorithm for exact string matching, what does the value Z_i(S) represent for a string S?",
@@ -2078,7 +2078,7 @@
                         "The model includes non-synonymous mutations that do not change the amino acid."
                     ],
                     "correct": 1,
-                    "explanation": "The Jukes-Cantor model corrects for 'multiple hits'. Over long evolutionary periods, a single site may mutate several times (e.g., A -> G -> T); however, only the final state is visible. The formula d = -3/4 ln(1 - 4/3p) accounts for these unobservable historical events[cite: 25, 26]."
+                    "explanation": "The Jukes-Cantor model corrects for 'multiple hits'. Over long evolutionary periods, a single site may mutate several times (e.g., A -> G -> T); however, only the final state is visible. The formula d = -3/4 ln(1 - 4/3p) accounts for these unobservable historical events."
                 }
             ]
         },
@@ -2095,7 +2095,7 @@
                         "Binomial Distribution"
                     ],
                     "correct": 2,
-                    "explanation": "The maximum scores of local alignments between random sequences follow an Extreme Value Distribution (EVD). This distribution is skewed, allowing BLAST to calculate the E-value, which represents the number of hits expected by chance alone[cite: 21, 22]."
+                    "explanation": "The maximum scores of local alignments between random sequences follow an Extreme Value Distribution (EVD). This distribution is skewed, allowing BLAST to calculate the E-value, which represents the number of hits expected by chance alone."
                 }
             ]
         },
@@ -2239,7 +2239,7 @@
                         "It stabilizes at a point where both alleles have equal frequency."
                     ],
                     "correct": 2,
-                    "explanation": "Genetic drift in finite populations causes random changes in allele frequencies[cite: 28, 31]. Without new mutations to reintroduce variation, one allele will eventually replace all others by chance, leading to a loss of heterozygosity at a rate of 1/(2N) per generation."
+                    "explanation": "Genetic drift in finite populations causes random changes in allele frequencies. Without new mutations to reintroduce variation, one allele will eventually replace all others by chance, leading to a loss of heterozygosity at a rate of 1/(2N) per generation."
                 },
                 {
                     "question": "What is 'Effective Population Size' (Ne) in population genetics?",
@@ -2674,7 +2674,7 @@
                         "The number of suffix links connected to the root."
                     ],
                     "correct": 1,
-                    "explanation": "Any path from the root to an internal node represents a repeated substring because it is a prefix to at least two different suffixes[cite: 19, 30]. The string depth of an internal node is the length of its path label; thus, the node with the maximum string depth identifies the longest repeat."
+                    "explanation": "Any path from the root to an internal node represents a repeated substring because it is a prefix to at least two different suffixes. The string depth of an internal node is the length of its path label; thus, the node with the maximum string depth identifies the longest repeat."
                 },
                 {
                     "question": "In Suffix Tree construction, what does the '$' sentinel character ensure?",
@@ -2686,7 +2686,7 @@
                         "That the root always has four children (A, C, G, T)."
                     ],
                     "correct": 1,
-                    "explanation": "If one suffix is a prefix of another (e.g., 'ABA' and 'AB'), the shorter suffix would not end at a leaf node[cite: 18, 30]. By appending a unique character '$' that appears nowhere else, every suffix is guaranteed to be unique and terminate at a leaf."
+                    "explanation": "If one suffix is a prefix of another (e.g., 'ABA' and 'AB'), the shorter suffix would not end at a leaf node. By appending a unique character '$' that appears nowhere else, every suffix is guaranteed to be unique and terminate at a leaf."
                 },
                 {
                     "question": "Which specific condition defines an 'Internal Node' in a Suffix Tree as being 'Left-Divergent'?",
@@ -3154,7 +3154,7 @@
                         "The number of possible global alignments between two genomes."
                     ],
                     "correct": 1,
-                    "explanation": "Coalescent theory provides a framework to trace the ancestry of a sample of genes backward until they merge (coalesce) into a single common ancestor[cite: 29, 31]. This allows researchers to estimate population parameters like effective size (Ne) and mutation rate (theta)."
+                    "explanation": "Coalescent theory provides a framework to trace the ancestry of a sample of genes backward until they merge (coalesce) into a single common ancestor. This allows researchers to estimate population parameters like effective size (Ne) and mutation rate (theta)."
                 },
                 {
                     "question": "In Coalescent Theory, why does the tree for a sample of genes look 'star-like' under strong positive selection?",
@@ -3165,7 +3165,7 @@
                         "The population size becomes infinitely large."
                     ],
                     "correct": 1,
-                    "explanation": "When an advantageous mutation occurs, it sweeps through the population rapidly (selective sweep)[cite: 29, 30]. Because the fixation happens in a short time window, the ancestral lineages of the sampled genes are forced to merge (coalesce) very quickly, creating short internal branches and a star-like shape."
+                    "explanation": "When an advantageous mutation occurs, it sweeps through the population rapidly (selective sweep). Because the fixation happens in a short time window, the ancestral lineages of the sampled genes are forced to merge (coalesce) very quickly, creating short internal branches and a star-like shape."
                 },
                 {
                     "question": "What is the 'Effective Population Size' (Ne) in the context of the Coalescent model?",
@@ -3314,7 +3314,7 @@
                         "The cell with the highest positive value in the entire matrix."
                     ],
                     "correct": 2,
-                    "explanation": "Needleman-Wunsch is a global alignment algorithm that forces the alignment to span the entire length of both sequences[cite: 14, 30]. Consequently, the optimal score is accumulated at the final cell of the dynamic programming matrix, representing the completion of both prefixes."
+                    "explanation": "Needleman-Wunsch is a global alignment algorithm that forces the alignment to span the entire length of both sequences. Consequently, the optimal score is accumulated at the final cell of the dynamic programming matrix, representing the completion of both prefixes."
                 }
             ]
         },
@@ -3348,7 +3348,7 @@
                         "To identify the TATA-box in a promoter region."
                     ],
                     "correct": 1,
-                    "explanation": "Overlap (or end-space free) alignment is used when two sequences are suspected to match only at their ends[cite: 13, 15]. This is essential for genome assembly, where random fragments must be 'stitched' together based on overlapping terminal sequences[cite: 13, 14]."
+                    "explanation": "Overlap (or end-space free) alignment is used when two sequences are suspected to match only at their ends. This is essential for genome assembly, where random fragments must be 'stitched' together based on overlapping terminal sequences."
                 }
             ]
         },
@@ -3866,7 +3866,7 @@
                         "Counting the number of introns in a known sequence."
                     ],
                     "correct": 1,
-                    "explanation": "Search by content involves analyzing the statistical distribution of nucleotides or k-mers within a window[cite: 24, 25]. For example, coding regions often have a different hexamer frequency (codon bias) than non-coding regions, which prediction tools use to distinguish them."
+                    "explanation": "Search by content involves analyzing the statistical distribution of nucleotides or k-mers within a window. For example, coding regions often have a different hexamer frequency (codon bias) than non-coding regions, which prediction tools use to distinguish them."
                 },
                 {
                     "question": "In the context of Gene Prediction, what is 'Search by Signal'?",
@@ -4054,7 +4054,7 @@
                         "A visual representation of the scoring matrix."
                     ],
                     "correct": 1,
-                    "explanation": "Progressive MSA (like ClustalW) starts by calculating all pairwise distances. A guide tree is constructed from these distances to determine the 'path' of alignment: the most similar sequences are aligned first, followed by more distant ones[cite: 23, 24]."
+                    "explanation": "Progressive MSA (like ClustalW) starts by calculating all pairwise distances. A guide tree is constructed from these distances to determine the 'path' of alignment: the most similar sequences are aligned first, followed by more distant ones."
                 },
                 {
                     "question": "Which algorithm is commonly used for Multiple Sequence Alignment (MSA) to avoid the exponential complexity of dynamic programming?",
@@ -4104,7 +4104,7 @@
                         "The substitution matrix must be PAM250."
                     ],
                     "correct": 1,
-                    "explanation": "Smith-Waterman introduces a 'maximum-of-zero' rule. If a partial alignment score becomes negative (due to poor matches), the cell is reset to zero, effectively 'restarting' the alignment locally[cite: 15, 30]."
+                    "explanation": "Smith-Waterman introduces a 'maximum-of-zero' rule. If a partial alignment score becomes negative (due to poor matches), the cell is reset to zero, effectively 'restarting' the alignment locally."
                 },
                 {
                     "question": "Which dynamic programming step distinguishes the 'Smith-Waterman' algorithm from 'Needleman-Wunsch'?",

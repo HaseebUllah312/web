@@ -83,7 +83,7 @@ export default function VUExamMode({ questions, subject, examType, customLabel, 
     return (
         <div style={{
             minHeight: '100vh',
-            background: '#1a1a2e',
+            background: 'var(--bg-primary)',
             display: 'flex',
             flexDirection: 'column',
             fontFamily: 'Arial, sans-serif',
@@ -107,7 +107,7 @@ export default function VUExamMode({ questions, subject, examType, customLabel, 
                         <div style={{ color: 'white', fontWeight: 'bold', fontSize: '1.25rem', letterSpacing: '0.02em' }}>
                             {subject} - {customLabel || (examType === 'midterm' ? 'Midterm' : 'Final Term')}
                         </div>
-                        <div style={{ fontSize: '0.75rem', color: '#a5b4fc', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '600' }}>
+                        <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '600' }}>
                             {examLabel} Assessment Portal
                         </div>
                     </div>
@@ -130,7 +130,7 @@ export default function VUExamMode({ questions, subject, examType, customLabel, 
                         <text x="45" y="42" textAnchor="middle" fill="white" fontSize="13" fontWeight="bold">
                             {formatTime(timeLeft)}
                         </text>
-                        <text x="45" y="56" textAnchor="middle" fill="#a5b4fc" fontSize="9">
+                        <text x="45" y="56" textAnchor="middle" fill="rgba(255,255,255,0.7)" fontSize="9">
                             Time Left
                         </text>
                     </svg>
@@ -138,7 +138,7 @@ export default function VUExamMode({ questions, subject, examType, customLabel, 
 
                 {/* Login info */}
                 <div style={{ color: 'white', textAlign: 'right', fontSize: '0.82rem' }}>
-                    <div style={{ color: '#a5b4fc' }}>VU Academic Hub</div>
+                    <div style={{ color: 'rgba(255,255,255,0.7)' }}>VU Academic Hub</div>
                     <div style={{ fontWeight: 'bold' }}>Practice Mode</div>
                 </div>
             </div>
@@ -169,16 +169,16 @@ export default function VUExamMode({ questions, subject, examType, customLabel, 
             <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
 
                 {/* LEFT: Question + Options */}
-                <div style={{ flex: 1, overflowY: 'auto', background: '#f8f9fa', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ flex: 1, overflowY: 'auto', background: 'var(--bg-secondary)', display: 'flex', flexDirection: 'column' }}>
 
                     {/* Question Text */}
                     <div style={{
                         padding: '24px 28px',
-                        background: 'white',
-                        borderBottom: '1px solid #e5e7eb',
+                        background: 'var(--bg-secondary)',
+                        borderBottom: '1px solid var(--border-color)',
                         fontSize: '1rem',
                         lineHeight: '1.7',
-                        color: '#111827',
+                        color: 'var(--text-primary)',
                         minHeight: '100px',
                     }}>
                         <strong style={{ color: '#6d28d9', marginRight: '8px' }}>Q{currentQ + 1}.</strong>
@@ -202,9 +202,9 @@ export default function VUExamMode({ questions, subject, examType, customLabel, 
                             const isSelected = answers[currentQ] === i;
                             const isCorrect = i === q.correct;
                             const hasAnswered = answers[currentQ] !== null && showExplanation[currentQ];
-                            let borderColor = '#d1d5db';
-                            let bg = 'white';
-                            let textColor = '#111827';
+                            let borderColor = 'var(--border-color)';
+                            let bg = 'var(--bg-secondary)';
+                            let textColor = 'var(--text-primary)';
 
                             if (hasAnswered) {
                                 if (isCorrect) { borderColor = '#22c55e'; bg = '#f0fdf4'; textColor = '#166534'; }
@@ -302,8 +302,8 @@ export default function VUExamMode({ questions, subject, examType, customLabel, 
                 {/* RIGHT: Summary Sidebar */}
                 <div style={{
                     width: '260px',
-                    background: '#1e1b4b',
-                    borderLeft: '1px solid rgba(255,255,255,0.1)',
+                    background: 'var(--bg-primary)',
+                    borderLeft: '1px solid var(--border-color)',
                     display: 'flex',
                     flexDirection: 'column',
                     overflowY: 'auto',
@@ -362,32 +362,32 @@ export default function VUExamMode({ questions, subject, examType, customLabel, 
                     </div>
 
                     {/* Legend */}
-                    <div style={{ padding: '8px 12px', borderTop: '1px solid #374151' }}>
+                    <div style={{ padding: '8px 12px', borderTop: '1px solid var(--border-color)' }}>
                         {[
                             { color: '#7c3aed', label: 'Current' },
                             { color: '#22c55e', label: 'Answered' },
                             { color: '#f59e0b', label: 'Flagged' },
-                            { color: '#374151', label: 'Not answered' },
+                            { color: 'var(--text-muted)', label: 'Not answered' },
                         ].map(({ color, label }) => (
                             <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                                 <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: color }} />
-                                <span style={{ color: '#9ca3af', fontSize: '0.72rem' }}>{label}</span>
+                                <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem' }}>{label}</span>
                             </div>
                         ))}
                     </div>
 
                     {/* Stats */}
-                    <div style={{ padding: '12px', borderTop: '1px solid #374151', marginTop: 'auto' }}>
-                        <div style={{ fontSize: '2rem', fontWeight: 'bold', color: 'white', textAlign: 'center' }}>
+                    <div style={{ padding: '12px', borderTop: '1px solid var(--border-color)', marginTop: 'auto' }}>
+                        <div style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--text-primary)', textAlign: 'center' }}>
                             {Math.round((attempted / questions.length) * 100)}%
                         </div>
                         {[
                             { label: 'Attempted', val: attempted, color: '#22c55e' },
                             { label: 'Flagged', val: flaggedCount, color: '#f59e0b' },
-                            { label: 'Total', val: questions.length, color: '#9ca3af' },
+                            { label: 'Total', val: questions.length, color: 'var(--text-muted)' },
                         ].map(({ label, val, color }) => (
                             <div key={label} style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '4px', fontSize: '0.82rem' }}>
-                                <span style={{ color: '#9ca3af' }}>{label}</span>
+                                <span style={{ color: 'var(--text-muted)' }}>{label}</span>
                                 <span style={{ color, fontWeight: 'bold' }}>{val}</span>
                             </div>
                         ))}

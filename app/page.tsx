@@ -96,7 +96,7 @@ export default function Home() {
                     </span>
                     {a.important && <span className="badge badge-warning">Important</span>}
                   </div>
-                  <h3 style={{ fontSize: '1rem', marginBottom: '6px' }}>{a.title}</h3>
+                  <h3 style={{ fontSize: '1rem', marginBottom: '6px', color: 'var(--text-primary)' }}>{a.title}</h3>
                   <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)' }}>{a.description}</p>
                   <div className="announcement-date">{a.date}</div>
                 </div>
@@ -191,7 +191,7 @@ export default function Home() {
       {/* CTA */}
       <section className="section" style={{ textAlign: 'center' }}>
         <div className="container">
-          <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', marginBottom: '16px' }}>
+          <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', marginBottom: '16px', color: 'var(--text-primary)' }}>
             Ready to <span className="gradient-text">Ace Your Exams</span>?
           </h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', maxWidth: '500px', margin: '0 auto 32px' }}>

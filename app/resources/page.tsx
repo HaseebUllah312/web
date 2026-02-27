@@ -5,9 +5,9 @@ const archives = [
     { title: 'Archive 1 (Mixed Subjects)', link: 'https://drive.google.com/drive/folders/1gn9vOlBosa4sco-W_NvgGWgCV432sLdu?usp=drive_link', color: 'var(--primary)' },
     { title: 'Archive 2 (Mixed Subjects)', link: 'https://drive.google.com/drive/folders/1yLr8EX3ehDdGdhsKI0YZna9Kk2JbtjZe?usp=drive_link', color: 'var(--secondary)' },
     { title: 'Archive 3 (Mixed Subjects)', link: 'https://drive.google.com/drive/folders/11iCga1LlWk5EvpcZykWNr_glURgUeNeo?usp=drive_link', color: 'var(--accent)' },
-    { title: 'Archive 4 (Mixed Subjects)', link: 'https://drive.google.com/drive/folders/1zJW41VjmF7YZJU8OfE2TWMk3jXQ0okcD', color: '#FF6B6B' },
-    { title: 'Archive 5 (Mixed Subjects)', link: 'https://drive.google.com/drive/folders/1QI9_QgYZU88uulylWksI3mKXECYDkSHB', color: '#4ECDC4' },
-    { title: 'Archive 6 (Mixed Subjects)', link: 'https://drive.google.com/drive/folders/1i3v79NvfvB6-gCq1KgB-jwSLl3OoX9_O', color: '#FFE66D' },
+    { title: 'Archive 4 (Mixed Subjects)', link: 'https://drive.google.com/drive/folders/1zJW41VjmF7YZJU8OfE2TWMk3jXQ0okcD', color: 'var(--error)' },
+    { title: 'Archive 5 (Mixed Subjects)', link: 'https://drive.google.com/drive/folders/1QI9_QgYZU88uulylWksI3mKXECYDkSHB', color: 'var(--info)' },
+    { title: 'Archive 6 (Mixed Subjects)', link: 'https://drive.google.com/drive/folders/1i3v79NvfvB6-gCq1KgB-jwSLl3OoX9_O', color: '#eab308' },
 ];
 
 export default function ResourcesPage() {
